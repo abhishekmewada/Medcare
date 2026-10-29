@@ -2,7 +2,7 @@
 // import './App.css'
 
 import { Route, Routes } from "react-router-dom"
-import PublicLayout from "./layouts/publicLayout"
+ import PublicLayout from "./layouts/PublicLayout"
  import Register from "./pages/auth/Register"
 import Login from "./pages/auth/Login"
 import Home from "./pages/public/Home"
