@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../../redux/slice/authSlice";
 import { logoutUser } from "../../services/auth.service";
-import PatientNotification from "./patientNotification";
+import PatientNotification from "./PatientNotification";
 
 const PatientNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
