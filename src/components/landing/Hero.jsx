@@ -1,26 +1,26 @@
 import { ArrowRight, BotMessageSquare, Check, Stars } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <section className="  relative overflow-hidden pt-36 pb-26  ">
+    <section className="w-full relative overflow-hidden z-10 pt-36 pb-26  ">
       
 
       {/* Grid Background */}
       <div
-        className="absolute inset-0 -z-20"
+        className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `
-            linear-gradient([#F2F4F7] 1px, transparent 1px),
-            linear-gradient(90deg, [#F2F4F7] 0.6px, transparent 0.6px)
-          `,
-          backgroundSize: "40px 40px",
+          backgroundImage: `url("/images/SoftBluee.png") `,
+          backgroundSize: "cover",
+           backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
         }}
       />
 
       {/* Blue Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 h-150 w-225 rounded-full bg-blue-400/20 blur-[150px] -z-10" />
 
-      <div className="  max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
 
         <div className="  flex flex-col lg:flex-row items-start gap-10 lg:gap-6">
 
@@ -33,7 +33,7 @@ const Hero = () => {
             <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2 shadow-sm">
                  <Stars className="text-blue-600" size={14} strokeWidth={2.5} />
                <p className="text-sm text-gray-600">
-                Built with Claude Sonnet 4.5 · AI-native clinic OS
+               Your All-in-One Healthcare Platform
               </p>
             </div>
 
@@ -59,12 +59,13 @@ const Hero = () => {
             {/* Buttons */}
 
             <div className="mt-10 flex gap-5">
-
-              <button className="rounded-full text-xs flex items-center bg-blue-600 md:px-8 px-3 py-2 text-white font-semibold hover:bg-blue-700 transition">
-
+                <Link to="/register" className="rounded-full text-xs flex items-center bg-blue-600 md:px-8 px-3 py-2 text-white font-semibold hover:bg-blue-700 transition">
+              <button className=" flex">
+               
                 Get Started Free  <span  >  <ArrowRight size={16} className="ml-2" /> </span>
-
+               
               </button>
+              </Link>
 
               <button className="rounded-full text-xs border border-gray-300  md:px-8 px-3 py-4 font-semibold hover:bg-blue-500/15 transition">
 
@@ -75,9 +76,10 @@ const Hero = () => {
             </div>
 
             <div  className="mt-10 flex flex-row gap-3 text-gray-600 items-center text-lg">
-                <p className="flex text-sm block" > <Check size={16} className="text-green-500 mr-2" /> HIPAA-ready</p>
-                <p className="flex text-sm block"> <Check size={16} className="text-green-500 mr-2" /> SOC-2 (in progress)</p>
-                <p className="flex text-sm block"> <Check size={16} className="text-green-500 mr-2" /> Loved by 1,200+ clinic</p>
+                <p className="flex text-sm " > <Check size={16} className="text-green-500 mr-2" /> HIPAA-ready</p>
+                <p className="flex text-sm "> <Check size={16} className="text-green-500 mr-2" /> SOC-2 (in progress)</p>
+                <p className="flex text-sm "> <Check size={16} className="text-green-500 mr-2" /> Loved by 1,200+ clinic</p>
+                {/* <img className="h-12 w-auto" src="/images/Minimal.png" alt="minimal" /> */}
             </div>
  
 

@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
+  ArrowLeftIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/auth.service";
@@ -70,23 +71,25 @@ const Login = () => {
   };
 
   return (
-    <div className="relative  flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#f8fafc] p-4 sm:p-6 lg:p-10">
+    <div className="relative z-10 flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#f8fafc] p-4 sm:p-6 lg:p-10">
       {/* =====================================================
           SUBTLE AMBIENT HEALTHCARE BACKGROUND
       ====================================================== */}
-      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        {/* Soft, calm medical blue & teal glow */}
-        <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-teal-100/50 blur-[110px]" />
-        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-sky-100/60 blur-[130px]" />
-        
-        {/* Subtle abstract clinical grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(#0f766e 1px, transparent 1px)`,
-            backgroundSize: "28px 28px",
-          }}
+       <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        {/* Full Background Image */}
+        <img
+          src="/images/circle-scatter-haikei.png"
+          alt="MedCare Background"
+          className="h-full w-full object-cover object-center"
         />
+
+        {/* Cinematic Dual-Tone Medical Overlay (ensures card contrast) */}
+        <div className="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-linear-to-tr from-teal-950/60 via-slate-900/30 to-sky-950/40 mix-blend-multiply" />
+
+        {/* Ambient Glow Accents */}
+        <div className="absolute -left-20 -top-20 h-96 w-96 rounded-full bg-teal-400/20 blur-[130px]" />
+        <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-sky-400/20 blur-[140px]" />
       </div>
 
       {/* =====================================================
@@ -96,7 +99,7 @@ const Login = () => {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="relative flex w-full max-w-5xl flex-col overflow-hidden   rounded-3xl border border-slate-200/90 bg-white shadow-xl shadow-slate-200/50 lg:flex-row"
+        className="relative flex w-full max-w-5xl flex-col overflow-hidden   rounded-3xl  bg-white  lg:flex-row"
       >
         {/* =====================================================
             LEFT SIDE: HEALTHCARE VISUAL AREA
@@ -116,22 +119,14 @@ const Login = () => {
 
           {/* Left Top: MedCare Brand Logo & Trust Tag */}
           <div className="relative z-10 flex items-center justify-between">
-            <Link
-              to="/"
-              className="group inline-flex items-center gap-2.5 transition-transform duration-200 hover:opacity-95"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/15 backdrop-blur-md shadow-sm">
-                <Activity size={20} className="text-teal-300" strokeWidth={2.5} />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white">
-                MedCare
-              </span>
-            </Link>
+            <Link to="/" className="inline-flex items-center gap-2">
+                      {/* <img className="object-contain bg-transparent mix-blend-multiply contrast-125 brightness-105 " src="/images/Gemini_Generated_Image_6t88pq6t88pq6t88-removebg-preview.png" height="auto" width="180" alt="logo" /> */}
+                      <p className="text-white flex items-center hover:text-teal-300 transition-colors">
+                        <ArrowLeftIcon size={20} />  Back to home
+                      </p>
+                    </Link>
 
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-teal-200 backdrop-blur-md">
-              <ShieldCheck size={14} className="text-teal-300" />
-              <span>HIPAA Compliant</span>
-            </div>
+            
           </div>
 
           {/* Left Middle: Headline & Subtle Supporting Copy */}

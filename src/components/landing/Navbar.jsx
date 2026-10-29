@@ -1,7 +1,6 @@
 import  { useState, useEffect, useRef } from "react";
 import {
-  Activity,
-  Home,
+   Home,
   Stethoscope,
   Users,
    HelpCircle,

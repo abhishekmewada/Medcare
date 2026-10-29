@@ -10,7 +10,7 @@ import Service from "../../components/landing/Service";
 const Home = () => {
   return (
     <main className="bg-gray-50">
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <div className=" py-0">
     
   
         <Hero />

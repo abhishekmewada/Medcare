@@ -12,6 +12,7 @@ import {
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
+  ArrowLeftIcon,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser, verifyEmail } from "../../services/auth.service";
@@ -87,7 +88,7 @@ const Register = () => {
       <div className="pointer-events-none fixed inset-0 -z-20 overflow-hidden">
         {/* Full Background Image */}
         <img
-          src="/images/pexels-towfiqu-barbhuiya-3440682-9155926.jpg"
+          src="/images/circle-scatter-haikei.png"
           alt="MedCare Background"
           className="h-full w-full object-cover object-center"
         />
@@ -128,22 +129,14 @@ const Register = () => {
 
           {/* Left Top: Logo & Trust Tag */}
           <div className="relative z-10 flex items-center justify-between">
-            <Link
-              to="/"
-              className="group inline-flex items-center gap-2.5 transition-transform duration-200 hover:opacity-95"
-            >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/20 bg-white/15 backdrop-blur-md shadow-sm">
-                <Activity size={20} className="text-teal-300" strokeWidth={2.5} />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-white">
-                MedCare
-              </span>
-            </Link>
+          <Link to="/" className="inline-flex items-center gap-2">
+                      {/* <img className="object-contain bg-transparent mix-blend-multiply contrast-125 brightness-105 " src="/images/Gemini_Generated_Image_6t88pq6t88pq6t88-removebg-preview.png" height="auto" width="180" alt="logo" /> */}
+                      <p className="text-white flex items-center hover:text-teal-300 transition-colors">
+                        <ArrowLeftIcon size={20} />  Back to home
+                      </p>
+                    </Link>
 
-            <div className="inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-teal-200 backdrop-blur-md">
-              <ShieldCheck size={14} className="text-teal-300" />
-              <span>HIPAA Compliant</span>
-            </div>
+             
           </div>
 
           {/* Left Middle: Headline & Supporting Copy */}
