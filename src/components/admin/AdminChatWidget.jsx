@@ -30,6 +30,7 @@ import {
 } from "../../socket/chatSocket";
 
 import socket, { connectSocket } from "../../socket/socket";
+// import { getImageUrl } from "../../utiles/imageURL";
 
 // Helper to resolve backend image URLs
 const resolveAvatarUrl = (path) => {

@@ -25,22 +25,23 @@ import {
 import {
   useAppointment,
 } from "../../context/AppointmentContext";
+import { getImageUrl } from "../../utiles/imageURL";
 
 // ==========================================
 // AVATAR URL RESOLVER
 // ==========================================
 
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+// const resolveAvatarUrl = (path) => {
+//   if (!path) return "";
+//   if (
+//     path.startsWith("blob:") ||
+//     path.startsWith("http://") ||
+//     path.startsWith("https://")
+//   ) {
+//     return path;
+//   }
+//   return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
+// };
 
 const BookVisitModal = () => {
   const dispatch = useDispatch();
@@ -233,7 +234,7 @@ const BookVisitModal = () => {
     .charAt(0)
     .toUpperCase();
 
-  const doctorAvatar = resolveAvatarUrl(selectedDoctor.avatar);
+  const doctorAvatar = getImageUrl(selectedDoctor.avatar);
   const hasAvatar = doctorAvatar && !imgError;
 
   const consultationTypes = Array.isArray(selectedDoctor.consultationType)
@@ -261,7 +262,7 @@ const BookVisitModal = () => {
       onClick={closeBookVisitModal}
     >
       <div
-        className="relative w-full max-w-lg rounded-[32px] border border-stone-200/80 bg-[#FAFBF9] p-6 sm:p-8 shadow-2xl transition-all overflow-hidden"
+        className="relative w-full max-w-lg rounded-4xl border border-stone-200/80 bg-[#FAFBF9] p-6 sm:p-8 shadow-2xl transition-all overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top Decorative Blur */}
