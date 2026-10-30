@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAppointment } from "../../context/AppointmentContext";
 import BookVisitModal from "../../components/patient/BookVisitModal";
 import { fetchDoctors } from "../../redux/slice/doctorSlice";
+import { getImageUrl } from "../../utiles/imageURL";
 
 const BookVisitView = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -285,17 +286,17 @@ const BookVisitView = () => {
 // AVATAR URL RESOLVER
 // ============================================================
 
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+// const resolveAvatarUrl = (path) => {
+//   if (!path) return "";
+//   if (
+//     path.startsWith("blob:") ||
+//     path.startsWith("http://") ||
+//     path.startsWith("https://")
+//   ) {
+//     return path;
+//   }
+//   return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
+// };
 
 // ============================================================
 // DOCTOR BENTO CARD
@@ -311,7 +312,7 @@ const DoctorCard = ({ doc, onSchedule }) => {
     "D";
 
   const image = doc?.avatar;
-  const avatarUrl = resolveAvatarUrl(image);
+  const avatarUrl = getImageUrl(image);
   const hasImage = avatarUrl && !imgError;
 
   const locationText = doc.clinicAddress || doc.address || doc.city || "";
