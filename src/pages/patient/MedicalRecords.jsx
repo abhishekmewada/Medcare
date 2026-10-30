@@ -18,7 +18,8 @@ import {
   removeMedicalRecord,
 } from "../../redux/slice/medicalRecordSlice";
 
-const API_BASE = "http://localhost:5000";
+// Use shared image URL resolver for medical record files
+import { getImageUrl } from "../../utiles/imageURL";
 
 const MedicalRecords = () => {
   const dispatch = useDispatch();

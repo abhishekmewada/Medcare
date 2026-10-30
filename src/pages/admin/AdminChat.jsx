@@ -12,17 +12,8 @@ import {
 import { fetchAdminConversations } from "../../redux/slice/adminSlice";
 
 // Helper to resolve backend image URLs
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+import { getImageUrl } from "../../utiles/imageURL";
+const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
 
 export default function AdminChat() {
   const dispatch = useDispatch();

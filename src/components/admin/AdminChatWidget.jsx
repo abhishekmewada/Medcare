@@ -30,20 +30,11 @@ import {
 } from "../../socket/chatSocket";
 
 import socket, { connectSocket } from "../../socket/socket";
-// import { getImageUrl } from "../../utiles/imageURL";
+// Import utility to resolve image URLs
+import { getImageUrl } from "../../utiles/imageURL";
 
-// Helper to resolve backend image URLs
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+// Alias for backward compatibility
+const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
 
 export default function AdminChatWidget() {
   const user = useSelector((state) => state.auth.user);

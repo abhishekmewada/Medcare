@@ -33,7 +33,9 @@ const resolveAvatarUrl = (path) => {
   ) {
     return path;
   }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
+  // Use backend URL from environment variable (remove trailing /api if present)
+  const baseUrl = import.meta.env.VITE_API_URL.replace(/\/api$/,'' );
+  return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`;
 };
 
 const DoctorPrescriptions = () => {

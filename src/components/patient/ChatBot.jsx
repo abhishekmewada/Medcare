@@ -45,17 +45,8 @@ import {
 import socket, { connectSocket } from "../../socket/socket";
 
 // Helper to resolve backend image URLs
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+import { getImageUrl } from "../../utiles/imageURL";
+const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
 
 // Helper to resolve the doctor participant in patient chat
 const getDoctorParticipant = (conv, currentUserId) => {
