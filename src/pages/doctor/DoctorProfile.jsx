@@ -24,6 +24,7 @@ import {
   Activity,
   Sparkles,
 } from "lucide-react";
+import { getImageUrl } from "../../utiles/imageURL";
 
 import {
   updateDoctorProfileApi,
@@ -34,17 +35,9 @@ import {
 // IMAGE URL RESOLVER
 // ==========================================
 
-const resolveAvatarUrl = (path) => {
-  if (!path) return "";
-  if (
-    path.startsWith("blob:") ||
-    path.startsWith("http://") ||
-    path.startsWith("https://")
-  ) {
-    return path;
-  }
-  return `http://localhost:5000${path.startsWith("/") ? "" : "/"}${path}`;
-};
+// Use shared image URL resolver
+import { getImageUrl } from "../../utiles/imageURL";
+const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
 
 // ==========================================
 // DEFAULT FORM STATE

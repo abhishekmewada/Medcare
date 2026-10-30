@@ -19,6 +19,7 @@ import {
   ArrowUpRight,
   Activity,
 } from "lucide-react";
+import { getImageUrl } from "../../utiles/imageURL";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -26,15 +27,8 @@ import {
   updateUserProfile,
 } from "../../redux/slice/userSlice";
 
-const API_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
-
-const getImageUrl = (image) => {
-  if (!image) return "";
-  if (image.startsWith("blob:")) return image;
-  if (image.startsWith("http://") || image.startsWith("https://")) return image;
-  return `${API_URL}${image.startsWith("/") ? image : `/${image}`}`;
-};
+// Image URL helper is centralized in src/utiles/imageURL.js
+// Import the shared function below
 
 const getFormDataFromProfile = (profile) => ({
   fullName: profile?.fullName || "",
@@ -382,7 +376,7 @@ const Profile = () => {
               <div className="h-28 w-28 overflow-hidden rounded-full border-4 border-white bg-[#DDF4EC] shadow-md ring-1 ring-stone-200">
                 {avatarPreview ? (
                   <img
-                    src={`http://localhost:5000${avatarPreview}`}
+                    src={getImageUrl(avatarPreview)}
                     alt={formData.fullName || "Patient"}
                     className="h-full w-full object-cover"
                   />
@@ -616,7 +610,7 @@ const Profile = () => {
               <div className="h-24 w-24 sm:h-28 sm:w-28 shrink-0 overflow-hidden rounded-full border-4 border-[#F7F8F5] bg-[#DDF4EC] shadow-md">
                 {profile.avatar ? (
                   <img
-                    src={`http://localhost:5000${profile.avatar}`}
+                    src={getImageUrl(profile.avatar)}
                     alt={profile.fullName || "Patient"}
                     className="h-full w-full object-cover"
                   />
