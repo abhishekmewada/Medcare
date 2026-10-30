@@ -135,7 +135,7 @@ const DoctorSidebar = () => {
           {/* Doctor Profile Chip */}
           <Link
             to="/doctor/profile"
-            className="flex  items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/70 py-1 pl-1 pr-3 transition-colors hover:bg-slate-100"
+            className="hidden md:flex  items-center gap-2 rounded-full border border-slate-200/80 bg-slate-50/70 py-1 pl-1 pr-3 transition-colors hover:bg-slate-100"
           >
             <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-[11px] font-bold text-white shadow-2xs">
              {initial}

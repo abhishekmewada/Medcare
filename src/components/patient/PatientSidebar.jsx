@@ -201,7 +201,7 @@ const PatientNavbar = () => {
           <div className="flex items-center gap-2 sm:gap-3">
          <PatientNotification />
             {/* Desktop User Chip & Logout */}
-            <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200/80">
+            <div className="hidden md:flex items-center gap-2 pl-2 border-l border-slate-200/80">
               <div
                 onClick={() => {
                   setActiveTab("profile");
