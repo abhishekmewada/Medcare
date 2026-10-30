@@ -384,15 +384,16 @@ const PatientNotification = () => {
         <div
           className="
             absolute
-            right-0
+            text-center
+            left-1/2
+            top-18
+             -translate-x-1/2
             top-[calc(100%+12px)]
             z-50
             w-95
             max-w-[calc(100vw-24px)]
-            overflow-hidden
+            overflow-hidden 
             rounded-2xl
-            border
-            border-slate-200
             bg-white
             shadow-[0_20px_60px_rgba(15,23,42,0.15)]
           "

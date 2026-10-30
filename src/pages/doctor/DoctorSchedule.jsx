@@ -466,7 +466,7 @@ const DoctorSchedule = () => {
   };
 
   return (
-    <div className="relative isolate min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 antialiased dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-slate-100 pt-24 md:pt-28 pb-20 selection:bg-teal-500/20">
+    <div className="relative isolate min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 antialiased  pt-24 md:pt-28 pb-20 selection:bg-teal-500/20">
       
       {/* PRINT-ONLY ISOLATED TICKET */}
       {/* <style>{`

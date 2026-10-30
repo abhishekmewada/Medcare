@@ -36,8 +36,7 @@ import {
 // ==========================================
 
 // Use shared image URL resolver
-import { getImageUrl } from "../../utiles/imageURL";
-const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
+ const resolveAvatarUrl = getImageUrl; // alias for backward compatibility
 
 // ==========================================
 // DEFAULT FORM STATE

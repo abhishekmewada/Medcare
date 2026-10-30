@@ -225,14 +225,14 @@ const Appointments = () => {
         </div>
 
         {/* Action Button & Orange Circular Trigger */}
-        <div  data-aos="fade-left" className="flex items-center gap-3">
+        <div  data-aos="fade-left" className="flex  items-center gap-3">
           <button
             type="button"
             onClick={openBookVisit}
             className="inline-flex items-center gap-2 rounded-full bg-[#285943] px-5 py-3 text-xs font-semibold text-white shadow-xs transition-all duration-200 hover:bg-[#1e4533] active:scale-[0.98]"
           >
             <Plus className="h-4 w-4" />
-            <span>Book New Visit</span>
+            <span  >Book New Visit</span>
           </button>
 
           <button

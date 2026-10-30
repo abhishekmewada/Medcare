@@ -53,7 +53,7 @@ const OverviewView = () => {
   const goToSymptomChecker = () => navigate("/patient/symptoms");
 
   return (
-    <div className="w-full relative min-h-screen   text-slate-800 p-3 sm:p-6 lg:p-8 space-y-8">
+    <div className=" relative min-h-screen   text-slate-800 p-3 sm:p-6 lg:p-8 space-y-8">
             {/* <div className="absolute top-0 left-1/2 -translate-x-1/2 h-150 w-225 rounded-full bg-blue-400/40 blur-[150px] -z-10" /> */}
 
       {/* ── TOP EDITORIAL HERO (Exact Image 2 Header) ── */}
@@ -217,7 +217,7 @@ const OverviewView = () => {
             <div className="flex items-center justify-between z-10">
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium backdrop-blur-xs">
                 <span className="h-2 w-2 rounded-full bg-[#8cd790] animate-pulse" />
-                {nextAppointment ? "Upcoming Visit Queued" : "Care Room Ready"}
+                {nextAppointment ? "Upcoming Visits" : "Care Room Ready"}
               </span>
               <Video className="h-5 w-5 text-white/80" />
             </div>
@@ -240,10 +240,8 @@ const OverviewView = () => {
             {/* Floating Glass Pill Bar like Image 2 */}
             <div className="z-10 flex items-center justify-center gap-2 rounded-full bg-black/30 backdrop-blur-md p-1.5 border border-white/10">
               <span className="rounded-full bg-white/20 px-3 py-0.5 text-[10px] font-semibold text-white">24/7</span>
-              <span className="text-white/40">•</span>
-              <span className="rounded-full bg-white/20 px-3 py-0.5 text-[10px] font-semibold text-white">user-friendly</span>
-              <span className="text-white/40">•</span>
-              <button
+               <span className="rounded-full bg-white/20 px-3 py-0.5 text-[10px] font-semibold text-white">user-friendly</span>
+               <button
                 type="button"
                 onClick={goToAppointments}
                 className="rounded-full bg-[#FA6432] text-white px-3 py-0.5 text-[10px] font-bold hover:scale-105 transition-transform"
@@ -272,16 +270,16 @@ const OverviewView = () => {
         {/* Right Column: Telehealth Solutions & AI Assistant (Span 4) */}
         <div className="lg:col-span-4 flex flex-col justify-between rounded-[26px] border border-stone-200/80 bg-white p-6 shadow-xs">
           <div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3 justify-between">
               <span className="rounded-full border border-stone-200 bg-stone-50 px-2.5 py-0.5 text-[10px] font-semibold text-stone-600">
                 telehealth solutions ⓘ
               </span>
               <button
                 type="button"
                 onClick={goToDoctors}
-                className="rounded-full bg-[#FA6432] text-white text-[11px] font-bold px-3 py-1 hover:bg-[#e45222] transition-colors"
+                className="rounded-full flex gap-2 bg-[#FA6432] text-white text-[11px] font-bold px-3 py-1 hover:bg-[#e45222] transition-colors"
               >
-                Explore &gt;
+                Explore <ArrowUpRight size={16} />
               </button>
             </div>
 

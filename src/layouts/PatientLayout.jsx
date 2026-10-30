@@ -25,7 +25,7 @@ const PatientLayout = () => {
 
       {/* Main area   */}
       <div className="w-full  bg-[#F7F8F5] ">
-        <div className=" max-w-7xl mx-auto " > 
+        <div className=" mx-auto w-full max-w-[1920px] space-y-8 px-4 sm:px-8 md:px-14 lg:px-20" > 
         
 
         {/* Header */}
