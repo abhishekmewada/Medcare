@@ -60,6 +60,7 @@ const PatientNavbar = () => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setIsOpen(false);
+        if (mobileMenuOpen) setMobileMenuOpen(false);
       }
     };
 
@@ -128,13 +129,13 @@ const PatientNavbar = () => {
       path: "/patient/symptoms",
       description: "Instant clinical symptom checker",
     },
-    // {
-    //   id: "profile",
-    //   label: "Profile",
-    //   icon: User,
-    //   path: "/patient/profile",
-    //   description: "Personal & emergency details",
-    // },
+    {
+      id: "profile",
+      label: "Profile",
+      icon: User,
+      path: "/patient/profile",
+      description: "Personal & emergency details",
+    },
   ];
 
   const handleNavigation = (item) => {
@@ -248,45 +249,60 @@ const PatientNavbar = () => {
           </div>
         </nav>
 
-        {/* Mobile Responsive Dropdown Menu */}
+                {/* Mobile Responsive Dropdown Menu */}
         {mobileMenuOpen && (
-        <div className="mx-auto  absolute  md:right-32 right-9 mt-2 md:max-w-xs  place-items-start overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 p-4 shadow-xl backdrop-blur-md lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
-          <nav className="flex flex-col space-y-1">
-            {menuItems.map(({ path, label, icon: Icon, id }) => (
-              <NavLink
-                key={path}
-                to={path}
-                end={path === "/patient"}
-                onClick={() => {
-                  handleNavigation({ id, path });
-                  setMobileMenuOpen(false);
-                }}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold transition-all ${
-                    isActive
-                      ? "bg-blue-50 text-blue-600 shadow-2xs"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                  }`
-                }
-              >
-                <Icon size={16} />
-                <span>{label}</span>
-              </NavLink>
-            ))}
-
-            <div className="pt-2 border-t border-slate-100">
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
-              >
-                <LogOut size={16} />
-                <span>Sign Out</span>
-              </button>
+          <div className="mx-auto absolute md:right-32 right-9 mt-2 md:max-w-xs place-items-start overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 p-4 shadow-xl backdrop-blur-md lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
+            {/* User Chip */}
+            <div
+              className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200/60 cursor-pointer transition-colors mb-2"
+              onClick={() => {
+                setActiveTab("profile");
+                navigate("/patient/profile");
+                setMobileMenuOpen(false);
+              }}
+            >
+              <div className="w-7 h-7 rounded-full bg-linear-to-tr from-blue-600 to-indigo-600 text-white text-sm font-bold flex items-center justify-center shadow-xs">
+                {user?.fullName?.charAt(0)?.toUpperCase() || "P"}
+              </div>
+              <span className="text-sm font-semibold text-slate-700 truncate">
+                {user?.fullName?.split(" ")[0] || "Patient"}
+              </span>
             </div>
-          </nav>
-        </div>
-      )}
+            <nav className="flex flex-col space-y-1">
+              {menuItems.map(({ path, label, icon: Icon, id }) => (
+                <NavLink
+                  key={path}
+                  to={path}
+                  end={path === "/patient"}
+                  onClick={() => {
+                    handleNavigation({ id, path });
+                    setMobileMenuOpen(false);
+                  }}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-blue-50 text-blue-600 shadow-2xs"
+                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    }`
+                  }
+                >
+                  <Icon size={16} />
+                  <span>{label}</span>
+                </NavLink>
+              ))}
+              <div className="pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors"
+                >
+                  <LogOut size={16} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );

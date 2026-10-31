@@ -47,8 +47,7 @@ const Login = () => {
 
       const response = await loginUser(formData);
 
-      console.log("Login successful:", response);
-
+ 
       dispatch(setUser(response.user));
       connectSocket();
 

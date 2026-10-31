@@ -81,7 +81,7 @@ const DoctorSidebar = () => {
         }, [isOpen]);
 
   return (
-    <header   className="fixed   md:top-4  left-0 w-full z-50 px-4 transition-all duration-400">
+    <header   className="fixed   md:top-4  left-0 w-full z-50 px-4 lg:px-1 transition-all duration-400">
       {/* ── FLOATING PILL NAVBAR (Image Jaisa Exact Design) ── */}
       <div ref={menuRef} className={`h-16  max-w-7xl mx-auto scale-85  md:scale-80 group hover:scale-85 md:hover:scale-85 transition-all duration-400 md:h-18 bg-white/30 backdrop-blur-2xl backdrop-saturate-150 border border-white/40  rounded-full  px-4 sm:px-6 py-2.5 flex items-center justify-between  ${
             scrolled ? "shadow-lg bg-white/50 border-slate-200/60" : ""
