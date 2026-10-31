@@ -9,9 +9,10 @@ import {
   Users,
    BarChart3,
   LogOut,
-  X,
+   X,
   Menu,
   ClipboardList,
+  UserCircle,
 } from "lucide-react";
 
 import { logout } from "../../redux/slice/authSlice";
@@ -24,7 +25,7 @@ const NAV_ITEMS = [
   // { to: "/doctor/prescriptions/new", label: "Write prescription", icon: FileEdit },
   { to: "/doctor/prescriptions", label: "Prescriptions", icon: ClipboardList },
   { to: "/doctor/analytics", label: "Analytics", icon: BarChart3 },
-  // { to: "/doctor/profile", label: "Profile", icon: UserCircle },
+  { to: "/doctor/profile", label: "Profile", icon: UserCircle },
 ];
 
 const DoctorSidebar = () => {
@@ -93,7 +94,7 @@ const DoctorSidebar = () => {
           <div
             onClick={() => {
               // setActiveTab("overview");
-              navigate("/patient");
+              navigate("/doctor");
             }}
             className="flex items-center hover:opacity-90  gap-3 cursor-pointer select-none transition-transform hover:scale-[1.02] shrink-0"
           >
@@ -189,6 +190,20 @@ const DoctorSidebar = () => {
                 <span>{label}</span>
               </NavLink>
             ))}
+            {/* <NavLink
+  to="/doctor/profile"
+  onClick={() => setMobileMenuOpen(false)}
+  className={({ isActive }) =>
+    `flex items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold transition-all ${
+      isActive
+        ? "bg-blue-50 text-blue-600 shadow-2xs"
+        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+    }`
+  }
+>
+  <UserCircle size={16} />
+  <span>Profile</span>
+</NavLink> */}
 
             <div className="pt-2 border-t border-slate-100">
               <button

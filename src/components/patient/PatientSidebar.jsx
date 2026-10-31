@@ -8,6 +8,7 @@ import {
    Pill,
   LogOut,
   Menu,
+  User,
   X,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -252,22 +253,7 @@ const PatientNavbar = () => {
                 {/* Mobile Responsive Dropdown Menu */}
         {mobileMenuOpen && (
           <div className="mx-auto absolute md:right-32 right-9 mt-2 md:max-w-xs place-items-start overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 p-4 shadow-xl backdrop-blur-md lg:hidden animate-in fade-in slide-in-from-top-2 duration-200">
-            {/* User Chip */}
-            <div
-              className="flex items-center gap-2 px-2.5 py-1.5 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200/60 cursor-pointer transition-colors mb-2"
-              onClick={() => {
-                setActiveTab("profile");
-                navigate("/patient/profile");
-                setMobileMenuOpen(false);
-              }}
-            >
-              <div className="w-7 h-7 rounded-full bg-linear-to-tr from-blue-600 to-indigo-600 text-white text-sm font-bold flex items-center justify-center shadow-xs">
-                {user?.fullName?.charAt(0)?.toUpperCase() || "P"}
-              </div>
-              <span className="text-sm font-semibold text-slate-700 truncate">
-                {user?.fullName?.split(" ")[0] || "Patient"}
-              </span>
-            </div>
+            
             <nav className="flex flex-col space-y-1">
               {menuItems.map(({ path, label, icon: Icon, id }) => (
                 <NavLink
