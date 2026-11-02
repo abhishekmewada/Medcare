@@ -117,11 +117,11 @@ const doctors = [
            
               {/* Background decorative shape */}
   <div
-    className="absolute right-[5%] top-[10%]
-    h-100 opacity-20 w-[85%]  -z-10
+    className="absolute right-[5%] top-[1%]
+    h-100 opacity-20 w-[95%]  -z-10
     rounded-[100px_80px_100px_120px]
     bg-[#F5D8A7]
-    -rotate-12"
+    -rotate-10"
     
   />
   <section className="z-10 px-6 py-8 text-center">
