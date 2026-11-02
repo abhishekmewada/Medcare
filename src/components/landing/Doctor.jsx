@@ -117,7 +117,7 @@ const doctors = [
            
               {/* Background decorative shape */}
   <div
-    className="absolute right-[5%] top-[1%]
+    className="absolute right-[5%] top-[6%]
     h-100 opacity-20 w-[95%]  -z-10
     rounded-[100px_80px_100px_120px]
     bg-[#F5D8A7]
