@@ -39,7 +39,7 @@ const Hero = () => {
 
             {/* Heading */}
 
-            <h1 className="mt-8  text-[36px] md:text-[48px] lg:text-[72px] text-color:[#0F172A] font-bold leading-[1.05] tracking-tight text-slate-900">
+            <h1 className="mt-8 text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-7xl">
 
               Care that <span className="text-blue-600">  thinks</span> , <br /> schedules, and heals.
 
@@ -47,7 +47,7 @@ const Hero = () => {
 
             {/* Paragraph */}
 
-            <p className="mt-8 max-w-2xl text-[18px] leading-7 text-gray-600">
+            <p className="mt-8 max-w-2xl text-base leading-7 text-gray-600 sm:text-lg">
 
               MedCare is the AI-native platform for modern clinics —
               appointments, prescriptions, medical records, video visits
@@ -60,14 +60,14 @@ const Hero = () => {
 
             <div className="mt-10 flex gap-5">
                 <Link to="/register" className="rounded-full text-xs flex items-center bg-blue-600 md:px-8 px-3 py-2 text-white font-semibold hover:bg-blue-700 transition">
-              <button className=" flex">
+              <button className="flex text-sm">
                
                 Get Started Free  <span  >  <ArrowRight size={16} className="ml-2" /> </span>
                
               </button>
               </Link>
 
-              <button className="rounded-full text-xs border border-gray-300  md:px-8 px-3 py-4 font-semibold hover:bg-blue-500/15 transition">
+              <button className="rounded-full border border-gray-300 px-3 py-3 text-sm font-semibold transition hover:bg-blue-500/15 md:px-8">
 
                 Explore Features
 

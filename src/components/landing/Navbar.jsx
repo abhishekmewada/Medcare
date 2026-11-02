@@ -103,7 +103,7 @@ const Navbar = () => {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className="flex  items-center  px-3 py-2 transition duration-500 text-lg group-hover:text-md font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50/80 rounded-xl "
+                    className="flex items-center rounded-xl px-3 py-2 text-base font-medium text-slate-600 transition duration-500 hover:bg-slate-50/80 hover:text-blue-600"
                   >
                     {/* <Icon size={16} className="text-slate-400 group-hover:text-blue-600 transition-colors" /> */}
                     <span>{item.name}</span>
@@ -119,14 +119,14 @@ const Navbar = () => {
             <div className="hidden sm:flex items-center gap-3">
               <a
                 href="/login"
-                className="text-md font-semibold text-slate-700 hover:text-blue-600 px-3 py-2 rounded-xl transition-colors"
+                className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:text-blue-600"
               >
                 Sign in
               </a>
 
               <a
                 href="/register"
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 active:scale-95 text-white px-5 py-2 rounded-full text-md font-semibold transition-all shadow-md shadow-blue-600/25 hover:shadow-lg hover:shadow-blue-600/35"
+                className="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-md shadow-blue-600/25 transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-600/35 active:scale-95"
               >
                 <span >Get Started </span>
                 <ArrowRight size={15} />  

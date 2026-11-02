@@ -155,7 +155,7 @@ const Service = () => {
             </span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-tight text-slate-900">
+          <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
             One place for every part of care.
           </h2>
 

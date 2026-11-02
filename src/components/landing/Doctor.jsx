@@ -5,7 +5,7 @@
   Baby,
   Star,
 } from "lucide-react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 const Doctor = () => {
   
 const features = [
@@ -124,39 +124,39 @@ const doctors = [
     -rotate-12"
     
   />
-  <section class="text-center py-8 z-10  px-6">
-  <h2 class="font-serif z-50 text-[#004d49]   text-4xl sm:text-5xl md:text-7xl tracking-tight leading-[1.15]  max-w-4xl mx-auto mb-6">
-    Get care today for <br class="hidden sm:inline" />
-    <span class="text-[#198d71]">that weird rash</span>
+  <section className="z-10 px-6 py-8 text-center">
+  <h2 className="z-50 mx-auto mb-6 max-w-4xl text-3xl font-bold leading-tight tracking-tight text-[#004d49] sm:text-4xl md:text-5xl">
+    Get care today for <br className="hidden sm:inline" />
+    <span className="text-[#198d71]">that weird rash</span>
   </h2>
   <a
     href="#services"
-    class="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-[#198d71] hover:text-[#136b56] transition-colors group"
+    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#198d71] transition-colors hover:text-[#136b56] sm:text-base"
   >
     <span>See all our services on top</span>
-    <span class="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">&rsaquo;</span>
+    <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">&rsaquo;</span>
   </a>
 </section>
 
- <section class="text-center py-12 px-4">
-  <h2 class="font-serif text-[#004d49] text-4xl sm:text-5xl md:text-7xl tracking-tight leading-[1.15] max-w-3xl mx-auto mb-6">
-    Fall in love with your <br class="hidden sm:inline" /> doctor’s  
+ <section className="px-4 py-12 text-center">
+  <h2 className="mx-auto mb-6 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-[#004d49] sm:text-4xl md:text-5xl">
+    Fall in love with your <br className="hidden sm:inline" /> doctor’s
     office
   </h2>
-  <p class="text-[#35635f] text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-6">
+  <p className="mx-auto mb-6 max-w-xl text-base leading-relaxed text-[#35635f]">
     We accept most major health insurance plans for scheduled in-office and remote visits just like a typical doctor’s office, but we make it faster, easier, and more enjoyable to get care.
   </p>
   <a
     href="#insurance"
-    class="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-[#198d71] hover:text-[#136b56] transition-colors group"
+    className="group inline-flex items-center gap-1.5 text-sm font-semibold text-[#198d71] transition-colors hover:text-[#136b56] sm:text-base"
   >
     <span>See if we're in network with your insurance</span>
-    <span class="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">&rsaquo;</span>
+    <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">&rsaquo;</span>
   </a>
 </section>
 
-              <h6 className="text-xs text-[#2563EB] uppercase tracking-[2.4px] font-bold" >Specialties</h6>
-                 <h2 className=" text-3xl sm:text-4xl mt-3 tracking-tight  font-bold " >Every department, expertly covered.</h2>
+              <h6 className="text-xs font-bold uppercase tracking-[2.4px] text-[#2563EB]">Specialties</h6>
+                 <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Every department, expertly covered.</h2>
 
         <div className="  py-20  overflow-hidden " >
             <motion.div  className="flex w-max gap-6  marquee "

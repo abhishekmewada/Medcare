@@ -3,7 +3,7 @@
  import {Outlet } from "react-router-dom";
 const PublicLayout = () => {
   return (
-     <>
+     <div className="font-sans antialiased">
       <Navbar />
 
       <main>
@@ -11,7 +11,7 @@ const PublicLayout = () => {
       </main>
 
       <Footer />
-    </>
+     </div>
    )
 }
 

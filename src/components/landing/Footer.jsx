@@ -69,32 +69,31 @@ export default function Footer({
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Structured navigation with the user's exact columns & items + subtle enhancement tags
   const navColumns = [
     {
-      title: "Product",
+      title: "Explore",
       links: [
-        { name: "Features" },
-        { name: "Pricing" },
-        { name: "Security" },
-        { name: "Integrations" },
+        { name: "Services", href: "/#services" },
+        { name: "Find a doctor", href: "/#doctors" },
+        { name: "Pricing", href: "/#pricing" },
+        { name: "Frequently asked questions", href: "/#faq" },
       ],
     },
     {
-      title: "Company",
+      title: "Patient care",
       links: [
-        { name: "About" },
-        { name: "Blog" },
-        { name: "Contact" },
+        { name: "Book an appointment", href: "/patient/appointments" },
+        { name: "Symptom checker", href: "/patient/symptoms" },
+        { name: "Prescriptions", href: "/patient/prescriptions" },
+        { name: "Medical records", href: "/patient/medical-records" },
       ],
     },
     {
-      title: "Resources",
+      title: "Your account",
       links: [
-        { name: "Docs" },
-        { name: "Help Center" },
-        { name: "Privacy" },
-        { name: "Terms" },
+        { name: "Create an account", href: "/register" },
+        { name: "Sign in", href: "/login" },
+        { name: "Patient dashboard", href: "/patient" },
       ],
     },
   ];
@@ -352,9 +351,15 @@ export default function Footer({
                 <ul className="space-y-3">
                   {col.links.map((link) => (
                     <li key={link.name}>
-                      <button
-                        onClick={() => handleLinkClick(link.name)}
-                        className={`group flex items-center gap-1.5 text-left text-sm transition-all duration-200 cursor-pointer py-0.5 ${
+                      <a
+                        href={link.href}
+                        onClick={(event) => {
+                          if (onNavigate) {
+                            event.preventDefault();
+                            onNavigate(link.name);
+                          }
+                        }}
+                        className={`group flex items-center gap-1.5 text-left text-sm transition-all duration-200 py-0.5 ${
                           isDark
                             ? "text-slate-400 hover:text-white hover:translate-x-1"
                             : "text-slate-600 hover:text-blue-600 hover:translate-x-1"
@@ -387,7 +392,7 @@ export default function Footer({
                             {link.badge}
                           </span>
                         )}
-                      </button>
+                      </a>
                     </li>
                   ))}
                 </ul>

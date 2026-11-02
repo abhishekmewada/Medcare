@@ -70,7 +70,7 @@ const cardVariants = {
             FAQ
           </p>
 
-          <h2 className="mt-4 text-4xl font-bold text-slate-900">
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
             Everything you'd want to ask.
           </h2>
         </div>
@@ -93,7 +93,7 @@ const cardVariants = {
                 onClick={() => toggleFAQ(faq.id)}
                 className="flex w-full items-center justify-between px-6 py-6 text-left"
               >
-                <span className="text-lg font-medium text-slate-800">
+                <span className="text-base font-medium text-slate-800 sm:text-lg">
                   {faq.question}
                 </span>
 
@@ -119,7 +119,7 @@ const cardVariants = {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <p className="px-6 pb-6 text-gray-500 leading-7">
+                  <p className="px-6 pb-6 text-base leading-7 text-gray-500">
                     {faq.answer}
                   </p>
                 </div>
@@ -131,8 +131,8 @@ const cardVariants = {
 <div className="  mx-6 md:mx-12" >
         <div className="bg-blue-500 max-w-7xl mx-auto  flex flex-col gap-6 p-8 md:p-18 md:flex-row rounded-2xl  mt-18" >
             <div className="flex-1  text-white " >
-              <h1  className="text-4xl font-bold pb-6 ">Ready to run care like it's 2026?</h1>
-              <p>Start free. Onboard your clinic in a day. Delight patients from day one.</p>
+              <h2 className="pb-6 text-2xl font-bold tracking-tight sm:text-3xl">Ready to run care like it's 2026?</h2>
+              <p className="text-base leading-relaxed">Start free. Onboard your clinic in a day. Delight patients from day one.</p>
             </div>
             <div className=" my-auto" >
                 <button className="flex gap-2 text-center bg-white px-5 py-3 rounded-3xl" >
