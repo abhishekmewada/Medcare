@@ -77,7 +77,6 @@ export default function Footer({
         { name: "Features" },
         { name: "Pricing" },
         { name: "Security" },
-        { name: "AI Assistant", badge: "New", isNew: true },
         { name: "Integrations" },
       ],
     },
@@ -86,9 +85,7 @@ export default function Footer({
       links: [
         { name: "About" },
         { name: "Blog" },
-        { name: "Careers", badge: "Hiring", isHiring: true },
         { name: "Contact" },
-        { name: "Press Kit" },
       ],
     },
     {
@@ -98,7 +95,6 @@ export default function Footer({
         { name: "Help Center" },
         { name: "Privacy" },
         { name: "Terms" },
-        { name: "System Status", badge: "Operational", statusDot: true },
       ],
     },
   ];
@@ -241,7 +237,7 @@ export default function Footer({
           <div className="max-w-sm">
             <div className="flex items-center gap-3">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-600/25">
-                <Activity size={22} className="text-white" />
+                <img src="/logo.png" alt="MedCare Logo" className="h-6 w-auto" />
               </div>
               <div className="flex items-baseline gap-2">
                 <h2
