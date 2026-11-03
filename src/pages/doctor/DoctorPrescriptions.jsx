@@ -96,12 +96,12 @@ const DoctorPrescriptions = () => {
   };
 
   return (
-    <div className="w-full min-h-screen  text-slate-800 py-32 font-sans antialiased">
+    <div className="w-full min-h-screen bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 pt-24 sm:pt-28 pb-16 sm:pb-20 font-sans antialiased">
 
- <div className="pointer-events-none  -top-24 left-1/4 fixed h-196 w-96 rounded-full bg-teal-400/10 blur-3xl" />
+ <div className="pointer-events-none -top-24 left-1/4 fixed h-196 w-96 rounded-full bg-teal-400/10 blur-3xl" />
       <div className="pointer-events-none fixed top-1/3 -right-20 h-96 w-96 rounded-full bg-sky-400/10 blur-3xl" />
 
-      <div className="mx-auto w-full max-w-[1920px] space-y-6 px-4 md:px-14 lg:px-24">
+      <div className="mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
         
         {/* ========================================================= */}
         {/* 1. HEADER (CareSync / DoctorOverview Style)               */}
@@ -155,7 +155,7 @@ const DoctorPrescriptions = () => {
              > 
               <Plus className="h-3.5 w-3.5 text-[#285943]" strokeWidth={2.5} />
               <span>Write New Rx</span>
-               <ArrowUpRight className=" bg-[#FA6432] text-white rounded-full h-5 w-5" />
+               <ArrowUpRight className="bg-[#FA6432] text-white rounded-full h-5 w-5" />
             </button>
            
 
@@ -169,7 +169,7 @@ const DoctorPrescriptions = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
           
           {/* Photo Tile: Pharmacotherapy Station */}
-          {/* <div className="lg:col-span-5 relative overflow-hidden rounded-[28px] border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between min-h-55">
+          {/* <div className="lg:col-span-5 relative overflow-hidden rounded-2xl border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between min-h-55">
             <div className="absolute inset-0 z-0">
               <img
                 src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=800"
@@ -208,7 +208,7 @@ const DoctorPrescriptions = () => {
           </div> */}
 
           {/* Clinical Update Topic: Drug Interaction & Allergy Triage */}
-          {/* <div className="lg:col-span-4 rounded-[28px] border border-[#77af9c]/40 bg-[#E8F4F0]/70 p-6 shadow-xs flex flex-col justify-between min-h-55">
+          {/* <div className="lg:col-span-4 rounded-2xl border border-[#77af9c]/40 bg-[#E8F4F0]/70 p-6 shadow-xs flex flex-col justify-between min-h-55">
             <div>
               <div className="flex items-center justify-between">
                 <span className="rounded-full border border-[#77af9c]/30 bg-white/80 px-2.5 py-0.5 text-[10px] font-semibold text-[#285943]">
@@ -236,7 +236,7 @@ const DoctorPrescriptions = () => {
           </div> */}
 
           {/* Performance Ring: Validation Accuracy */}
-          {/* <div className="lg:col-span-3 rounded-[28px] border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between min-h-55">
+          {/* <div className="lg:col-span-3 rounded-2xl border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between min-h-55">
             <div className="flex items-center justify-between">
               <span className="rounded-full border border-stone-200 bg-[#F9FAF8] px-2.5 py-0.5 text-[10px] font-semibold text-stone-600">
                 validation ⓘ
@@ -348,7 +348,7 @@ const DoctorPrescriptions = () => {
           data-aos="fade-up"
           data-aos-delay="100"
           data-aos-duration="700"
-          className="rounded-[28px] border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4"
         >
           <div className="relative flex-1 w-full">
             <Search
@@ -398,14 +398,14 @@ const DoctorPrescriptions = () => {
         {/* ========================================================= */}
         <div>
           {loading ? (
-            <div className="rounded-[28px] border border-stone-200/80 bg-white p-16 text-center shadow-xs">
+            <div className="rounded-2xl border border-stone-200/80 bg-white p-16 text-center shadow-xs">
               <div className="mx-auto h-8 w-8 border-3 border-[#285943] border-t-transparent rounded-full animate-spin mb-3" />
               <p className="text-xs text-stone-500 font-medium">
                 Retrieving clinical prescription ledger records...
               </p>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="rounded-[28px] border border-dashed border-stone-300 bg-white p-12 text-center shadow-xs">
+            <div className="rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center shadow-xs">
               <EmptyState
                 icon={ClipboardList}
                 title={query ? "No matching prescriptions" : "Prescription ledger is currently empty"}
@@ -457,7 +457,7 @@ const DoctorPrescriptions = () => {
                   <div
                     key={id}
                     data-aos="fade-up"
-                    className="group rounded-[28px] border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-[#77af9c] transition-all duration-200 hover:shadow-md"
+                    className="group rounded-2xl border border-stone-200/80 bg-white p-6 shadow-xs flex flex-col justify-between hover:border-[#77af9c] transition-all duration-200 hover:shadow-md"
                   >
                     <div className="space-y-4">
                       
@@ -573,7 +573,7 @@ const DoctorPrescriptions = () => {
         {/* ========================================================= */}
         {/* 6. BOTTOM CLINICAL CERTIFICATION BADGE                    */}
         {/* ========================================================= */}
-        <div className="rounded-3xl border border-stone-200/80 bg-white/80 p-5 text-xs text-stone-500 space-y-1">
+        <div className="rounded-2xl border border-stone-200/80 bg-white/80 p-5 text-xs text-stone-500 space-y-1">
           <div className="flex items-center gap-2 font-semibold text-[#285943]">
             <ShieldCheck className="h-4 w-4" />
             <span>Digitally Authorized &amp; Audited Medical Records</span>
@@ -595,7 +595,7 @@ const DoctorPrescriptions = () => {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg rounded-4xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto"
+            className="w-full max-w-lg rounded-2xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-stone-200/70 pb-3">
@@ -714,7 +714,7 @@ const DoctorPrescriptions = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-md"
           onClick={() => setPrescriptionModal(false)} >
             <div  onClick={(e) => e.stopPropagation()}
-            className=" rounded-4xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto" >
+            className="rounded-2xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto" >
 
            {/* <DoctorWritePrescription setPrescriptionModal={setPrescriptionModal} /> */}
            <DoctorWritePrescription isOpen={prescriptionModal}    

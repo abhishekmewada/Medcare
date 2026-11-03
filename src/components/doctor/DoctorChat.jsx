@@ -465,51 +465,14 @@ const DoctorChat = () => {
           setIsMinimized(false);
           setUnreadCount(0);
         }}
-        className="
-          fixed
-          bottom-6
-          right-6
-          z-40
-          flex
-          h-14
-          w-14
-          items-center
-          justify-center
-          rounded-full
-          bg-[#0D9488]/60
-          text-white
-          shadow-xl
-          shadow-blue-600/30
-          transition-all
-          duration-200
-          hover:scale-105
-          hover:bg-[#0D9488]
-          active:scale-95
-        "
+        className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-[#0D9488]/60 text-white shadow-xl shadow-blue-600/30 transition-all duration-200 hover:scale-105 hover:bg-[#0D9488] active:scale-95"
         aria-label="Open Patient Chat"
       >
         <MessageSquare className="h-6 w-6" strokeWidth={2} />
 
         {totalUnread > 0 && (
           <span
-            className="
-              absolute
-              -right-1
-              -top-1
-              flex
-              h-5
-              min-w-5
-              items-center
-              justify-center
-              rounded-full
-              bg-rose-600
-              px-1
-              text-[11px]
-              font-bold
-              text-white
-              ring-2
-              ring-white
-            "
+            className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-[11px] font-bold text-white ring-2 ring-white"
           >
             {totalUnread > 9 ? "9+" : totalUnread}
           </span>
@@ -541,8 +504,6 @@ const DoctorChat = () => {
         shadow-slate-900/15
         transition-all
         duration-200
-        dark:border-slate-800
-        dark:bg-slate-900
         ${
           isMinimized
             ? "h-19  md:w-60 w-55 "
@@ -554,20 +515,20 @@ const DoctorChat = () => {
           HEADER
       ====================================== */}
 
-      <div className="flex items-center justify-between border-b border-slate-100 bg-slate-900 px-4 py-3 text-white dark:border-slate-800">
+      <div className="flex items-center justify-between border-b border-teal-800 bg-teal-700 px-4 py-3 text-white">
         <div className="flex items-center gap-3 min-w-0">
           {selectedConversationId && (
             <button
               type="button"
               onClick={handleBack}
-              className="rounded-lg p-1.5 text-slate-300 transition hover:bg-slate-800 hover:text-white"
+              className="rounded-lg p-1.5 text-teal-100 transition hover:bg-teal-800 hover:text-white"
               aria-label="Back to conversations"
             >
               <ArrowLeft className="h-4 w-4" />
             </button>
           )}
 
-          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-600 font-semibold text-sm text-white">
+          <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-teal-800 font-semibold text-sm text-white">
             {selectedConversationId ? (
               currentOtherUser?.avatar ? (
                 <img
@@ -590,13 +551,13 @@ const DoctorChat = () => {
                 h-3
                 w-3
                 rounded-full
-                bg-slate-900
+                bg-teal-700
                 ring-2
-                ring-slate-900
+                ring-teal-700
                 ${
                   isConnected
-                    ? "fill-emerald-500 text-emerald-500"
-                    : "fill-slate-400 text-slate-400"
+                    ? "fill-emerald-400 text-emerald-400"
+                    : "fill-slate-300 text-slate-300"
                 }
               `}
             />
@@ -609,7 +570,7 @@ const DoctorChat = () => {
                 : "Messages & Consultations"}
             </p>
 
-            <p className="truncate text-[11.5px] leading-tight text-slate-300">
+            <p className="truncate text-[11.5px] leading-tight text-teal-100">
               {selectedConversationId
                 ? isTyping
                   ? `${currentOtherUser?.fullName?.split(" ")[0] || "User"} is typing...`
@@ -631,7 +592,7 @@ const DoctorChat = () => {
           <button
             type="button"
             onClick={() => setIsMinimized((val) => !val)}
-            className="rounded-lg p-1.5 text-slate-300 transition hover:bg-slate-800 hover:text-white"
+            className="rounded-lg p-1.5 text-teal-100 transition hover:bg-teal-800 hover:text-white"
             aria-label="Minimize chat"
           >
             <Minus className="h-4 w-4" />
@@ -640,7 +601,7 @@ const DoctorChat = () => {
           <button
             type="button"
             onClick={handleClose}
-            className="rounded-lg p-1.5 text-slate-300 transition hover:bg-slate-800 hover:text-white"
+            className="rounded-lg p-1.5 text-teal-100 transition hover:bg-teal-800 hover:text-white"
             aria-label="Close chat"
           >
             <X className="h-4 w-4" />
@@ -655,9 +616,9 @@ const DoctorChat = () => {
           ==================================== */}
 
           {!selectedConversationId ? (
-            <div className="flex flex-1 flex-col overflow-hidden bg-slate-50 dark:bg-slate-950">
+            <div className="flex flex-1 flex-col overflow-hidden bg-slate-50">
               {/* SEARCH BAR */}
-              <div className="p-2.5 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
+              <div className="p-2.5 bg-white border-b border-slate-100">
                 <div className="relative flex items-center">
                   <Search className="absolute left-3 h-3.5 w-3.5 text-slate-400" />
                   <input
@@ -665,19 +626,19 @@ const DoctorChat = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search patients..."
-                    className="w-full rounded-xl bg-slate-50 dark:bg-slate-800 py-1.5 pl-8 pr-3 text-xs text-slate-700 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full rounded-xl bg-slate-50 py-1.5 pl-8 pr-3 text-xs text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   />
                 </div>
               </div>
 
               {/* TABS */}
-              <div className="flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-2 shrink-0">
+              <div className="flex border-b border-slate-200 bg-white px-2 shrink-0">
                 <button
                   type="button"
                   onClick={() => setActiveTab("chats")}
                   className={`flex-1 pb-2.5 pt-2 text-xs font-semibold border-b-2 transition ${
                     activeTab === "chats"
-                      ? "border-blue-600 text-blue-600 dark:text-blue-400"
+                      ? "border-blue-600 text-blue-600"
                       : "border-transparent text-slate-400 hover:text-slate-600"
                   }`}
                 >
@@ -688,7 +649,7 @@ const DoctorChat = () => {
                   onClick={() => setActiveTab("patients")}
                   className={`flex-1 pb-2.5 pt-2 text-xs font-semibold border-b-2 transition ${
                     activeTab === "patients"
-                      ? "border-blue-600 text-blue-600 dark:text-blue-400"
+                      ? "border-blue-600 text-blue-600"
                       : "border-transparent text-slate-400 hover:text-slate-600"
                   }`}
                 >
@@ -699,7 +660,7 @@ const DoctorChat = () => {
                   onClick={() => setActiveTab("colleagues")}
                   className={`flex-1 pb-2.5 pt-2 text-xs font-semibold border-b-2 transition ${
                     activeTab === "colleagues"
-                      ? "border-blue-600 text-blue-600 dark:text-blue-400"
+                      ? "border-blue-600 text-blue-600"
                       : "border-transparent text-slate-400 hover:text-slate-600"
                   }`}
                 >
@@ -716,7 +677,7 @@ const DoctorChat = () => {
                         className="mb-3 h-9 w-9 text-slate-300"
                         strokeWidth={1.25}
                       />
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <p className="text-sm font-semibold text-slate-700">
                         No active conversations
                       </p>
                       <p className="mt-1 text-xs text-slate-400 max-w-[240px]">
@@ -733,7 +694,7 @@ const DoctorChat = () => {
                       )}
                     </div>
                   ) : (
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
+                    <div className="divide-y divide-slate-100 bg-white">
                       {filteredConversations.map((conversation) => {
                         const other = getOtherParticipant(conversation, user?._id);
                         const unread = conversation.unreadCount || 0;
@@ -745,7 +706,7 @@ const DoctorChat = () => {
                             onClick={() =>
                               handleSelectConversation(conversation)
                             }
-                            className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                            className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-slate-50"
                           >
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-blue-600 font-semibold text-sm">
                               {other?.avatar ? (
@@ -761,7 +722,7 @@ const DoctorChat = () => {
 
                             <div className="min-w-0 flex-1">
                               <div className="flex items-center justify-between gap-2">
-                                <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
+                                <p className="truncate text-sm font-semibold text-slate-800">
                                   {other?.fullName || "User"}
                                 </p>
                                 {conversation.lastMessageAt && (
@@ -772,7 +733,7 @@ const DoctorChat = () => {
                               </div>
 
                               <div className="flex items-center justify-between gap-2 mt-0.5">
-                                <p className="truncate text-xs text-slate-500 dark:text-slate-400">
+                                <p className="truncate text-xs text-slate-500">
                                   {conversation.lastMessage || "No messages yet"}
                                 </p>
                                 {unread > 0 && (
@@ -799,7 +760,7 @@ const DoctorChat = () => {
                         className="mb-3 h-9 w-9 text-slate-300"
                         strokeWidth={1.25}
                       />
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <p className="text-sm font-semibold text-slate-700">
                         No booked patients found
                       </p>
                       <p className="mt-1 text-xs text-slate-400 max-w-[230px]">
@@ -807,8 +768,8 @@ const DoctorChat = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      <div className="bg-slate-50 dark:bg-slate-800/40 px-4 py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    <div className="divide-y divide-slate-100 bg-white">
+                      <div className="bg-slate-50 px-4 py-2 text-[11px] font-medium text-slate-500">
                         Patients with active booked appointments
                       </div>
                       {filteredContacts.map((contact) => (
@@ -816,7 +777,7 @@ const DoctorChat = () => {
                           type="button"
                           key={contact.patientId || contact.patient?._id}
                           onClick={() => handleSelectPatientContact(contact)}
-                          className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                          className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-slate-50"
                         >
                           <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-blue-600 font-semibold text-sm">
                             {contact.patient?.avatar ? (
@@ -831,11 +792,11 @@ const DoctorChat = () => {
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
+                            <p className="truncate text-sm font-semibold text-slate-800">
                               {contact.patient?.fullName || "Patient"}
                             </p>
                             {contact.appointment && (
-                              <span className="mt-0.5 inline-block text-[11px] text-slate-500 dark:text-slate-400">
+                              <span className="mt-0.5 inline-block text-[11px] text-slate-500">
                                 {contact.appointment.appointmentDate
                                   ? new Date(
                                       contact.appointment.appointmentDate
@@ -849,7 +810,7 @@ const DoctorChat = () => {
                             )}
                           </div>
 
-                          <span className="shrink-0 rounded-lg bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-100 transition">
+                          <span className="shrink-0 rounded-lg bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-600 hover:bg-blue-100 transition">
                             Chat
                           </span>
                         </button>
@@ -864,7 +825,7 @@ const DoctorChat = () => {
                         className="mb-3 h-9 w-9 text-slate-300"
                         strokeWidth={1.25}
                       />
-                      <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                      <p className="text-sm font-semibold text-slate-700">
                         No colleagues or administrators found
                       </p>
                       <p className="mt-1 text-xs text-slate-400 max-w-[230px]">
@@ -872,8 +833,8 @@ const DoctorChat = () => {
                       </p>
                     </div>
                   ) : (
-                    <div className="divide-y divide-slate-100 dark:divide-slate-800 bg-white dark:bg-slate-900">
-                      <div className="bg-slate-50 dark:bg-slate-800/40 px-4 py-2 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    <div className="divide-y divide-slate-100 bg-white">
+                      <div className="bg-slate-50 px-4 py-2 text-[11px] font-medium text-slate-500">
                         Doctor Colleagues & Admin Support
                       </div>
                       {filteredAdminContacts.map((contact, idx) => (
@@ -881,7 +842,7 @@ const DoctorChat = () => {
                           type="button"
                           key={contact.targetUser?._id || idx}
                           onClick={() => handleSelectColleagueContact(contact)}
-                          className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-slate-50 dark:hover:bg-slate-800/60"
+                          className="flex w-full items-center gap-3 px-4 py-3 text-left transition hover:bg-slate-50"
                         >
                           <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-blue-50 text-blue-600 font-semibold text-sm">
                             {contact.targetUser?.avatar ? (
@@ -896,17 +857,17 @@ const DoctorChat = () => {
                           </div>
 
                           <div className="min-w-0 flex-1">
-                            <p className="truncate text-sm font-semibold text-slate-800 dark:text-slate-100">
+                            <p className="truncate text-sm font-semibold text-slate-800">
                               {contact.targetUser?.fullName || "User"}
                             </p>
-                            <span className="mt-0.5 inline-block text-[11px] text-slate-500 dark:text-slate-400">
+                            <span className="mt-0.5 inline-block text-[11px] text-slate-500">
                               {contact.targetUser?.role === "admin"
                                 ? "Support Administrator"
                                 : contact.targetUser?.specialty || "Doctor Colleague"}
                             </span>
                           </div>
 
-                          <span className="shrink-0 rounded-lg bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 text-[11px] font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-100 transition">
+                          <span className="shrink-0 rounded-lg bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-600 hover:bg-blue-100 transition">
                             Chat
                           </span>
                         </button>
@@ -922,7 +883,7 @@ const DoctorChat = () => {
                   MESSAGES VIEW
               ================================== */}
 
-              <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 dark:bg-slate-950 px-4 py-4">
+              <div className="flex-1 space-y-3 overflow-y-auto bg-slate-50 px-4 py-4">
                 {messagesLoading ? (
                   <div className="flex h-full items-center justify-center text-xs text-slate-400">
                     Loading conversation...
@@ -933,7 +894,7 @@ const DoctorChat = () => {
                       className="h-8 w-8 text-slate-300"
                       strokeWidth={1.25}
                     />
-                    <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    <p className="text-sm font-medium text-slate-600">
                       Start a consultation with this patient
                     </p>
                   </div>
@@ -964,7 +925,7 @@ const DoctorChat = () => {
                             ${
                               isOwnMessage
                                 ? "rounded-br-sm bg-blue-600 text-white shadow-sm"
-                                : "rounded-bl-sm border border-slate-200 bg-white text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200"
+                                : "rounded-bl-sm border border-slate-200 bg-white text-slate-700 shadow-sm"
                             }
                           `}
                         >
@@ -992,7 +953,7 @@ const DoctorChat = () => {
 
                 {isTyping && (
                   <div className="flex justify-start">
-                    <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-3.5 py-3 dark:border-slate-800 dark:bg-slate-900">
+                    <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-3.5 py-3">
                       {[0, 1, 2].map((index) => (
                         <span
                           key={index}
@@ -1013,7 +974,7 @@ const DoctorChat = () => {
                   INPUT AREA
               ================================== */}
 
-              <div className="flex items-end gap-2 border-t border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900 px-3 py-3">
+              <div className="flex items-end gap-2 border-t border-slate-100 bg-white px-3 py-3">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -1021,28 +982,7 @@ const DoctorChat = () => {
                   onKeyDown={handleKeyDown}
                   placeholder="Type a message to patient..."
                   rows={1}
-                  className="
-                    max-h-24
-                    flex-1
-                    resize-none
-                    rounded-xl
-                    border
-                    border-slate-200
-                    bg-slate-50
-                    px-3
-                    py-2
-                    text-[13.5px]
-                    text-slate-700
-                    placeholder:text-slate-400
-                    focus:border-blue-500
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-blue-100
-                    dark:border-slate-700
-                    dark:bg-slate-800
-                    dark:text-slate-100
-                    dark:focus:ring-blue-900/40
-                  "
+                  className="max-h-24 flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-[13.5px] text-slate-700 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
                 />
 
                 <button
@@ -1054,24 +994,7 @@ const DoctorChat = () => {
                     !isConnected ||
                     currentConversation?.status === "closed"
                   }
-                  className="
-                    mb-0.5
-                    flex
-                    h-9
-                    w-9
-                    items-center
-                    justify-center
-                    rounded-xl
-                    bg-blue-600
-                    text-white
-                    transition
-                    hover:bg-blue-700
-                    disabled:cursor-not-allowed
-                    disabled:bg-slate-200
-                    disabled:text-slate-400
-                    dark:disabled:bg-slate-800
-                    dark:disabled:text-slate-600
-                  "
+                  className="mb-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
                   aria-label="Send message"
                 >
                   <Send className="h-4 w-4" strokeWidth={2} />

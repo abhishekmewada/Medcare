@@ -126,20 +126,26 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
     }
   };
 
-    if (!isOpen) return null;
+  if (isOpen !== undefined && !isOpen) return null;
 
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div
+      className={`mx-auto max-w-7xl space-y-6 ${
+        isOpen === undefined
+          ? "pt-24 sm:pt-28 pb-16 sm:pb-20 px-4 sm:px-6 lg:px-8"
+          : ""
+      }`}
+    >
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-teal-200/50 bg-teal-50 text-teal-700">
           <FileEdit size={21} />
         </div>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
             Write Electronic Prescription
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500">
             Issue certified medication regimens and clinical instructions
           </p>
         </div>
@@ -147,19 +153,19 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
 
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900"
+        className="space-y-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-xs"
       >
         <div className="grid gap-5 sm:grid-cols-2">
           {/* Patient Select */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700">
               <UserRound size={14} className="text-teal-600" />
               Patient
             </label>
             <select
               value={patientId}
               onChange={(e) => setPatientId(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 outline-none transition focus:border-teal-600 focus:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 outline-none transition focus:border-teal-600 focus:bg-white"
             >
               <option value="">Select attending patient...</option>
               {patients.map((p) => (
@@ -175,7 +181,7 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
 
           {/* Diagnosis */}
           <div>
-            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+            <label className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-slate-700">
               <Stethoscope size={14} className="text-teal-600" />
               Diagnosis
             </label>
@@ -184,7 +190,7 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
               placeholder="e.g. Acute Bronchitis"
               value={diagnosis}
               onChange={(e) => setDiagnosis(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 outline-none transition focus:border-teal-600 focus:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-900 outline-none transition focus:border-teal-600 focus:bg-white"
             />
             {errors.diagnosis && (
               <p className="mt-1 text-[11px] text-rose-500">{errors.diagnosis}</p>
@@ -195,7 +201,7 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
         {/* Medication Table */}
         <div>
           <div className="mb-3 flex items-center justify-between">
-            <label className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+            <label className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
               <Pill size={14} className="text-teal-600" />
               Medications & Dosage Instructions
             </label>
@@ -208,39 +214,39 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
             </button>
           </div>
 
-          <div className="space-y-2.5  ">
+          <div className="space-y-2.5">
             {medications.map((med, idx) => (
               <div
                 key={idx}
-                className="grid grid-cols-1  items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/50 p-2.5 sm:grid-cols-[1.5fr_1fr_1fr_1fr_auto] md:grid-cols-2 lg:grid-cols-4 dark:border-slate-800 dark:bg-slate-800/40"
+                className="grid grid-cols-1 items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50/50 p-2.5 sm:grid-cols-[1.5fr_1fr_1fr_1fr_auto] md:grid-cols-2 lg:grid-cols-4"
               >
                 <input
                   type="text"
                   placeholder="Medicine name"
                   value={med.name}
                   onChange={(e) => updateMed(idx, "name", e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600"
                 />
                 <input
                   type="text"
                   placeholder="Dosage (500mg)"
                   value={med.dosage}
                   onChange={(e) => updateMed(idx, "dosage", e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600"
                 />
                 <input
                   type="text"
                   placeholder="Frequency (BID)"
                   value={med.frequency}
                   onChange={(e) => updateMed(idx, "frequency", e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600"
                 />
                 <input
                   type="text"
                   placeholder="Duration (5 days)"
                   value={med.duration}
                   onChange={(e) => updateMed(idx, "duration", e.target.value)}
-                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                  className="rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs outline-none focus:border-teal-600"
                 />
                 <button
                   type="button"
@@ -260,7 +266,7 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
 
         {/* Clinical Instructions */}
         <div>
-          <label className="mb-1 block text-xs font-bold text-slate-700 dark:text-slate-300">
+          <label className="mb-1 block text-xs font-bold text-slate-700">
             Physician Advice & Patient Instructions
           </label>
           <textarea
@@ -268,15 +274,15 @@ const DoctorWritePrescription = ({isOpen, onClose}) => {
             placeholder="Dietary changes, precautions, warning signs..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs text-slate-900 outline-none focus:border-teal-600 focus:bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 p-3 text-xs text-slate-900 outline-none focus:border-teal-600 focus:bg-white"
           />
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
+        <div className="flex justify-end gap-3 border-t border-slate-100 pt-4">
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl border border-slate-200 px-5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300"
+            className="rounded-xl border border-slate-200 px-5 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50"
           >
             Cancel
           </button>

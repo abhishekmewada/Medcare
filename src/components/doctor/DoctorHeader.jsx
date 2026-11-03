@@ -154,19 +154,7 @@ useEffect(() => {
 }, [dispatch]);
 
 return ( <header
-   className="
-     sticky top-0 z-20
-     flex h-16
-     items-center
-     justify-between
-     rounded-2xl
-     border border-gray-100
-     bg-white/20
-     px-6 py-4
-     shadow-[0_8px_30px_rgba(0,0,0,0.06)]
-     backdrop-blur-2xl
-     dark:border-gray-800
-   "
+   className="sticky top-0 z-20 flex h-16 items-center justify-between rounded-2xl border border-gray-100 bg-white/20 px-6 py-4 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl"
  >
 
 
@@ -178,12 +166,7 @@ return ( <header
 
     <button
       type="button"
-      className="
-        text-gray-500
-        hover:text-gray-800
-        dark:text-gray-400
-        lg:hidden
-      "
+      className="text-gray-500 hover:text-gray-800 lg:hidden"
       onClick={() =>
         dispatch(setSidebarOpen(true))
       }
@@ -197,12 +180,7 @@ return ( <header
         Welcome back
       </p>
 
-      <p className="
-        text-sm
-        font-bold
-        text-gray-900
-        dark:text-white
-      ">
+      <p className="text-sm font-bold text-gray-900">
         Dr. {doctorName}
       </p>
 
@@ -225,14 +203,7 @@ return ( <header
       onClick={() =>
         dispatch(toggleDarkMode())
       }
-      className="
-        rounded-full
-        p-2
-        text-gray-500
-        hover:bg-gray-100
-        dark:text-gray-400
-        dark:hover:bg-gray-800
-      "
+      className="rounded-full p-2 text-gray-500 hover:bg-gray-100"
       aria-label="Toggle dark mode"
     >
 
@@ -258,15 +229,7 @@ return ( <header
             (prev) => !prev
           )
         }
-        className="
-          relative
-          rounded-full
-          p-2
-          text-gray-500
-          hover:bg-gray-100
-          dark:text-gray-400
-          dark:hover:bg-gray-800
-        "
+        className="relative rounded-full p-2 text-gray-500 hover:bg-gray-100"
         aria-label="Notifications"
       >
 
@@ -278,25 +241,7 @@ return ( <header
         {unreadCount > 0 && (
 
           <span
-            className="
-              absolute
-              -right-1
-              -top-1
-              flex
-              h-5
-              min-w-5
-              items-center
-              justify-center
-              rounded-full
-              bg-blue-500
-              px-1
-              text-[10px]
-              font-bold
-              text-white
-              ring-2
-              ring-white
-              dark:ring-gray-950
-            "
+            className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-blue-500 px-1 text-[10px] font-bold text-white ring-2 ring-white"
           >
 
             {unreadCount > 5
@@ -313,7 +258,7 @@ return ( <header
 {newNotification && (
   <div 
   data-aos="fade-left"
-  className="absolute  right-0 top-full mt-3 w-60 z-50">
+  className="absolute right-0 top-full mt-3 w-60 z-50">
     <div className="rounded-xl border border-blue-500 bg-blue-50/50 backdrop-blur-md p-4 shadow-xl">
       {/* <p className="font-semibold text-gray-900">
         {newNotification.title}
@@ -337,11 +282,7 @@ return ( <header
           {/* Outside click */}
 
           <div
-            className="
-              fixed
-              inset-0
-              z-10
-            "
+            className="fixed inset-0 z-10"
             onClick={() =>
               setNotifOpen(false)
             }
@@ -351,47 +292,18 @@ return ( <header
           {/* Notification dropdown */}
 
           <div
-            className="
-              absolute
-              right-0
-              z-20
-              mt-2
-              w-80
-              overflow-hidden
-              rounded-2xl
-              border
-              border-gray-100
-              bg-white
-              shadow-lg
-              dark:border-gray-800
-              dark:bg-gray-900
-            "
+            className="absolute right-0 z-20 mt-2 w-80 overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-lg"
           >
 
 
             {/* Header */}
 
             <div
-              className="
-                flex
-                items-center
-                justify-between
-                border-b
-                border-gray-100
-                px-4
-                py-3
-                dark:border-gray-800
-              "
+              className="flex items-center justify-between border-b border-gray-100 px-4 py-3"
             >
 
               <p
-                className="
-                  text-xs
-                  font-semibold
-                  uppercase
-                  tracking-wide
-                  text-gray-400
-                "
+                className="text-xs font-semibold uppercase tracking-wide text-gray-400"
               >
                 Notifications
               </p>
@@ -400,17 +312,7 @@ return ( <header
               {unreadCount > 0 && (
 
                 <span
-                  className="
-                    rounded-full
-                    bg-blue-50
-                    px-2
-                    py-1
-                    text-[10px]
-                    font-semibold
-                    text-blue-600
-                    dark:bg-blue-500/10
-                    dark:text-blue-400
-                  "
+                  className="rounded-full bg-blue-50 px-2 py-1 text-[10px] font-semibold text-blue-600"
                 >
                   {unreadCount} unread
                 </span>
@@ -423,11 +325,7 @@ return ( <header
             {/* Notifications */}
 
             <div
-              className="
-                max-h-80
-                overflow-y-auto
-                p-2
-              "
+              className="max-h-80 overflow-y-auto p-2"
             >
 
 
@@ -436,13 +334,7 @@ return ( <header
               {notificationsLoading && (
 
                 <p
-                  className="
-                    px-3
-                    py-6
-                    text-center
-                    text-sm
-                    text-gray-400
-                  "
+                  className="px-3 py-6 text-center text-sm text-gray-400"
                 >
                   Loading notifications...
                 </p>
@@ -456,28 +348,16 @@ return ( <header
                 notifications.length === 0 && (
 
                 <div
-                  className="
-                    px-3
-                    py-10
-                    text-center
-                  "
+                  className="px-3 py-10 text-center"
                 >
 
                   <Bell
                     size={28}
-                    className="
-                      mx-auto
-                      mb-2
-                      text-gray-300
-                    "
+                    className="mx-auto mb-2 text-gray-300"
                   />
 
                   <p
-                    className="
-                      text-sm
-                      font-medium
-                      text-gray-500
-                    "
+                    className="text-sm font-medium text-gray-500"
                   >
                     No notifications yet
                   </p>
@@ -509,13 +389,11 @@ return ( <header
                       text-left
                       transition
                       hover:bg-gray-50
-                      dark:hover:bg-gray-800
 
                       ${
                         !notification.isRead
                           ? `
                             bg-blue-50/70
-                            dark:bg-blue-500/5
                           `
                           : ""
                       }
@@ -523,11 +401,7 @@ return ( <header
                   >
 
                     <div
-                      className="
-                        flex
-                        items-start
-                        gap-2
-                      "
+                      className="flex items-start gap-2"
                     >
 
 
@@ -536,14 +410,7 @@ return ( <header
                       {!notification.isRead && (
 
                         <span
-                          className="
-                            mt-2
-                            h-2
-                            w-2
-                            shrink-0
-                            rounded-full
-                            bg-blue-500
-                          "
+                          className="mt-2 h-2 w-2 shrink-0 rounded-full bg-blue-500"
                         />
 
                       )}
@@ -552,23 +419,14 @@ return ( <header
                       <div className="min-w-0">
 
                         <p
-                          className="
-                            text-sm
-                            leading-5
-                            text-gray-700
-                            dark:text-gray-200
-                          "
+                          className="text-sm leading-5 text-gray-700"
                         >
                           {notification.message}
                         </p>
 
 
                         <p
-                          className="
-                            mt-1
-                            text-xs
-                            text-gray-400
-                          "
+                          className="mt-1 text-xs text-gray-400"
                         >
 
                           {new Date(

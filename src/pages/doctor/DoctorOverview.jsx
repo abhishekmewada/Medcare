@@ -111,12 +111,12 @@ const DoctorOverview = () => {
   ];
 
   return (
-   <div className="relative w-full min-h-screen bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 py-16 lg:py-24 text-slate-800 antialiased overflow-hidden">
+   <div className="relative w-full min-h-screen bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 pt-24 sm:pt-28 pb-16 sm:pb-20 text-slate-800 antialiased overflow-hidden">
       {/* Decorative ambient background glows */}
       <div className="pointer-events-none  -top-24 left-1/4 fixed h-196 w-96 rounded-full bg-teal-400/10 blur-3xl" />
       <div className="pointer-events-none fixed top-1/3 -right-20 h-96 w-96 rounded-full bg-sky-400/10 blur-3xl" />
 
-      <div className="relative mx-auto w-full max-w-[1920px] space-y-8 px-4 sm:px-8 md:px-14 lg:px-20"> 
+      <div className="relative mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8"> 
         
         {/* ── 1. HEADER ── */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 pb-8 border-b border-slate-200/80">

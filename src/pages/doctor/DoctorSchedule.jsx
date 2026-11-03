@@ -439,26 +439,26 @@ const DoctorSchedule = () => {
     switch (s) {
       case "completed":
         return {
-          pill: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60",
+          pill: "bg-emerald-50 text-emerald-800 border-emerald-200",
           dot: "bg-emerald-500",
           bar: "bg-emerald-500",
         };
       case "cancelled":
       case "rejected":
         return {
-          pill: "bg-rose-50 text-rose-800 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/60",
+          pill: "bg-rose-50 text-rose-800 border-rose-200",
           dot: "bg-rose-500",
           bar: "bg-rose-500",
         };
       case "confirmed":
         return {
-          pill: "bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-800/60",
+          pill: "bg-teal-50 text-teal-800 border-teal-200",
           dot: "bg-teal-500",
           bar: "bg-teal-500",
         };
       default:
         return {
-          pill: "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/60",
+          pill: "bg-amber-50 text-amber-800 border-amber-200",
           dot: "bg-amber-500",
           bar: "bg-amber-500",
         };
@@ -466,7 +466,7 @@ const DoctorSchedule = () => {
   };
 
   return (
-    <div className="relative isolate min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 antialiased  pt-24 md:pt-28 pb-20 selection:bg-teal-500/20">
+    <div className="relative isolate min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 antialiased pt-24 md:pt-28 pb-20 selection:bg-teal-500/20">
       
       {/* PRINT-ONLY ISOLATED TICKET */}
       {/* <style>{`
@@ -552,25 +552,25 @@ const DoctorSchedule = () => {
 
       {/* AMBIENT BACKGROUND ACCENTS */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
-        <div className="absolute -top-32 right-10 h-125 w-125 rounded-full bg-teal-400/10 blur-[130px] dark:bg-teal-500/10" />
-        <div className="absolute top-1/3 -left-36 h-115 w-115 rounded-full bg-emerald-400/10 blur-[120px] dark:bg-emerald-500/10" />
-        <div className="absolute -bottom-20 right-1/4 h-105 w-105 rounded-full bg-cyan-400/10 blur-[120px] dark:bg-cyan-500/10" />
+        <div className="absolute -top-32 right-10 h-125 w-125 rounded-full bg-teal-400/10 blur-[130px]" />
+        <div className="absolute top-1/3 -left-36 h-115 w-115 rounded-full bg-emerald-400/10 blur-[120px]" />
+        <div className="absolute -bottom-20 right-1/4 h-105 w-105 rounded-full bg-cyan-400/10 blur-[120px]" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1920px] space-y-8 px-4 sm:px-8 md:px-14 lg:px-20">
+      <div className="relative z-10 mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
         
         {/* HEADER HERO */}
-        <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-white/90 p-6 backdrop-blur-md shadow-sm sm:p-8 ">
+        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-6 backdrop-blur-md shadow-sm sm:p-8">
           <div className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
             <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/80 bg-teal-50/70 px-3.5 py-1 text-xs font-semibold text-teal-800 ">
+              <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/80 bg-teal-50/70 px-3.5 py-1 text-xs font-semibold text-teal-800">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-600 " />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-600" />
                 </span>
                 <span className="tracking-wide">MedCare Clinical Stream</span>
-                <span className="text-teal-300 ">•</span>
-                <span className="font-medium text-slate-600 ">
+                <span className="text-teal-300">•</span>
+                <span className="font-medium text-slate-600">
                   {new Date().toLocaleDateString("en-US", {
                     weekday: "short",
                     month: "short",
@@ -579,10 +579,10 @@ const DoctorSchedule = () => {
                 </span>
               </div>
 
-              <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl lg:text-4xl dark:text-white">
+              <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
                 Consultation Schedule
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-xl">
+              <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
                 Real-time patient appointments, clinical timelines, and active medical management.
               </p>
             </div>
@@ -593,11 +593,11 @@ const DoctorSchedule = () => {
                 type="button"
                 onClick={handleRefresh}
                 disabled={refreshing || loading}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-slate-700 shadow-2xs hover:border-teal-300 hover:bg-teal-50/50 hover:text-teal-800 active:scale-95 disabled:opacity-60  transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-slate-700 shadow-2xs hover:border-teal-300 hover:bg-teal-50/50 hover:text-teal-800 active:scale-95 disabled:opacity-60 transition-all cursor-pointer"
               >
                 <RefreshCw
                   size={14}
-                  className={`text-teal-600 dark:text-teal-400 ${
+                  className={`text-teal-600 ${
                     refreshing ? "animate-spin" : ""
                   }`}
                 />
@@ -619,22 +619,22 @@ const DoctorSchedule = () => {
         <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
           <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Today's Queue
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700 ">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
                 <CalendarDays size={18} />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900 dark:text-white">
+              <span className="text-2xl font-black text-slate-900">
                 {stats.todayCount}
               </span>
-              <span className="text-[11px] font-medium text-teal-700 dark:text-teal-400">
+              <span className="text-[11px] font-medium text-teal-700">
                 Scheduled Today
               </span>
             </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100 ">
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
               <div
                 className="h-full rounded-full bg-teal-600 transition-all duration-500"
                 style={{
@@ -646,22 +646,22 @@ const DoctorSchedule = () => {
 
           <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Upcoming Slots
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 ">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
                 <Clock size={18} />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900 dark:text-white">
+              <span className="text-2xl font-black text-slate-900">
                 {stats.upcomingCount}
               </span>
-              <span className="text-[11px] font-medium text-emerald-700 ">
+              <span className="text-[11px] font-medium text-emerald-700">
                 Pending / Confirmed
               </span>
             </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100 ">
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
               <div
                 className="h-full rounded-full bg-emerald-500 transition-all duration-500"
                 style={{
@@ -673,22 +673,22 @@ const DoctorSchedule = () => {
 
           <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                 Completed
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700 ">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
                 <CheckCircle2 size={18} />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900 ">
+              <span className="text-2xl font-black text-slate-900">
                 {stats.completedCount}
               </span>
-              <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold text-teal-800 border border-teal-200/70 ">
+              <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold text-teal-800 border border-teal-200/70">
                 {stats.completionRate}% Rate
               </span>
             </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100 ">
+            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
               <div
                 className="h-full rounded-full bg-teal-600 transition-all duration-500"
                 style={{ width: `${stats.completionRate}%` }}
@@ -698,19 +698,19 @@ const DoctorSchedule = () => {
 
           <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 ">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
 
                 Total Consultations
               </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700 ">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
                 <CalendarCheck size={18} />
               </div>
             </div>
             <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900 dark:text-white">
+              <span className="text-2xl font-black text-slate-900">
                 {stats.total}
               </span>
-              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+              <span className="text-[11px] font-medium text-slate-500">
                 {stats.cancelledCount} Cancelled
               </span>
             </div>
@@ -723,7 +723,7 @@ const DoctorSchedule = () => {
 
         {/* NEXT UP SPOTLIGHT */}
         {nextUpcoming && (
-          <div className="relative overflow-hidden rounded-3xl border border-teal-200/90 bg-gradient-to-r from-teal-50/70 via-white to-emerald-50/30 p-5 shadow-xs sm:p-6 dark:border-teal-500/20 dark:from-teal-950/30 dark:via-slate-900 dark:to-slate-900">
+          <div className="relative overflow-hidden rounded-2xl border border-teal-200/90 bg-gradient-to-r from-teal-50/70 via-white to-emerald-50/30 p-5 shadow-xs sm:p-6">
             <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
               <div className="flex items-start gap-4">
                 <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-700 to-teal-600 text-lg font-black text-white shadow-md shadow-teal-700/20">
@@ -734,7 +734,7 @@ const DoctorSchedule = () => {
                   )
                     .charAt(0)
                     .toUpperCase()}
-                  <span className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900 text-[10px] text-white">
+                  <span className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white text-[10px] text-white">
                     <Sparkles size={9} />
                   </span>
                 </div>
@@ -744,32 +744,32 @@ const DoctorSchedule = () => {
                     <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
                       Next Up in Queue
                     </span>
-                    <span className="flex items-center gap-1 text-xs font-bold text-teal-800 dark:text-teal-300">
+                    <span className="flex items-center gap-1 text-xs font-bold text-teal-800">
                       <Clock size={12} />
                       {nextUpcoming.startTime || "--:--"}
                       {nextUpcoming.endTime && ` - ${nextUpcoming.endTime}`}
                     </span>
-                    <span className="text-xs text-slate-300 dark:text-slate-700">•</span>
-                    <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                    <span className="text-xs text-slate-300">•</span>
+                    <span className="text-xs font-medium text-slate-600">
                       {isToday(nextUpcoming.appointmentDate)
                         ? "Today"
                         : formatDay(nextUpcoming.appointmentDate)}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">
+                  <h3 className="text-lg font-extrabold text-slate-900">
                     {nextUpcoming.patient?.fullName ||
                       nextUpcoming.patientName ||
                       "Patient"}
                   </h3>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-                    <span className="inline-flex items-center gap-1.5 rounded-md bg-white/90 border border-slate-200/80 px-2.5 py-0.5 font-medium text-slate-800 shadow-2xs dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                    <span className="inline-flex items-center gap-1.5 rounded-md bg-white/90 border border-slate-200/80 px-2.5 py-0.5 font-medium text-slate-800 shadow-2xs">
                       <Stethoscope size={12} className="text-teal-600" />
                       {nextUpcoming.reason || "General Consultation"}
                     </span>
                     {nextUpcoming.patient?.phone && (
-                      <span className="flex items-center gap-1 text-[11px] text-slate-500 dark:text-slate-400">
+                      <span className="flex items-center gap-1 text-[11px] text-slate-500">
                         <Phone size={11} />
                         {nextUpcoming.patient.phone}
                       </span>
@@ -783,7 +783,7 @@ const DoctorSchedule = () => {
                 <button
                   type="button"
                   onClick={() => handlePrintSingle(nextUpcoming)}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:border-slate-300 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-colors cursor-pointer"
                   title="Print this pass"
                 >
                   <Printer size={13} className="text-slate-500" />
@@ -815,7 +815,7 @@ const DoctorSchedule = () => {
         )}
 
         {/* SEARCH & DUAL FILTER STRIP */}
-        <div className="space-y-3 sticky top-6 z-40 rounded-2xl border border-slate-200/80 bg-white/90 p-4 backdrop-blur-xl shadow-xs sm:p-5 dark:border-slate-800 dark:bg-slate-900/90">
+        <div className="space-y-3 sticky top-6 z-40 rounded-2xl border border-slate-200/80 bg-white/90 p-4 backdrop-blur-xl shadow-xs sm:p-5">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             <div className="relative w-full lg:max-w-md">
               <Search
@@ -827,7 +827,7 @@ const DoctorSchedule = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search patient name, reason, symptoms, phone..."
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-10 pr-9 text-xs font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 dark:border-slate-800 dark:bg-slate-800/60 dark:text-white"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-10 pr-9 text-xs font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
               />
               {searchQuery && (
                 <button
@@ -841,7 +841,7 @@ const DoctorSchedule = () => {
             </div>
 
             {/* Date Preset Buttons */}
-            <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/80 p-1 dark:border-slate-800 dark:bg-slate-800/60">
+            <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/80 p-1">
               <span className="px-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
                 Date:
               </span>
@@ -855,7 +855,7 @@ const DoctorSchedule = () => {
                     className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
                       isActive
                         ? "bg-teal-700 text-white shadow-xs font-bold"
-                        : "text-slate-600 hover:bg-white/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700"
+                        : "text-slate-600 hover:bg-white/80 hover:text-slate-900"
                     }`}
                   >
                     {preset.label}
@@ -866,7 +866,7 @@ const DoctorSchedule = () => {
           </div>
 
           {/* Status Tabs Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3 dark:border-slate-800/80">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3">
             <div className="flex flex-wrap items-center gap-2">
               {STATUS_FILTERS.map((item) => {
                 const isActive = statusFilter === item.id;
@@ -880,7 +880,7 @@ const DoctorSchedule = () => {
                     className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all duration-200 cursor-pointer ${
                       isActive
                         ? "bg-teal-700 text-white shadow-xs"
-                        : "text-slate-600 hover:bg-teal-50 hover:text-teal-800 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-teal-300"
+                        : "text-slate-600 hover:bg-teal-50 hover:text-teal-800"
                     }`}
                   >
                     <span>{item.label}</span>
@@ -888,7 +888,7 @@ const DoctorSchedule = () => {
                       className={`inline-flex min-w-4.5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
                         isActive
                           ? "bg-teal-100 text-teal-900"
-                          : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                          : "bg-slate-100 text-slate-600"
                       }`}
                     >
                       {count}
@@ -906,7 +906,7 @@ const DoctorSchedule = () => {
                   setStatusFilter("all");
                   setDatePreset("all");
                 }}
-                className="text-[11px] font-semibold text-teal-700 hover:underline dark:text-teal-400 cursor-pointer"
+                className="text-[11px] font-semibold text-teal-700 hover:underline cursor-pointer"
               >
                 Reset all filters
               </button>
@@ -916,9 +916,9 @@ const DoctorSchedule = () => {
 
         {/* LOADING STATE */}
         {loading && (
-          <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-200/80 bg-white/90 py-20 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90 shadow-xs">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-600 dark:text-teal-400" />
-            <h3 className="mt-4 text-sm font-bold text-slate-800 dark:text-white">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 py-20 backdrop-blur-md shadow-xs">
+            <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+            <h3 className="mt-4 text-sm font-bold text-slate-800">
               Syncing Clinical Consultations
             </h3>
           </div>
@@ -926,16 +926,16 @@ const DoctorSchedule = () => {
 
         {/* ERROR STATE */}
         {!loading && error && (
-          <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/80 p-4 text-xs font-semibold text-rose-800 dark:border-rose-900/40 dark:bg-rose-950/30 dark:text-rose-300">
+          <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/80 p-4 text-xs font-semibold text-rose-800">
             <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
             <div className="flex-1">
               <p className="font-bold">Error loading schedule</p>
-              <p className="text-[11px] text-rose-600 dark:text-rose-400">{error}</p>
+              <p className="text-[11px] text-rose-600">{error}</p>
             </div>
             <button
               type="button"
               onClick={handleRefresh}
-              className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-rose-700 shadow-2xs hover:bg-rose-50 dark:bg-slate-900 cursor-pointer"
+              className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-rose-700 shadow-2xs hover:bg-rose-50 cursor-pointer"
             >
               Retry
             </button>
@@ -944,7 +944,7 @@ const DoctorSchedule = () => {
 
         {/* EMPTY STATE */}
         {!loading && !error && groupedAppointments.groups.length === 0 && (
-          <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-white/90 p-12 text-center backdrop-blur-md shadow-xs dark:border-slate-800 dark:bg-slate-900/80">
+          <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-white/90 p-12 text-center backdrop-blur-md shadow-xs">
             <EmptyState
               icon={CalendarDays}
               title={
@@ -971,16 +971,16 @@ const DoctorSchedule = () => {
             return (
               <div
                 key={date}
-                className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/95 backdrop-blur-md shadow-xs transition-all dark:border-slate-800 dark:bg-slate-900/95"
+                className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 backdrop-blur-md shadow-xs transition-all"
               >
                 {/* Header for Day Group */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-teal-50/60 via-slate-50/40 to-white px-6 py-4 dark:border-slate-800 dark:from-slate-800/50 dark:via-slate-900 dark:to-slate-900">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-teal-50/60 via-slate-50/40 to-white px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-teal-200 bg-teal-50 text-teal-800 dark:border-teal-800 dark:bg-teal-950/60 dark:text-teal-300">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-teal-200 bg-teal-50 text-teal-800">
                       <Calendar size={15} />
                     </div>
                     <div className="flex items-center gap-2.5">
-                      <h2 className="text-sm font-extrabold text-slate-900 dark:text-white">
+                      <h2 className="text-sm font-extrabold text-slate-900">
                         {formatDay(date)}
                       </h2>
                       {isDayToday && (
@@ -996,14 +996,14 @@ const DoctorSchedule = () => {
                     </div>
                   </div>
 
-                  <span className="rounded-full border border-teal-200 bg-teal-50/80 px-3 py-1 text-xs font-bold text-teal-800 dark:border-slate-700 dark:bg-slate-800 dark:text-teal-300">
+                  <span className="rounded-full border border-teal-200 bg-teal-50/80 px-3 py-1 text-xs font-bold text-teal-800">
                     {appointmentsForDate.length}{" "}
                     {appointmentsForDate.length === 1 ? "Consultation" : "Consultations"}
                   </span>
                 </div>
 
                 {/* List Items */}
-                <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
+                <div className="divide-y divide-slate-100">
                   {appointmentsForDate.map((appointment) => {
                     const appointmentId = appointment._id || appointment.id;
                     const patientId =
@@ -1023,7 +1023,7 @@ const DoctorSchedule = () => {
                     return (
                       <div
                         key={appointmentId}
-                        className="group relative flex flex-col justify-between gap-4 p-5 transition-all duration-200 hover:bg-teal-50/30 sm:flex-row sm:items-center sm:gap-6 dark:hover:bg-slate-800/40"
+                        className="group relative flex flex-col justify-between gap-4 p-5 transition-all duration-200 hover:bg-teal-50/30 sm:flex-row sm:items-center sm:gap-6"
                       >
                         <div
                           className={`absolute bottom-0 left-0 top-0 w-1.5 rounded-l ${visual.bar} opacity-75 group-hover:opacity-100 transition-opacity`}
@@ -1031,18 +1031,18 @@ const DoctorSchedule = () => {
 
                         {/* LEFT: TIME & PATIENT */}
                         <div className="flex min-w-0 flex-1 items-start sm:items-center gap-4">
-                          <div className="flex w-24 shrink-0 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/80 py-2.5 px-1.5 text-center transition-all group-hover:border-teal-300 group-hover:bg-white dark:border-slate-800 dark:bg-slate-800/80">
-                            <span className="text-xs font-black tracking-tight text-slate-900 dark:text-white">
+                          <div className="flex w-24 shrink-0 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/80 py-2.5 px-1.5 text-center transition-all group-hover:border-teal-300 group-hover:bg-white">
+                            <span className="text-xs font-black tracking-tight text-slate-900">
                               {appointment.startTime || "--:--"}
                             </span>
                             {appointment.endTime && (
-                              <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                              <span className="text-[10px] font-semibold text-slate-500">
                                 to {appointment.endTime}
                               </span>
                             )}
-                            <div className="mt-1 flex items-center gap-1 border-t border-slate-200/80 pt-1 dark:border-slate-700/60">
+                            <div className="mt-1 flex items-center gap-1 border-t border-slate-200/80 pt-1">
                               <span className={`h-1.5 w-1.5 rounded-full ${visual.dot}`} />
-                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">
                                 {isMissedAppointment(appointment) ? "missed" : status || "scheduled"}
                               </span>
                             </div>
@@ -1057,29 +1057,29 @@ const DoctorSchedule = () => {
                               <div className="flex flex-wrap items-center gap-2">
                                 <Link
                                   to={patientId ? `/doctor/patients/${patientId}` : "#"}
-                                  className="truncate text-sm font-bold text-slate-900 transition-colors hover:text-teal-700 dark:text-white dark:hover:text-teal-300"
+                                  className="truncate text-sm font-bold text-slate-900 transition-colors hover:text-teal-700"
                                 >
                                   {patientName}
                                 </Link>
 
                                 {isMissedAppointment(appointment) && (
-                                  <span className="inline-flex items-center gap-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                                  <span className="inline-flex items-center gap-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">
                                     <AlertCircle size={10} /> Missed Slot
                                   </span>
                                 )}
 
                                 {appointment.appointmentType && (
-                                  <span className="rounded-md border border-slate-200 bg-slate-100/70 px-1.5 py-0.5 text-[9px] font-bold uppercase text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                                  <span className="rounded-md border border-slate-200 bg-slate-100/70 px-1.5 py-0.5 text-[9px] font-bold uppercase text-slate-600">
                                     {appointment.appointmentType}
                                   </span>
                                 )}
                               </div>
 
                               <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                                <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                                <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">
                                   <FileText
                                     size={11}
-                                    className="shrink-0 text-teal-600 dark:text-teal-400"
+                                    className="shrink-0 text-teal-600"
                                   />
                                   <span className="truncate max-w-xs">
                                     {appointment.reason || "General Consultation"}
@@ -1103,7 +1103,7 @@ const DoctorSchedule = () => {
                             type="button"
                             onClick={() => handlePrintSingle(appointment)}
                             title="Print this appointment pass"
-                            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-600 transition-all duration-150 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] dark:border-slate-800 dark:bg-slate-800 dark:text-slate-300 cursor-pointer"
+                            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-600 transition-all duration-150 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] cursor-pointer"
                           >
                             <Printer size={13} className="text-slate-500" />
                             <span className="hidden md:inline">Print Pass</span>
@@ -1128,7 +1128,7 @@ const DoctorSchedule = () => {
                               <Link
                                 to={`/doctor/prescriptions/new?patient=${patientId}`}
                                 title="Write prescription"
-                                className="inline-flex items-center gap-1 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold text-teal-800 hover:bg-teal-100 dark:border-teal-800 dark:bg-teal-950/30 dark:text-teal-300 transition-colors"
+                                className="inline-flex items-center gap-1 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold text-teal-800 hover:bg-teal-100 transition-colors"
                               >
                                 <Pill size={12} />
                                 <span className="hidden sm:inline">Rx</span>
@@ -1141,7 +1141,7 @@ const DoctorSchedule = () => {
                                 onClick={() =>
                                   setCancelModalAppointment(appointment)
                                 }
-                                className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-500 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98] disabled:opacity-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400 transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-500 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98] disabled:opacity-50 transition-colors cursor-pointer"
                               >
                                 <X size={13} strokeWidth={2.5} />
                               </button>
@@ -1160,7 +1160,7 @@ const DoctorSchedule = () => {
                               {status === "completed" && (
                                 <button
                                   onClick={() => setPrescriptionModal(true)}
-                                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-700 hover:underline dark:text-teal-400"
+                                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-700 hover:underline"
                                 >
                                   <Pill size={11} />
                                   <span>Rx</span>
@@ -1181,8 +1181,8 @@ const DoctorSchedule = () => {
 
         {/* PAGINATION */}
         {groupedAppointments.total > 0 && (
-          <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900/90 shadow-2xs">
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between shadow-2xs">
+            <p className="text-xs text-slate-500">
               Showing {Math.min((currentPage - 1) * PAGE_SIZE + 1, groupedAppointments.total)}–
               {Math.min(currentPage * PAGE_SIZE, groupedAppointments.total)} of {groupedAppointments.total} consultations
             </p>
@@ -1191,18 +1191,18 @@ const DoctorSchedule = () => {
                 type="button"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage <= 1}
-                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 cursor-pointer transition-colors"
+                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
               >
                 Previous
               </button>
-              <span className="px-2 text-xs font-bold text-slate-700 dark:text-slate-200">
+              <span className="px-2 text-xs font-bold text-slate-700">
                 Page {Math.min(currentPage, groupedAppointments.pageCount)} of {groupedAppointments.pageCount}
               </span>
               <button
                 type="button"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= groupedAppointments.pageCount}
-                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 cursor-pointer transition-colors"
+                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
               >
                 Next
               </button>
@@ -1214,35 +1214,35 @@ const DoctorSchedule = () => {
       {/* CANCEL CONFIRMATION MODAL */}
       {cancelModalAppointment && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600 dark:bg-rose-950/50 dark:text-rose-400">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
                 <AlertCircle size={24} />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-base font-bold text-slate-900">
                   Cancel Consultation?
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-slate-500">
                   This action will notify the patient and release the slot.
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-3.5 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-800/60 dark:text-slate-300">
+            <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-3.5 text-xs text-slate-700">
               <p>
-                <strong className="text-slate-900 dark:text-white">Patient:</strong>{" "}
+                <strong className="text-slate-900">Patient:</strong>{" "}
                 {cancelModalAppointment.patient?.fullName ||
                   cancelModalAppointment.patientName ||
                   "Patient"}
               </p>
               <p className="mt-1">
-                <strong className="text-slate-900 dark:text-white">Schedule:</strong>{" "}
+                <strong className="text-slate-900">Schedule:</strong>{" "}
                 {formatDay(cancelModalAppointment.appointmentDate)} at{" "}
                 {cancelModalAppointment.startTime || "Scheduled time"}
               </p>
               <p className="mt-1">
-                <strong className="text-slate-900 dark:text-white">Reason:</strong>{" "}
+                <strong className="text-slate-900">Reason:</strong>{" "}
                 {cancelModalAppointment.reason || "General Consultation"}
               </p>
             </div>
@@ -1251,7 +1251,7 @@ const DoctorSchedule = () => {
               <button
                 type="button"
                 onClick={() => setCancelModalAppointment(null)}
-                className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 cursor-pointer"
+                className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
               >
                 Keep Appointment
               </button>
@@ -1287,7 +1287,7 @@ const DoctorSchedule = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-md"
           onClick={() => setPrescriptionModal(false)} >
             <div  onClick={(e) => e.stopPropagation()}
-            className=" rounded-4xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto" >
+            className="rounded-2xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto" >
 
            {/* <DoctorWritePrescription setPrescriptionModal={setPrescriptionModal} /> */}
            <DoctorWritePrescription isOpen={prescriptionModal}    

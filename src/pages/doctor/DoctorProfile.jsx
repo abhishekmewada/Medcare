@@ -366,28 +366,28 @@ const DoctorProfile = () => {
   const activeAvatar = resolveAvatarUrl(form.avatar);
 
   return (
-    <div className="min-h-screen w-full bg-[#F8FAFC] text-[#0F172A] antialiased dark:bg-[#0B1116] dark:text-slate-100 pt-28 md:pt-32 pb-24 selection:bg-teal-500/20">
-      <div className="mx-auto w-full max-w-[1920px] space-y-8 px-4 sm:px-8 md:px-14 lg:px-20">
+    <div className="min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-900 antialiased pt-24 sm:pt-28 pb-16 sm:pb-20 selection:bg-teal-500/20">
+      <div className="mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
         {/* ==================================================== */}
        {/* ==================================================== */}
         {/* 1. PAGE HEADER                                       */}
         {/* ==================================================== */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 border-b border-slate-200/80">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/80 bg-teal-50/70 px-3.5 py-1 text-xs font-semibold text-teal-800 dark:border-teal-500/30 dark:bg-teal-950/40 dark:text-teal-300">
+            <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/80 bg-teal-50/70 px-3.5 py-1 text-xs font-semibold text-teal-800">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-600 dark:bg-teal-400" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-600" />
               </span>
               <span className="tracking-wide">Practitioner Profile</span>
-              <span className="text-teal-300 dark:text-teal-700">•</span>
-              <span className="text-slate-600 dark:text-slate-400">Clinical Credentials</span>
+              <span className="text-teal-300">•</span>
+              <span className="text-slate-600">Clinical Credentials</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-slate-900">
               Doctor Profile &amp; Practice
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-xl">
+            <p className="text-xs sm:text-sm text-slate-500 max-w-xl">
               Personal clinician bio, schedule policies, consultation tariffs, and clinic affiliation.
             </p>
           </div>
@@ -405,7 +405,7 @@ const DoctorProfile = () => {
         {/* ==================================================== */}
         {/* 2. ELEVATED PRACTITIONER HERO PROFILE                */}
         {/* ==================================================== */}
-        <div className="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-white/95 p-6 sm:p-8 lg:p-10 shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
+        <div className="relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white/95 p-6 sm:p-8 lg:p-10 shadow-sm backdrop-blur-md">
           
           {/* Ambient soft background glow */}
           <div className="pointer-events-none absolute -top-24 right-0 h-80 w-80 rounded-full bg-teal-400/10 blur-3xl" />
@@ -417,7 +417,7 @@ const DoctorProfile = () => {
             <div className="relative shrink-0 w-full max-w-70 sm:max-w-[320px] lg:w-72 xl:w-80">
               
               {/* Layered Decorative Frame & Depth Ring */}
-              <div className="relative aspect-3/4 w-full rounded-3xl overflow-hidden   bg-linear-to-br from-teal-800 via-teal-700 to-emerald-900 shadow-xl shadow-teal-900/10 dark:border-slate-800">
+              <div className="relative aspect-3/4 w-full rounded-2xl overflow-hidden bg-linear-to-br from-teal-800 via-teal-700 to-emerald-900 shadow-xl shadow-teal-900/10">
                 {activeAvatar ? (
                   <img
                     src={activeAvatar}
@@ -439,7 +439,7 @@ const DoctorProfile = () => {
 
                 {/* Status indicator pinned inside the frame bottom */}
                 <div className="absolute bottom-4 left-4 right-4">
-                  <div className="flex items-center justify-between rounded-2xl bg-white/90 backdrop-blur-md px-3.5 py-2 border border-white/60 shadow-md dark:bg-slate-900/90 dark:border-slate-700/60">
+                  <div className="flex items-center justify-between rounded-2xl bg-white/90 backdrop-blur-md px-3.5 py-2 border border-white/60 shadow-md">
                     <div className="flex items-center gap-2">
                       <span className="relative flex h-2.5 w-2.5">
                         {form.isAvailable && (
@@ -447,15 +447,15 @@ const DoctorProfile = () => {
                         )}
                         <span className={`relative inline-flex h-2.5 w-2.5 rounded-full ${form.isAvailable ? "bg-emerald-600" : "bg-slate-400"}`} />
                       </span>
-                      <span className="text-[11px] font-bold text-slate-800 dark:text-slate-200">
+                      <span className="text-[11px] font-bold text-slate-800">
                         {form.isAvailable ? "Available Now" : "Duty Off"}
                       </span>
                     </div>
 
-                    <span className={`rounded-full px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wider ${
+                    <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
                       form.isAvailable 
-                        ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300" 
-                        : "bg-slate-200 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                        ? "bg-emerald-100 text-emerald-800" 
+                        : "bg-slate-200 text-slate-600"
                     }`}>
                       {form.isAvailable ? "Live" : "Away"}
                     </span>
@@ -470,32 +470,32 @@ const DoctorProfile = () => {
               {/* Doctor Name & Credentials */}
               <div className="space-y-2.5">
                 <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800 dark:border-teal-800 dark:bg-teal-950/50 dark:text-teal-300">
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 text-xs font-bold text-teal-800">
                     <ShieldCheck size={14} className="text-teal-600" />
                     Verified Practitioner
                   </span>
 
                   {form.experience !== "" && (
-                    <span className="rounded-full bg-slate-100 border border-slate-200/80 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-300">
+                    <span className="rounded-full bg-slate-100 border border-slate-200/80 px-3 py-1 text-xs font-semibold text-slate-600">
                       {form.experience}+ Years Practice
                     </span>
                   )}
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight dark:text-white">
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight">
                   {form.fullName ? `Dr. ${form.fullName}` : "Doctor"}
                 </h2>
 
-                <p className="text-sm sm:text-base font-semibold text-teal-700 dark:text-teal-400">
+                <p className="text-sm sm:text-base font-semibold text-teal-700">
                   {form.specialty || "Medical Specialist"}
                   {form.qualification && (
-                    <span className="text-slate-600 dark:text-slate-400 font-normal"> • {form.qualification}</span>
+                    <span className="text-slate-600 font-normal"> • {form.qualification}</span>
                   )}
                 </p>
 
-                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
                   {form.clinicName ? (
-                    <>Senior Consultant affiliated with <strong className="font-semibold text-slate-800 dark:text-slate-200">{form.clinicName}</strong>.</>
+                    <>Senior Consultant affiliated with <strong className="font-semibold text-slate-800">{form.clinicName}</strong>.</>
                   ) : (
                     "Registered medical practitioner offering specialist patient triage and consultations."
                   )}
@@ -504,56 +504,56 @@ const DoctorProfile = () => {
 
               {/* Clinical Metrics Bento Row */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2">
-                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/60 dark:hover:border-teal-700">
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Consultation Fee
                   </span>
-                  <p className="mt-1 text-xl sm:text-2xl font-black text-slate-900 dark:text-white">
+                  <p className="mt-1 text-xl sm:text-2xl font-black text-slate-900">
                     {form.fees !== "" ? `₹${form.fees}` : "—"}
                   </p>
-                  <span className="text-[10px] text-teal-700 dark:text-teal-400 font-medium">Per Session</span>
+                  <span className="text-[10px] text-teal-700 font-medium">Per Session</span>
                 </div>
 
-                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/60 dark:hover:border-teal-700">
+                <div className="rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Medical License
                   </span>
-                  <p className="mt-1 text-sm sm:text-base font-bold text-teal-800 dark:text-teal-300 truncate">
+                  <p className="mt-1 text-sm sm:text-base font-bold text-teal-800 truncate">
                     {form.licenseNumber || "Pending"}
                   </p>
                   <span className="text-[10px] text-slate-500">Board Authorized</span>
                 </div>
 
-                <div className="col-span-2 sm:col-span-1 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white dark:border-slate-800 dark:bg-slate-800/60 dark:hover:border-teal-700">
+                <div className="col-span-2 sm:col-span-1 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-4 transition-colors hover:border-teal-300 hover:bg-white">
                   <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     Duty Schedule
                   </span>
-                  <p className="mt-1 text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200">
+                  <p className="mt-1 text-sm sm:text-base font-bold text-slate-800">
                     {form.isAvailable ? "Accepting Patients" : "Off Duty"}
                   </p>
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">Regular OP Hours</span>
+                  <span className="text-[10px] text-emerald-600 font-medium">Regular OP Hours</span>
                 </div>
               </div>
 
               {/* Direct Practice Contacts Strip */}
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800/80">
+              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 pt-3 border-t border-slate-100">
                 {form.email && (
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    <Mail size={13} className="text-teal-600 dark:text-teal-400 shrink-0" />
+                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700">
+                    <Mail size={13} className="text-teal-600 shrink-0" />
                     <span className="font-medium truncate max-w-50">{form.email}</span>
                   </div>
                 )}
 
                 {form.phone && (
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    <Phone size={13} className="text-teal-600 dark:text-teal-400 shrink-0" />
+                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700">
+                    <Phone size={13} className="text-teal-600 shrink-0" />
                     <span className="font-medium">{form.phone}</span>
                   </div>
                 )}
 
                 {form.clinicAddress && (
-                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    <MapPin size={13} className="text-teal-600 dark:text-teal-400 shrink-0" />
+                  <div className="inline-flex items-center gap-2 rounded-xl bg-slate-100/80 px-3 py-1.5 text-xs text-slate-700">
+                    <MapPin size={13} className="text-teal-600 shrink-0" />
                     <span className="font-medium truncate max-w-60">{form.clinicAddress}</span>
                   </div>
                 )}
@@ -568,16 +568,16 @@ const DoctorProfile = () => {
         {/* ==================================================== */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Section 1: Professional & Credentials */}
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <GraduationCap size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Medical Credentials &amp; Registration
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Regulatory license and academic qualifications
                 </p>
               </div>
@@ -625,16 +625,16 @@ const DoctorProfile = () => {
           </section>
 
           {/* Section 2: Consultation & Practice Settings */}
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <IndianRupee size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Consultation Parameters
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Fees, appointment channels, and language proficiency
                 </p>
               </div>
@@ -679,16 +679,16 @@ const DoctorProfile = () => {
           </section>
 
           {/* Section 3: Clinic & Location */}
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <Building2 size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Clinic &amp; Workplace Information
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Affiliated clinic or primary hospital location
                 </p>
               </div>
@@ -709,16 +709,16 @@ const DoctorProfile = () => {
           </section>
 
           {/* Section 4: Personal Information */}
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <User size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Personal &amp; Contact Information
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Private identity and verified communication channels
                 </p>
               </div>
@@ -768,21 +768,21 @@ const DoctorProfile = () => {
 
         {/* Section 5: Clinical Bio & Professional Statement */}
         {form.about && (
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <FileText size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Clinical Bio &amp; Professional Statement
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Practitioner introduction and clinical philosophy
                 </p>
               </div>
             </div>
-            <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[#334155] dark:text-slate-300 whitespace-pre-line">
+            <p className="mt-4 text-xs sm:text-sm leading-relaxed text-[#334155] whitespace-pre-line">
               {form.about}
             </p>
           </section>
@@ -792,16 +792,16 @@ const DoctorProfile = () => {
         {(form.insuranceProvider ||
           form.insurancePolicyNumber ||
           form.insuranceExpiryDate) && (
-          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5 dark:border-slate-800">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+          <section className="rounded-[20px] border border-slate-200/80 bg-white p-5.5 shadow-xs">
+            <div className="flex items-center gap-2.5 border-b border-slate-100 pb-3.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <ShieldCheck size={16} />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm font-bold text-slate-900">
                   Professional Liability Insurance
                 </h3>
-                <p className="text-[11px] text-[#64748B]">
+                <p className="text-[11px] text-slate-500">
                   Medical indemnity and malpractice policy coverage
                 </p>
               </div>
@@ -838,17 +838,17 @@ const DoctorProfile = () => {
             if (e.target === e.currentTarget) closeEditModal();
           }}
         >
-          <div className="relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+          <div className="relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4 dark:border-slate-800">
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
               <div>
-                <h2 className="text-base font-bold text-[#0F172A] dark:text-white flex items-center gap-2">
+                <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
                   <span>Edit Practitioner Profile</span>
                   <span className="rounded-full bg-[#CCFBF1] px-2 py-0.5 text-[10px] font-bold text-[#0F766E]">
                     Medical Registry
                   </span>
                 </h2>
-                <p className="text-xs text-[#64748B]">
+                <p className="text-xs text-slate-500">
                   Update your credentials, photo, and consultation details.
                 </p>
               </div>
@@ -857,7 +857,7 @@ const DoctorProfile = () => {
                 type="button"
                 onClick={closeEditModal}
                 disabled={saving}
-                className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                className="flex h-8 w-8 items-center justify-center rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50"
               >
                 <X size={17} />
               </button>
@@ -866,7 +866,7 @@ const DoctorProfile = () => {
             {/* Modal Form */}
             <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
               {/* Tab Navigation in Modal */}
-              <div className="flex border-b border-slate-100 px-6 bg-[#F8FAFC]/50 dark:border-slate-800 dark:bg-slate-800/40 gap-2">
+              <div className="flex border-b border-slate-100 px-6 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70/50 gap-2">
                 {[
                   { id: "personal", label: "Identity & Photo" },
                   { id: "credentials", label: "Credentials & Clinic" },
@@ -878,8 +878,8 @@ const DoctorProfile = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`py-3 px-3 text-xs font-bold transition-all border-b-2 -mb-px ${
                       activeTab === tab.id
-                        ? "border-[#0F766E] text-[#0F766E] dark:border-teal-400 dark:text-teal-300"
-                        : "border-transparent text-[#64748B] hover:text-[#0F172A] dark:hover:text-white"
+                        ? "border-[#0F766E] text-[#0F766E]"
+                        : "border-transparent text-slate-500 hover:text-slate-900"
                     }`}
                   >
                     {tab.label}
@@ -891,7 +891,7 @@ const DoctorProfile = () => {
               <div className="overflow-y-auto p-6 space-y-6 flex-1">
                 {/* Error Banner */}
                 {error && (
-                  <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs font-semibold text-red-700 dark:border-red-900/40 dark:bg-red-950/30 dark:text-red-300">
+                  <div className="rounded-xl border border-red-200 bg-red-50 p-3.5 text-xs font-semibold text-red-700">
                     {error}
                   </div>
                 )}
@@ -900,9 +900,9 @@ const DoctorProfile = () => {
                 {activeTab === "personal" && (
                   <div className="space-y-6">
                     {/* AVATAR UPLOAD SECTION (Fixed Preview Bug) */}
-                    <div className="flex flex-col sm:flex-row items-center gap-5 rounded-2xl border border-slate-100 bg-[#F8FAFC] p-4.5 dark:border-slate-800 dark:bg-slate-800/50">
+                    <div className="flex flex-col sm:flex-row items-center gap-5 rounded-2xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-4.5">
                       <div className="relative">
-                        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-teal-50 ring-4 ring-teal-500/15 dark:bg-teal-950/40 dark:ring-teal-500/20">
+                        <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-teal-50 ring-4 ring-teal-500/15">
                           {preview ? (
                             <img
                               src={resolveAvatarUrl(preview)}
@@ -936,14 +936,14 @@ const DoctorProfile = () => {
                       </div>
 
                       <div className="space-y-1 text-center sm:text-left">
-                        <p className="text-xs font-bold text-[#0F172A] dark:text-white">
+                        <p className="text-xs font-bold text-slate-900">
                           Profile Photography
                         </p>
-                        <p className="text-[11px] text-[#64748B]">
+                        <p className="text-[11px] text-slate-500">
                           Upload a professional headshot. Format: JPG, PNG, WEBP up to 5MB.
                         </p>
                         {selectedFile && (
-                          <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300">
+                          <div className="inline-flex items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700">
                             <Sparkles size={11} />
                             <span>New file selected: {selectedFile.name}</span>
                           </div>
@@ -967,7 +967,7 @@ const DoctorProfile = () => {
                           type="email"
                           value={form.email}
                           disabled
-                          className="profile-input cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800"
+                          className="profile-input cursor-not-allowed bg-slate-100 text-slate-400"
                         />
                       </InputBlock>
 
@@ -1104,7 +1104,7 @@ const DoctorProfile = () => {
                         </InputBlock>
                       </div>
 
-                      <div className="sm:col-span-2 border-t border-slate-100 pt-4 dark:border-slate-800">
+                      <div className="sm:col-span-2 border-t border-slate-100 pt-4">
                         <InputBlock label="Clinic or Hospital Affiliation" icon={Building2}>
                           <input
                             type="text"
@@ -1163,7 +1163,7 @@ const DoctorProfile = () => {
                       </InputBlock>
 
                       <div className="sm:col-span-2">
-                        <label className="mb-2 block text-xs font-semibold text-slate-700 dark:text-slate-300">
+                        <label className="mb-2 block text-xs font-semibold text-slate-700">
                           Consultation Channels
                         </label>
                         <div className="flex flex-wrap gap-2.5">
@@ -1182,8 +1182,8 @@ const DoctorProfile = () => {
                                 }
                                 className={`rounded-xl border px-3.5 py-2 text-xs font-bold transition-all ${
                                   isSelected
-                                    ? "border-[#0F766E] bg-teal-50 text-[#0F766E] dark:bg-teal-950/40 dark:text-teal-300"
-                                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400"
+                                    ? "border-[#0F766E] bg-teal-50 text-[#0F766E]"
+                                    : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
                                 }`}
                               >
                                 {channel.label}
@@ -1229,8 +1229,8 @@ const DoctorProfile = () => {
                         </InputBlock>
                       </div>
 
-                      <div className="sm:col-span-2 border-t border-slate-100 pt-3 dark:border-slate-800">
-                        <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-3">
+                      <div className="sm:col-span-2 border-t border-slate-100 pt-3">
+                        <p className="text-xs font-bold text-slate-700 mb-3">
                           Professional Indemnity Insurance (Optional)
                         </p>
                       </div>
@@ -1260,7 +1260,7 @@ const DoctorProfile = () => {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex items-center justify-between border-t border-slate-100 bg-[#F8FAFC] px-6 py-4 dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center justify-between border-t border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 px-6 py-4">
                 <span className="text-[11px] text-slate-400">
                   {saved ? "Changes saved successfully!" : "Ensure all details are accurate."}
                 </span>
@@ -1270,7 +1270,7 @@ const DoctorProfile = () => {
                     type="button"
                     onClick={closeEditModal}
                     disabled={saving}
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
                   >
                     Cancel
                   </button>
@@ -1312,12 +1312,12 @@ const DoctorProfile = () => {
 // ==========================================
 
 const DisplayField = ({ label, value, icon: Icon }) => (
-  <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3 dark:border-slate-800/80 dark:bg-slate-800/50">
-    <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400">
-      {Icon && <Icon size={12} className="text-[#0F766E] dark:text-teal-400" />}
+  <div className="rounded-xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-3">
+    <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+      {Icon && <Icon size={12} className="text-[#0F766E]" />}
       {label}
     </span>
-    <p className="mt-1 text-xs font-bold text-[#0F172A] dark:text-slate-200 truncate">
+    <p className="mt-1 text-xs font-bold text-slate-900 truncate">
       {value || <span className="font-normal text-slate-400">Not recorded</span>}
     </p>
   </div>
@@ -1329,7 +1329,7 @@ const DisplayField = ({ label, value, icon: Icon }) => (
 
 const InputBlock = ({ label, icon: Icon, children }) => (
   <div>
-    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-300">
+    <label className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-700">
       {Icon && <Icon size={13} className="text-slate-400" />}
       <span>{label}</span>
     </label>

@@ -79,11 +79,11 @@ const getLast14Days = () => {
 const VolumeTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2.5 shadow-md backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/95">
-        <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+      <div className="rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2.5 shadow-md backdrop-blur-sm">
+        <p className="text-[11px] font-semibold text-slate-500">
           {label}
         </p>
-        <p className="mt-0.5 text-sm font-bold text-[#0F766E] dark:text-teal-400">
+        <p className="mt-0.5 text-sm font-bold text-[#0F766E]">
           {payload[0].value} {payload[0].value === 1 ? "Consultation" : "Consultations"}
         </p>
       </div>
@@ -96,11 +96,11 @@ const StatusTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     const data = payload[0];
     return (
-      <div className="rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2.5 shadow-md backdrop-blur-sm dark:border-slate-800 dark:bg-slate-900/95">
-        <p className="text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+      <div className="rounded-xl border border-slate-200/90 bg-white/95 px-3.5 py-2.5 shadow-md backdrop-blur-sm">
+        <p className="text-[11px] font-semibold text-slate-500">
           {data.name}
         </p>
-        <p className="mt-0.5 text-sm font-bold text-slate-900 dark:text-white">
+        <p className="mt-0.5 text-sm font-bold text-slate-900">
           {data.value} {data.value === 1 ? "Session" : "Sessions"}
         </p>
       </div>
@@ -280,30 +280,30 @@ const DoctorAnalytics = () => {
     stats.completed > 0 ? Math.round(stats.revenue / stats.completed) : 0;
 
   return (
-    <div className="min-h-screen w-full bg-[#F8FAFC] text-[#0F172A] antialiased dark:bg-[#0B1116] dark:text-slate-100 pt-28 md:pt-32 pb-24 selection:bg-teal-500/20">
-      <div className="mx-auto w-full max-w-[1920px] space-y-8 px-4 sm:px-8 md:px-14 lg:px-20">
+    <div className="min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-900 antialiased pt-24 sm:pt-28 pb-16 sm:pb-20 selection:bg-teal-500/20">
+      <div className="mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
         {/* ==================================================== */}
         {/* 1. HEADER / PAGE INTRODUCTION                        */}
         {/* ==================================================== */}
-        <div className="flex flex-col justify-between gap-6 pb-2 border-b border-slate-200/80 md:flex-row md:items-end dark:border-slate-800">
+        <div className="flex flex-col justify-between gap-6 pb-2 border-b border-slate-200/80 md:flex-row md:items-end">
           <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-teal-700/15 bg-[#CCFBF1]/50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#0F766E] dark:border-teal-500/20 dark:bg-teal-950/40 dark:text-teal-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#0F766E] dark:bg-teal-400" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-teal-700/15 bg-[#CCFBF1]/50 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#0F766E]">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#0F766E]" />
               <span>Clinical Analytics</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A] dark:text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
               Analytics &amp; Performance
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#64748B] dark:text-slate-400 max-w-2xl">
+            <p className="text-xs sm:text-sm text-slate-500 max-w-2xl">
               Monitor your practice volume, patient consultation flow, and clinical throughput over a rolling 14-day window.
             </p>
           </div>
 
           {/* Right Header Controls */}
           <div className="flex items-center gap-3">
-            <div className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-[#64748B] shadow-2xs dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
+            <div className="hidden sm:inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-500 shadow-2xs">
               <Clock size={13} className="text-[#0F766E]" />
               <span>14-Day Rolling Window</span>
             </div>
@@ -312,12 +312,12 @@ const DoctorAnalytics = () => {
               type="button"
               onClick={handleRefresh}
               disabled={refreshing}
-              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-[#334155] shadow-2xs transition-all hover:border-teal-300 hover:text-[#0F766E] active:scale-95 disabled:opacity-60 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300"
+              className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs transition-all hover:border-teal-300 hover:text-[#0F766E] active:scale-95 disabled:opacity-60"
               title="Refresh Analytics"
             >
               <RefreshCw
                 size={13}
-                className={`text-[#0F766E] dark:text-teal-400 ${
+                className={`text-[#0F766E] ${
                   refreshing ? "animate-spin" : ""
                 }`}
               />
@@ -331,83 +331,83 @@ const DoctorAnalytics = () => {
         {/* ==================================================== */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 sm:gap-5">
           {/* Card 1: Total Appointments (Deep Teal Highlight) */}
-          <div className="relative overflow-hidden rounded-[20px] border border-teal-800/20 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-teal-500/20 dark:bg-slate-900">
+          <div className="relative overflow-hidden rounded-2xl border border-teal-800/20 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <div className="absolute top-0 left-0 right-0 h-1 bg-[#0F766E]" />
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Total Consultations
                 </p>
-                <p className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                   {stats.total}
                 </p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#CCFBF1]/70 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#CCFBF1]/70 text-[#0F766E]">
                 <CalendarDays size={18} strokeWidth={2.2} />
               </div>
             </div>
-            <p className="mt-3 text-[11px] font-medium text-[#64748B] dark:text-slate-400">
+            <p className="mt-3 text-[11px] font-medium text-slate-500">
               Total volume across records
             </p>
           </div>
 
           {/* Card 2: Completed Consultations */}
-          <div className="rounded-[20px] border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Completed Visits
                 </p>
-                <p className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                   {stats.completed}
                 </p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-[#15803D] dark:bg-emerald-950/60 dark:text-emerald-300">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-[#15803D]">
                 <TrendingUp size={18} strokeWidth={2.2} />
               </div>
             </div>
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-[#15803D] dark:text-emerald-400">
+            <div className="mt-3 flex items-center gap-1.5 text-[11px] font-medium text-[#15803D]">
               <span className="font-bold">{completionRate}%</span>
-              <span className="text-[#64748B] dark:text-slate-400">completion rate</span>
+              <span className="text-slate-500">completion rate</span>
             </div>
           </div>
 
           {/* Card 3: Patients Registry */}
-          <div className="rounded-[20px] border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Unique Patients
                 </p>
-                <p className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                   {stats.patients}
                 </p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-[#0369A1] dark:bg-sky-950/60 dark:text-sky-300">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-[#0369A1]">
                 <Users size={18} strokeWidth={2.2} />
               </div>
             </div>
-            <p className="mt-3 text-[11px] font-medium text-[#64748B] dark:text-slate-400">
+            <p className="mt-3 text-[11px] font-medium text-slate-500">
               Registered patient registry
             </p>
           </div>
 
           {/* Card 4: Revenue */}
-          <div className="rounded-[20px] border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-[#64748B] dark:text-slate-400">
+                <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                   Clinical Revenue
                 </p>
-                <p className="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                   ₹{stats.revenue.toLocaleString("en-IN")}
                 </p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E] dark:bg-teal-950/60 dark:text-teal-300">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-[#0F766E]">
                 <IndianRupee size={18} strokeWidth={2.2} />
               </div>
             </div>
-            <p className="mt-3 text-[11px] font-medium text-[#64748B] dark:text-slate-400">
+            <p className="mt-3 text-[11px] font-medium text-slate-500">
               Avg ₹{avgRevenuePerVisit.toLocaleString("en-IN")} / completed visit
             </p>
           </div>
@@ -418,19 +418,19 @@ const DoctorAnalytics = () => {
         {/* ==================================================== */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
           {/* Trend Chart (Col 1 - 7 cols) */}
-          <div className="lg:col-span-7 flex flex-col justify-between rounded-[20px] border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
             <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
               <div>
-                <h3 className="text-sm sm:text-base font-semibold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm sm:text-base font-semibold text-slate-900">
                   Consultation Volume Trend
                 </h3>
-                <p className="text-xs text-[#64748B] dark:text-slate-400">
+                <p className="text-xs text-slate-500">
                   Daily patient consultations over the past 14 days
                 </p>
               </div>
 
               {peakDay.count > 0 && (
-                <div className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/70 bg-[#CCFBF1]/40 px-2.5 py-1 text-[11px] font-semibold text-[#0F766E] dark:border-teal-800 dark:bg-teal-950/40 dark:text-teal-300">
+                <div className="inline-flex items-center gap-1.5 rounded-lg border border-teal-200/70 bg-[#CCFBF1]/40 px-2.5 py-1 text-[11px] font-semibold text-[#0F766E]">
                   <Activity size={12} />
                   <span>Peak: {peakDay.count} on {peakDay.displayDate}</span>
                 </div>
@@ -485,28 +485,28 @@ const DoctorAnalytics = () => {
               </ResponsiveContainer>
             </div>
 
-            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-[11px] text-[#64748B] dark:border-slate-800 dark:text-slate-400">
+            <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-[11px] text-slate-500">
               <span>Showing last 14 days</span>
-              <span className="font-semibold text-[#0F766E] dark:text-teal-400">
+              <span className="font-semibold text-[#0F766E]">
                 Total: {dailyData.reduce((acc, curr) => acc + curr.count, 0)} Consultations
               </span>
             </div>
           </div>
 
           {/* Status Donut Distribution (Col 2 - 5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between rounded-[20px] border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+          <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-white">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900">
                 Consultation Status
               </h3>
-              <p className="text-xs text-[#64748B] dark:text-slate-400">
+              <p className="text-xs text-slate-500">
                 Breakdown of appointments by fulfillment state
               </p>
             </div>
 
             <div className="my-4 flex items-center justify-center">
               {statusData.length === 0 ? (
-                <div className="flex h-56 flex-col items-center justify-center text-center text-xs text-[#64748B]">
+                <div className="flex h-56 flex-col items-center justify-center text-center text-xs text-slate-500">
                   <AlertCircle size={24} className="mb-2 text-slate-300" />
                   <span>No consultation status recorded yet.</span>
                 </div>
@@ -533,10 +533,10 @@ const DoctorAnalytics = () => {
 
                   {/* Centered Statistic */}
                   <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <span className="text-2xl font-black text-[#0F172A] dark:text-white">
+                    <span className="text-2xl font-black text-slate-900">
                       {stats.total}
                     </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
                       Total Sessions
                     </span>
                   </div>
@@ -545,7 +545,7 @@ const DoctorAnalytics = () => {
             </div>
 
             {/* Custom Clinical Legend */}
-            <div className="space-y-2 border-t border-slate-100 pt-3 dark:border-slate-800">
+            <div className="space-y-2 border-t border-slate-100 pt-3">
               {statusData.map((item) => {
                 const percentage =
                   stats.total > 0 ? Math.round((item.value / stats.total) * 100) : 0;
@@ -560,16 +560,16 @@ const DoctorAnalytics = () => {
                         className="h-2.5 w-2.5 rounded-full"
                         style={{ backgroundColor: item.color }}
                       />
-                      <span className="font-medium text-[#334155] dark:text-slate-300">
+                      <span className="font-medium text-slate-700">
                         {item.name}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2 font-semibold">
-                      <span className="text-[#0F172A] dark:text-white">
+                      <span className="text-slate-900">
                         {item.value}
                       </span>
-                      <span className="text-[11px] text-[#64748B]">
+                      <span className="text-[11px] text-slate-500">
                         ({percentage}%)
                       </span>
                     </div>
@@ -585,22 +585,22 @@ const DoctorAnalytics = () => {
         {/* ==================================================== */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           {/* Card 1: Clinical Case Mix (By Reason) */}
-          <div className="rounded-[20px] border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h3 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900">
                   Case Mix &amp; Consultation Reasons
                 </h3>
-                <p className="text-xs text-[#64748B] dark:text-slate-400">
+                <p className="text-xs text-slate-500">
                   Distribution of clinical complaints and appointments
                 </p>
               </div>
-              <FileText size={16} className="text-[#64748B]" />
+              <FileText size={16} className="text-slate-500" />
             </div>
 
             <div className="mt-4 space-y-3.5">
               {byType.length === 0 ? (
-                <p className="py-8 text-center text-xs text-[#64748B]">
+                <p className="py-8 text-center text-xs text-slate-500">
                   No consultation category data available.
                 </p>
               ) : (
@@ -611,20 +611,20 @@ const DoctorAnalytics = () => {
                   return (
                     <div key={item.name} className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-semibold text-[#334155] dark:text-slate-200 truncate max-w-60">
+                        <span className="font-semibold text-slate-700 truncate max-w-60">
                           {item.name}
                         </span>
                         <div className="flex items-center gap-2 font-bold">
-                          <span className="text-[#0F172A] dark:text-white">
+                          <span className="text-slate-900">
                             {item.value}
                           </span>
-                          <span className="text-[11px] text-[#64748B]">
+                          <span className="text-[11px] text-slate-500">
                             ({percent}%)
                           </span>
                         </div>
                       </div>
 
-                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
                         <div
                           className="h-full rounded-full bg-[#0F766E] transition-all duration-300"
                           style={{ width: `${percent}%` }}
@@ -638,13 +638,13 @@ const DoctorAnalytics = () => {
           </div>
 
           {/* Card 2: Practice Performance Insights */}
-          <div className="rounded-[20px] border border-slate-200/80 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3 dark:border-slate-800">
+          <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xs">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h3 className="text-sm sm:text-base font-bold text-[#0F172A] dark:text-white">
+                <h3 className="text-sm sm:text-base font-bold text-slate-900">
                   Practice Efficiency Indicators
                 </h3>
-                <p className="text-xs text-[#64748B] dark:text-slate-400">
+                <p className="text-xs text-slate-500">
                   Key operational ratios calculated from real session records
                 </p>
               </div>
@@ -653,63 +653,63 @@ const DoctorAnalytics = () => {
 
             <div className="mt-4 grid grid-cols-2 gap-4">
               {/* Metric 1 */}
-              <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3.5 dark:border-slate-800 dark:bg-slate-800/60">
-                <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
+              <div className="rounded-xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-3.5">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <CheckCircle2 size={13} className="text-[#15803D]" />
                   <span>Completion Rate</span>
                 </div>
-                <p className="mt-2 text-xl font-extrabold text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-xl font-bold text-slate-900">
                   {completionRate}%
                 </p>
-                <p className="mt-0.5 text-[10px] text-[#64748B]">
+                <p className="mt-0.5 text-[10px] text-slate-500">
                   {stats.completed} of {stats.total} sessions fulfilled
                 </p>
               </div>
 
               {/* Metric 2 */}
-              <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3.5 dark:border-slate-800 dark:bg-slate-800/60">
-                <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
+              <div className="rounded-xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-3.5">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <AlertCircle size={13} className="text-[#B91C1C]" />
                   <span>Cancellation Rate</span>
                 </div>
-                <p className="mt-2 text-xl font-extrabold text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-xl font-bold text-slate-900">
                   {cancellationRate}%
                 </p>
-                <p className="mt-0.5 text-[10px] text-[#64748B]">
+                <p className="mt-0.5 text-[10px] text-slate-500">
                   Dropped or rescheduled sessions
                 </p>
               </div>
 
               {/* Metric 3 */}
-              <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3.5 dark:border-slate-800 dark:bg-slate-800/60">
-                <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
+              <div className="rounded-xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-3.5">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <Clock size={13} className="text-[#0369A1]" />
                   <span>Daily Patient Pace</span>
                 </div>
-                <p className="mt-2 text-xl font-extrabold text-[#0F172A] dark:text-white">
+                <p className="mt-2 text-xl font-bold text-slate-900">
                   {(stats.total / 14).toFixed(1)}
                 </p>
-                <p className="mt-0.5 text-[10px] text-[#64748B]">
+                <p className="mt-0.5 text-[10px] text-slate-500">
                   Avg consultations / day
                 </p>
               </div>
 
               {/* Metric 4 */}
-              <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3.5 dark:border-slate-800 dark:bg-slate-800/60">
-                <div className="flex items-center gap-1.5 text-xs text-[#64748B]">
+              <div className="rounded-xl border border-slate-100 bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 p-3.5">
+                <div className="flex items-center gap-1.5 text-xs text-slate-500">
                   <IndianRupee size={13} className="text-[#0F766E]" />
                   <span>Realized Revenue</span>
                 </div>
-                <p className="mt-2 text-xl font-extrabold text-[#0F766E] dark:text-teal-400">
+                <p className="mt-2 text-xl font-bold text-[#0F766E]">
                   ₹{stats.revenue.toLocaleString("en-IN")}
                 </p>
-                <p className="mt-0.5 text-[10px] text-[#64748B]">
+                <p className="mt-0.5 text-[10px] text-slate-500">
                   Settled clinical fees
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between rounded-xl bg-[#CCFBF1]/30 px-3.5 py-2 text-xs text-[#0F766E] dark:bg-teal-950/30 dark:text-teal-300">
+            <div className="mt-4 flex items-center justify-between rounded-xl bg-[#CCFBF1]/30 px-3.5 py-2 text-xs text-[#0F766E]">
               <span className="font-medium">Operational Status:</span>
               <span className="font-bold flex items-center gap-1">
                 Active &amp; Compliant
