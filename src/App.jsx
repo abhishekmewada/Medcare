@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom"
  import PublicLayout from "./layouts/PublicLayout"
  import Register from "./pages/auth/Register"
 import Login from "./pages/auth/Login"
+import ForgotPassword from "./pages/auth/ForgotPassword"
 import Home from "./pages/public/Home"
 import PatientLayout from "./layouts/PatientLayout"
 // import PatientDashboard from "./pages/patient/OverviewView"
@@ -60,7 +61,12 @@ function App() {
       
       {/* ------------------AUTH */}
       <Route path="/login" element={ <Login />} />
-       <Route path="/register" element={ <Register />} />
+      <Route path="/doctor/login" element={ <Login />} />
+      <Route path="/patient/login" element={ <Login />} />
+      <Route path="/register" element={ <Register />} />
+      <Route path="/forgot-password" element={ <ForgotPassword />} />
+      <Route path="/reset-password" element={ <ForgotPassword />} />
+      <Route path="/reset-password/:token" element={ <ForgotPassword />} />
 
         {/* Protected Route of patient page */}
 

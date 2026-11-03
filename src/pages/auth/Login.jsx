@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Activity,
   ArrowRight,
@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../services/auth.service";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/slice/authSlice";
 import { motion } from "framer-motion";
 import { connectSocket } from "../../socket/socket";
@@ -21,6 +21,10 @@ import { connectSocket } from "../../socket/socket";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { user, isAuthenticated, loading: authLoading } = useSelector(
+    (state) => state.auth
+  );
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -30,6 +34,19 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (!authLoading && isAuthenticated && user) {
+      if (user.role === "patient") {
+        navigate("/patient", { replace: true });
+      } else if (user.role === "doctor") {
+        navigate("/doctor", { replace: true });
+      } else if (user.role === "admin") {
+        navigate("/admin", { replace: true });
+      }
+    }
+  }, [authLoading, isAuthenticated, user, navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -47,7 +64,10 @@ const Login = () => {
 
       const response = await loginUser(formData);
 
- 
+      if (response.token) {
+        localStorage.setItem("authToken", response.token);
+      }
+
       dispatch(setUser(response.user));
       connectSocket();
 
@@ -184,12 +204,12 @@ const Login = () => {
           {/* Mobile Header with Logo */}
           <div className="mb-8 flex items-center justify-between lg:hidden">
             <Link to="/" className="inline-flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-white shadow-sm">
-                <Activity size={18} strokeWidth={2.5} />
-              </div>
-              <span className="text-lg font-bold tracking-tight text-slate-900">
-                MedCare
-              </span>
+            <div
+            onClick={() => navigate("/")}
+            className="flex shrink-0 cursor-pointer select-none items-center gap-3 transition-transform hover:scale-[1.02] hover:opacity-90"
+          >
+             <img className="w-32 object-contain bg-transparent mix-blend-multiply contrast-125 brightness-105 sm:w-36 xl:w-40" src="/images/Gemini_Generated_Image_6t88pq6t88pq6t88-removebg-preview.png" height="auto" width="180" alt="MedCare" />
+          </div>
             </Link>
 
             <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 px-2.5 py-1 text-xs font-medium text-teal-700">
@@ -257,13 +277,7 @@ const Login = () => {
                 </label>
 
                 <Link
-                  to="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    alert(
-                      "To reset your password, please check your inbox for instructions or contact support@medcare.com"
-                    );
-                  }}
+                  to="/forgot-password"
                   className="text-xs font-medium text-teal-700 transition-colors hover:text-teal-800 hover:underline"
                 >
                   Forgot password?

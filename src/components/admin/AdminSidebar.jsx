@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import ConfirmationModal from "../../components/common/ConfirmationModal";
+import useLogout from "../../hooks/useLogout";
 import {
   LayoutGrid,
   Stethoscope,
@@ -19,7 +21,7 @@ import {
   Unlock,
 } from "lucide-react";
 
-import { logout } from "../../redux/slice/authSlice";
+
 
 const NAV_ITEMS = [
   { to: "/admin", label: "Overview", icon: LayoutGrid, end: true },
@@ -32,7 +34,6 @@ const NAV_ITEMS = [
 ];
 
 export default function AdminSidebar() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.auth.user);
@@ -45,10 +46,13 @@ export default function AdminSidebar() {
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef(null);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
-  };
+  const {
+    isOpen: logoutModalOpen,
+    loading: isLoggingOut,
+    requestLogout,
+    cancelLogout,
+    confirmLogout,
+  } = useLogout();
 
   const adminName = user?.fullName || "System Admin";
   const adminEmail = user?.email || "admin@medcare.com";
@@ -177,8 +181,11 @@ export default function AdminSidebar() {
                 </div>
                 <div className="border-t border-white/10 pt-1">
                   <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors text-left"
+                    onClick={() => {
+                      setProfileOpen(false);
+                      requestLogout();
+                    }}
+                    className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-semibold text-rose-300 hover:bg-rose-500/20 transition-colors text-left cursor-pointer"
                   >
                     <LogOut size={15} />
                     <span>Sign Out</span>
@@ -231,8 +238,11 @@ export default function AdminSidebar() {
           })}
           <div className="pt-2 border-t border-white/10">
             <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-rose-300 bg-rose-500/10 rounded-xl hover:bg-rose-500/20 transition-colors"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                requestLogout();
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-rose-300 bg-rose-500/10 rounded-xl hover:bg-rose-500/20 transition-colors cursor-pointer"
             >
               <LogOut size={18} />
               <span>Sign Out</span>
@@ -240,6 +250,17 @@ export default function AdminSidebar() {
           </div>
         </div>
       )}
+
+      <ConfirmationModal
+        isOpen={logoutModalOpen}
+        isLoading={isLoggingOut}
+        title="Confirm Logout"
+        message="Are you sure you want to log out? You will need to login again to access the admin portal."
+        confirmLabel="Confirm Logout"
+        cancelLabel="Cancel"
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </header>
   );
 }

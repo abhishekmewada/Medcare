@@ -23,6 +23,9 @@ const AuthInitializer = ({ children }) => {
         connectSocket();
       } catch (error) {
         console.log("error message:", error.response?.data || error.message);
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
         disconnectSocket();
         dispatch(logout());
       } finally{

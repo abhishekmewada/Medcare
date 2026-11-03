@@ -1,14 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Activity,
   ArrowRight,
-  ShieldCheck,
-  CheckCircle2,
+   CheckCircle2,
   Mail,
   ChevronRight,
   ArrowUp,
-  Lock,
-  Sparkles,
 } from "lucide-react";
 // import { motion } from "motion/react";
 import {motion} from "framer-motion";
@@ -45,7 +43,7 @@ export default function Footer({
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [activeToast, setActiveToast] = useState("");
-
+ const navigate = useNavigate();
   const isDark = theme === "dark";
 
   const handleSubscribe = (e) => {
@@ -234,23 +232,13 @@ export default function Footer({
         <div className="flex flex-col lg:flex-row justify-between gap-12 pb-14 border-b border-slate-200 dark:border-slate-800/80">
           {/* Logo & Brand Details */}
           <div className="max-w-sm">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-600 text-white shadow-md shadow-blue-600/25">
-                <img src="/logo.png" alt="MedCare Logo" className="h-6 w-auto" />
-              </div>
-              <div className="flex items-baseline gap-2">
-                <h2
-                  className={`text-2xl font-bold tracking-tight ${
-                    isDark ? "text-white" : "text-slate-900"
-                  }`}
-                >
-                  MedCare
-                </h2>
-                <span className="rounded-md bg-blue-500/10 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                  AI
-                </span>
-              </div>
-            </div>
+            {/* Logo */}
+          <div
+            onClick={() => navigate("/")}
+            className="flex shrink-0 cursor-pointer select-none items-center gap-3 transition-transform hover:scale-[1.02] hover:opacity-90"
+          >
+             <img className="w-32 object-contain bg-transparent mix-blend-multiply contrast-125 brightness-105 sm:w-36 xl:w-40" src="/images/Gemini_Generated_Image_6t88pq6t88pq6t88-removebg-preview.png" height="auto" width="180" alt="MedCare" />
+          </div>
 
             <p
               className={`mt-5 text-sm leading-relaxed ${
@@ -262,38 +250,8 @@ export default function Footer({
             </p>
 
             {/* Compliance trust marks */}
-            <div className="mt-5 flex items-center gap-2.5">
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium border ${
-                  isDark
-                    ? "bg-slate-900/80 border-slate-800 text-slate-300"
-                    : "bg-slate-100 border-slate-200 text-slate-600"
-                }`}
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-                <span>HIPAA</span>
-              </span>
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium border ${
-                  isDark
-                    ? "bg-slate-900/80 border-slate-800 text-slate-300"
-                    : "bg-slate-100 border-slate-200 text-slate-600"
-                }`}
-              >
-                <Lock className="w-3.5 h-3.5 text-emerald-500" />
-                <span>SOC 2</span>
-              </span>
-              <span
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-medium border ${
-                  isDark
-                    ? "bg-slate-900/80 border-slate-800 text-slate-300"
-                    : "bg-slate-100 border-slate-200 text-slate-600"
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>ISO 27001</span>
-              </span>
-            </div>
+            
+              
 
             {/* Clearly defined Social Media Icons */}
             <div className="mt-7">

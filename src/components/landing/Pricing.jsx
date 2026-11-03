@@ -1,30 +1,26 @@
- import { Activity, ShieldCheck, Cpu, Layers} from "lucide-react";
+ import { Activity,} from "lucide-react";
 
 const Pricing = () => {
  
-  const telemetryStats = [
-    { label: "Rendering Rate", val: "60 FPS" },
-    { label: "Anatomical Layers", val: "12 Systems" },
-    { label: "Diagnostic AI", val: "Active (v4.2)" },
-  ];
+  
 
-  const features = [
-    {
-      icon: <Layers className="h-5 w-5 text-cyan-400" />,
-      title: "Multi-Layer Visualization",
-      desc: "Simultaneous skeletal, circulatory, and visceral inspection in real-time.",
-    },
-    {
-      icon: <Cpu className="h-5 w-5 text-cyan-400" />,
-      title: "Real-Time Neural Mapping",
-      desc: "High-precision volumetric rendering powered by client-side WebGL.",
-    },
-    {
-      icon: <ShieldCheck className="h-5 w-5 text-cyan-400" />,
-      title: "DICOM & PACS Integration",
-      desc: "Seamless synchronization directly from certified hospital databases.",
-    },
-  ];
+  // const features = [
+  //   {
+  //     icon: <Layers className="h-5 w-5 text-cyan-400" />,
+  //     title: "Multi-Layer Visualization",
+  //     desc: "Simultaneous skeletal, circulatory, and visceral inspection in real-time.",
+  //   },
+  //   {
+  //     icon: <Cpu className="h-5 w-5 text-cyan-400" />,
+  //     title: "Real-Time Neural Mapping",
+  //     desc: "High-precision volumetric rendering powered by client-side WebGL.",
+  //   },
+  //   {
+  //     icon: <ShieldCheck className="h-5 w-5 text-cyan-400" />,
+  //     title: "DICOM & PACS Integration",
+  //     desc: "Seamless synchronization directly from certified hospital databases.",
+  //   },
+  // ];
 
   return (
     <section id="pricing" className="relative overflow-hidden  py-24 text-slate-100">
@@ -86,19 +82,12 @@ const Pricing = () => {
             </div>
 
             {/* Telemetry Stats on Video */}
-            <div className="absolute bottom-5 right-5 flex gap-4 rounded-xl border border-slate-800/80 bg-black/70 px-4 py-2 font-mono text-xs text-slate-300 backdrop-blur-md">
-              {telemetryStats.map((stat, i) => (
-                <div key={i} className="text-right">
-                  <span className="block text-[10px] text-slate-500">{stat.label}</span>
-                  <span className="font-semibold text-cyan-400">{stat.val}</span>
-                </div>
-              ))}
-            </div>
+            
           </div>
         </div>
 
         {/* Feature Highlights Below Video */}
-        <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+        {/* <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
           {features.map((item, index) => (
             <div
               key={index}
@@ -111,7 +100,7 @@ const Pricing = () => {
               <p className="mt-2 text-sm leading-relaxed text-slate-400">{item.desc}</p>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

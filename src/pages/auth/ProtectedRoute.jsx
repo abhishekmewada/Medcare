@@ -30,7 +30,7 @@ const ProtectedRoute = ({ allowedRoles }) => {
   if (!isAuthenticated || !user) {
     return (
       <Navigate
-        to="/Login"
+        to="/login"
         replace
         state={{ from: location }}
       />
@@ -42,7 +42,10 @@ const ProtectedRoute = ({ allowedRoles }) => {
     allowedRoles &&
     !allowedRoles.includes(user.role)
   ) {
-    return <Navigate to="/unauthorized" replace />;
+    if (user.role === "doctor") return <Navigate to="/doctor" replace />;
+    if (user.role === "patient") return <Navigate to="/patient" replace />;
+    if (user.role === "admin") return <Navigate to="/admin" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

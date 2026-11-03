@@ -155,9 +155,8 @@ const doctors = [
   </a>
 </section>
 
-              <h6 className="text-xs font-bold uppercase tracking-[2.4px] text-[#2563EB]">Specialties</h6>
-                 <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Every department, expertly covered.</h2>
-
+              
+ 
         <div className="  py-20  overflow-hidden " >
             <motion.div  className="flex w-max gap-6  marquee "
             
