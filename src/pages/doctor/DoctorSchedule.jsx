@@ -6,7 +6,6 @@ import {
   Check,
   X,
   Clock,
-  CalendarCheck,
   AlertCircle,
   FileText,
   Loader2,
@@ -14,11 +13,18 @@ import {
   Printer,
   Stethoscope,
   Phone,
-  Sparkles,
   RefreshCw,
   Pill,
   CheckCircle2,
   Calendar,
+  ChevronLeft,
+  ChevronRight,
+  User,
+  SlidersHorizontal,
+  Video,
+  MapPin,
+  Sparkles,
+  ArrowRight,
 } from "lucide-react";
 
 import EmptyState from "../../components/ui/EmptyState";
@@ -36,7 +42,7 @@ import {
 
 const parseLocalDate = (dateInput) => {
   if (!dateInput) return null;
-  
+
   // Normalize ISO strings and date strings (e.g., "2026-10-25T00:00:00.000Z" -> "2026-10-25")
   const rawDateStr = typeof dateInput === "string" ? dateInput.split("T")[0] : null;
 
@@ -109,19 +115,19 @@ const isWithinDays = (dateStr, daysCount = 7) => {
 // ========================================
 
 const STATUS_FILTERS = [
-  { id: "all", label: "All Consultations" },
+  { id: "all", label: "All Encounters" },
   { id: "upcoming", label: "Upcoming" },
   { id: "completed", label: "Completed" },
   { id: "cancelled", label: "Cancelled" },
-  { id: "missed", label: "Missed / Expired" },
+  { id: "missed", label: "Missed" },
 ];
 
 const PAGE_SIZE = 10;
 const DATE_PRESETS = [
-  { id: "all", label: "All Dates" },
   { id: "today", label: "Today" },
   { id: "tomorrow", label: "Tomorrow" },
   { id: "week", label: "Next 7 Days" },
+  { id: "all", label: "All Dates" },
 ];
 
 // ========================================
@@ -434,59 +440,56 @@ const DoctorSchedule = () => {
     }
   };
 
-  const getStatusVisuals = (status) => {
+  const getStatusVisuals = (status, isMissed = false) => {
+    if (isMissed) {
+      return {
+        pill: "bg-amber-50 text-amber-900 border-amber-200",
+        dot: "bg-amber-500",
+        indicator: "bg-amber-500",
+        label: "Missed Slot",
+      };
+    }
+
     const s = status?.toLowerCase();
     switch (s) {
       case "completed":
         return {
-          pill: "bg-emerald-50 text-emerald-800 border-emerald-200",
+          pill: "bg-emerald-50 text-emerald-900 border-emerald-200",
           dot: "bg-emerald-500",
-          bar: "bg-emerald-500",
+          indicator: "bg-emerald-500",
+          label: "Completed",
         };
       case "cancelled":
       case "rejected":
         return {
-          pill: "bg-rose-50 text-rose-800 border-rose-200",
+          pill: "bg-rose-50 text-rose-900 border-rose-200",
           dot: "bg-rose-500",
-          bar: "bg-rose-500",
+          indicator: "bg-rose-500",
+          label: "Cancelled",
         };
       case "confirmed":
         return {
-          pill: "bg-teal-50 text-teal-800 border-teal-200",
+          pill: "bg-teal-50 text-teal-900 border-teal-200",
           dot: "bg-teal-500",
-          bar: "bg-teal-500",
+          indicator: "bg-teal-500",
+          label: "Confirmed",
         };
       default:
         return {
-          pill: "bg-amber-50 text-amber-800 border-amber-200",
-          dot: "bg-amber-500",
-          bar: "bg-amber-500",
+          pill: "bg-teal-50 text-teal-800 border-teal-200",
+          dot: "bg-teal-500",
+          indicator: "bg-teal-500",
+          label: "Scheduled",
         };
     }
   };
 
+  const hasActiveFilters = searchQuery !== "" || statusFilter !== "all" || datePreset !== "all";
+
   return (
-    <div className="relative isolate min-h-screen w-full bg-linear-to-b from-slate-50 via-teal-50/20 to-slate-100/70 text-slate-800 antialiased pt-24 md:pt-28 pb-20 selection:bg-teal-500/20">
+    <div className="min-h-screen w-full bg-[#FAFAF8] text-slate-800 antialiased pt-20 sm:pt-24 pb-20 selection:bg-teal-500/20 font-sans">
       
       {/* PRINT-ONLY ISOLATED TICKET */}
-      {/* <style>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #print-ticket-section, #print-ticket-section * {
-            visibility: visible;
-          }
-          #print-ticket-section {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            display: block !important;
-          }
-        }
-      `}</style> */}
-
       {printTarget && (
         <div id="print-ticket-section" className="hidden p-8 text-slate-900 bg-white">
           <div className="max-w-2xl mx-auto border-2 border-teal-900/40 rounded-2xl p-8 space-y-6 shadow-none">
@@ -496,8 +499,8 @@ const DoctorSchedule = () => {
                   <Stethoscope className="h-5 w-5 text-teal-700" />
                   <span className="text-xs font-bold uppercase tracking-wider text-teal-800">MedCare Clinical Suite</span>
                 </div>
-                <h1 className="text-2xl font-black tracking-tight text-slate-900 mt-1">
-                  CONSULTATION APPOINTMENT PASS
+                <h1 className="text-2xl font-serif italic text-slate-900 mt-1">
+                  Consultation Appointment Pass
                 </h1>
                 <p className="text-xs text-slate-500">Official Clinical Appointment &amp; Verification Slip</p>
               </div>
@@ -550,183 +553,90 @@ const DoctorSchedule = () => {
         </div>
       )}
 
-      {/* AMBIENT BACKGROUND ACCENTS */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
-        <div className="absolute -top-32 right-10 h-125 w-125 rounded-full bg-teal-400/10 blur-[130px]" />
-        <div className="absolute top-1/3 -left-36 h-115 w-115 rounded-full bg-emerald-400/10 blur-[120px]" />
-        <div className="absolute -bottom-20 right-1/4 h-105 w-105 rounded-full bg-cyan-400/10 blur-[120px]" />
-      </div>
-
-      <div className="relative z-10 mx-auto w-full max-w-7xl space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-8">
+      {/* MAIN CONTAINER */}
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-7">
         
-        {/* HEADER HERO */}
-        <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white/90 p-6 backdrop-blur-md shadow-sm sm:p-8">
-          <div className="relative flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-teal-200/80 bg-teal-50/70 px-3.5 py-1 text-xs font-semibold text-teal-800">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-600" />
+        {/* ── 1. EDITORIAL CLINICAL HEADER ── */}
+        <div className="pt-2 sm:pt-4 border-b border-stone-200/80 pb-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="space-y-1.5">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2 w-2 rounded-full bg-teal-600 animate-pulse" />
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-teal-800">
+                  Clinical Agenda
                 </span>
-                <span className="tracking-wide">MedCare Clinical Stream</span>
-                <span className="text-teal-300">•</span>
-                <span className="font-medium text-slate-600">
+                <span className="text-stone-300">•</span>
+                <span className="text-xs text-stone-500 font-medium">
                   {new Date().toLocaleDateString("en-US", {
-                    weekday: "short",
+                    weekday: "long",
                     month: "short",
                     day: "numeric",
+                    year: "numeric",
                   })}
                 </span>
               </div>
 
-              <h1 className="text-2xl font-black tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
-                Consultation Schedule
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-slate-900 tracking-tight leading-tight">
+                Consultation{" "}
+                <span className="font-serif italic font-normal text-teal-800">
+                  Schedule
+                </span>
               </h1>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-xl">
-                Real-time patient appointments, clinical timelines, and active medical management.
+              <p className="text-xs sm:text-sm text-stone-500 max-w-xl font-normal">
+                Manage your patient appointments, clinical timelines, and active care encounters.
               </p>
             </div>
 
-            {/* Quick Action Controls */}
-            <div className="flex flex-wrap items-center gap-3">
+            {/* Quick Actions & Inline Encounter Stats */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              {/* Subtle Inline Counter Badge */}
+              <div className="hidden md:flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1 text-xs text-stone-600 shadow-2xs">
+                <span className="font-bold text-slate-900">{stats.todayCount}</span>
+                <span>today</span>
+                <span className="text-stone-300">•</span>
+                <span className="font-bold text-teal-700">{stats.upcomingCount}</span>
+                <span>upcoming</span>
+                {stats.missedCount > 0 && (
+                  <>
+                    <span className="text-stone-300">•</span>
+                    <span className="font-bold text-amber-700">{stats.missedCount}</span>
+                    <span>missed</span>
+                  </>
+                )}
+              </div>
+
               <button
                 type="button"
                 onClick={handleRefresh}
                 disabled={refreshing || loading}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs font-semibold text-slate-700 shadow-2xs hover:border-teal-300 hover:bg-teal-50/50 hover:text-teal-800 active:scale-95 disabled:opacity-60 transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-3.5 py-2 text-xs font-semibold text-stone-700 shadow-2xs hover:bg-stone-50 hover:border-stone-300 active:scale-95 disabled:opacity-60 transition-all cursor-pointer"
+                title="Sync Schedule"
               >
                 <RefreshCw
-                  size={14}
-                  className={`text-teal-600 ${
-                    refreshing ? "animate-spin" : ""
-                  }`}
+                  size={13}
+                  className={`text-teal-700 ${refreshing ? "animate-spin" : ""}`}
                 />
-                <span>{refreshing ? "Syncing..." : "Sync Schedule"}</span>
+                <span>{refreshing ? "Syncing..." : "Sync"}</span>
               </button>
 
               <Link
-                to="/doctor/prescriptions/"
-                className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-all duration-200 hover:bg-teal-700 hover:shadow-md active:scale-95"
+                to="/doctor/prescriptions/new"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-teal-800 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-teal-900 active:scale-95 transition-all"
               >
-                <Pill size={14} className="text-teal-100" />
-                <span>Issue Prescription</span>
+                <Pill size={13} className="text-teal-200" />
+                <span>Write Rx</span>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* CLINICAL KPI METRIC CARDS */}
-        <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
-          <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Today's Queue
-              </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
-                <CalendarDays size={18} />
-              </div>
-            </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900">
-                {stats.todayCount}
-              </span>
-              <span className="text-[11px] font-medium text-teal-700">
-                Scheduled Today
-              </span>
-            </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-teal-600 transition-all duration-500"
-                style={{
-                  width: `${stats.total > 0 ? (stats.todayCount / stats.total) * 100 : 0}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Upcoming Slots
-              </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700">
-                <Clock size={18} />
-              </div>
-            </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900">
-                {stats.upcomingCount}
-              </span>
-              <span className="text-[11px] font-medium text-emerald-700">
-                Pending / Confirmed
-              </span>
-            </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-emerald-500 transition-all duration-500"
-                style={{
-                  width: `${stats.total > 0 ? (stats.upcomingCount / stats.total) * 100 : 0}%`,
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                Completed
-              </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
-                <CheckCircle2 size={18} />
-              </div>
-            </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900">
-                {stats.completedCount}
-              </span>
-              <span className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[10px] font-bold text-teal-800 border border-teal-200/70">
-                {stats.completionRate}% Rate
-              </span>
-            </div>
-            <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-100">
-              <div
-                className="h-full rounded-full bg-teal-600 transition-all duration-500"
-                style={{ width: `${stats.completionRate}%` }}
-              />
-            </div>
-          </div>
-
-          <div className="group rounded-2xl border border-slate-200/80 bg-white/90 p-4.5 backdrop-blur-md shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all">
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-
-                Total Consultations
-              </span>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
-                <CalendarCheck size={18} />
-              </div>
-            </div>
-            <div className="mt-3 flex items-baseline gap-2">
-              <span className="text-2xl font-black text-slate-900">
-                {stats.total}
-              </span>
-              <span className="text-[11px] font-medium text-slate-500">
-                {stats.cancelledCount} Cancelled
-              </span>
-            </div>
-            <div className="mt-2 flex items-center justify-between text-[10px] text-slate-400">
-              <span>Overall activity</span>
-              <span className="text-teal-600 font-semibold">100% Synced</span>
-            </div>
-          </div>
-        </div>
-
-        {/* NEXT UP SPOTLIGHT */}
+        {/* ── 2. ACTIVE ENCOUNTER / NEXT UP SPOTLIGHT (HUMAN, NON-DASHBOARD) ── */}
         {nextUpcoming && (
-          <div className="relative overflow-hidden rounded-2xl border border-teal-200/90 bg-gradient-to-r from-teal-50/70 via-white to-emerald-50/30 p-5 shadow-xs sm:p-6">
-            <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-center">
-              <div className="flex items-start gap-4">
-                <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-700 to-teal-600 text-lg font-black text-white shadow-md shadow-teal-700/20">
+          <div className="relative overflow-hidden rounded-2xl border border-teal-200/90 bg-gradient-to-br from-teal-50/50 via-white to-stone-50/50 p-4 sm:p-5 shadow-xs transition-all">
+            <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
+              
+              <div className="flex items-start sm:items-center gap-3.5">
+                <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-teal-800 text-sm sm:text-base font-semibold text-white shadow-xs">
                   {(
                     nextUpcoming.patient?.fullName ||
                     nextUpcoming.patientName ||
@@ -734,43 +644,41 @@ const DoctorSchedule = () => {
                   )
                     .charAt(0)
                     .toUpperCase()}
-                  <span className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-emerald-500 ring-2 ring-white text-[10px] text-white">
-                    <Sparkles size={9} />
-                  </span>
                 </div>
 
                 <div className="space-y-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                      Next Up in Queue
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-teal-800 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Next Encounter
                     </span>
-                    <span className="flex items-center gap-1 text-xs font-bold text-teal-800">
-                      <Clock size={12} />
+                    <span className="text-xs font-bold text-teal-950 flex items-center gap-1">
+                      <Clock size={12} className="text-teal-700" />
                       {nextUpcoming.startTime || "--:--"}
                       {nextUpcoming.endTime && ` - ${nextUpcoming.endTime}`}
                     </span>
-                    <span className="text-xs text-slate-300">•</span>
-                    <span className="text-xs font-medium text-slate-600">
+                    <span className="text-stone-300 text-xs">•</span>
+                    <span className="text-xs font-medium text-stone-600">
                       {isToday(nextUpcoming.appointmentDate)
                         ? "Today"
                         : formatDay(nextUpcoming.appointmentDate)}
                     </span>
                   </div>
 
-                  <h3 className="text-lg font-extrabold text-slate-900">
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-900">
                     {nextUpcoming.patient?.fullName ||
                       nextUpcoming.patientName ||
                       "Patient"}
                   </h3>
 
-                  <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
-                    <span className="inline-flex items-center gap-1.5 rounded-md bg-white/90 border border-slate-200/80 px-2.5 py-0.5 font-medium text-slate-800 shadow-2xs">
-                      <Stethoscope size={12} className="text-teal-600" />
-                      {nextUpcoming.reason || "General Consultation"}
+                  <div className="flex flex-wrap items-center gap-2 text-xs text-stone-600">
+                    <span className="inline-flex items-center gap-1 rounded-md bg-white border border-stone-200 px-2 py-0.5 text-[11px] text-stone-700 font-medium">
+                      <Stethoscope size={11} className="text-teal-700" />
+                      {nextUpcoming.reason || "General Medical Consultation"}
                     </span>
                     {nextUpcoming.patient?.phone && (
-                      <span className="flex items-center gap-1 text-[11px] text-slate-500">
-                        <Phone size={11} />
+                      <span className="flex items-center gap-1 text-[11px] text-stone-500">
+                        <Phone size={10} />
                         {nextUpcoming.patient.phone}
                       </span>
                     )}
@@ -778,15 +686,15 @@ const DoctorSchedule = () => {
                 </div>
               </div>
 
-              {/* Spotlight Fast Actions */}
-              <div className="flex flex-wrap items-center gap-2.5 sm:self-end lg:self-center">
+              {/* Fast Encounter Action Controls */}
+              <div className="flex items-center gap-2 self-end sm:self-center">
                 <button
                   type="button"
                   onClick={() => handlePrintSingle(nextUpcoming)}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-colors cursor-pointer"
-                  title="Print this pass"
+                  className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 transition-colors cursor-pointer"
+                  title="Print slip"
                 >
-                  <Printer size={13} className="text-slate-500" />
+                  <Printer size={12} className="text-stone-500" />
                   <span>Print Slip</span>
                 </button>
 
@@ -799,13 +707,13 @@ const DoctorSchedule = () => {
                     actionLoadingId ===
                     (nextUpcoming._id || nextUpcoming.id)
                   }
-                  className="inline-flex items-center gap-2 rounded-xl bg-teal-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-teal-700 active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-teal-800 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-teal-900 active:scale-95 disabled:opacity-50 transition-all cursor-pointer"
                 >
                   {actionLoadingId ===
                   (nextUpcoming._id || nextUpcoming.id) ? (
-                    <Loader2 size={13} className="animate-spin" />
+                    <Loader2 size={12} className="animate-spin" />
                   ) : (
-                    <Check size={13} strokeWidth={2.8} />
+                    <Check size={12} strokeWidth={2.8} />
                   )}
                   <span>Complete Visit</span>
                 </button>
@@ -814,60 +722,78 @@ const DoctorSchedule = () => {
           </div>
         )}
 
-        {/* SEARCH & DUAL FILTER STRIP */}
-        <div className="space-y-3 sticky top-6 z-40 rounded-2xl border border-slate-200/80 bg-white/90 p-4 backdrop-blur-xl shadow-xs sm:p-5">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="relative w-full lg:max-w-md">
+        {/* ── 3. INTUITIVE TIMELINE CONTROLS (SEARCH & DATE STRIP) ── */}
+        <div className="space-y-3">
+          
+          {/* Top Row: Search Input + Date Switcher Tabs */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            
+            {/* Search Input */}
+            <div className="relative w-full sm:max-w-md">
               <Search
-                size={16}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
+                size={14}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-stone-400"
               />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search patient name, reason, symptoms, phone..."
-                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-10 pr-9 text-xs font-medium text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10"
+                placeholder="Search patient, complaint, phone..."
+                className="w-full rounded-xl border border-stone-200 bg-white py-2 pl-9 pr-8 text-xs font-medium text-slate-800 outline-none transition-all placeholder:text-stone-400 focus:border-teal-700 focus:ring-2 focus:ring-teal-700/10 shadow-2xs"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-slate-400 hover:text-slate-600"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-0.5 text-stone-400 hover:text-stone-600 cursor-pointer"
                 >
-                  <X size={13} />
+                  <X size={12} />
                 </button>
               )}
             </div>
 
-            {/* Date Preset Buttons */}
-            <div className="flex flex-wrap items-center gap-1.5 rounded-xl border border-slate-200 bg-slate-50/80 p-1">
-              <span className="px-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Date:
-              </span>
-              {DATE_PRESETS.map((preset) => {
-                const isActive = datePreset === preset.id;
-                return (
-                  <button
-                    key={preset.id}
-                    type="button"
-                    onClick={() => setDatePreset(preset.id)}
-                    className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                      isActive
-                        ? "bg-teal-700 text-white shadow-xs font-bold"
-                        : "text-slate-600 hover:bg-white/80 hover:text-slate-900"
-                    }`}
-                  >
-                    {preset.label}
-                  </button>
-                );
-              })}
+            {/* Date Preset Pills */}
+            <div className="flex flex-wrap items-center gap-1 self-start sm:self-auto">
+              <div className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white p-1 shadow-2xs">
+                {DATE_PRESETS.map((preset) => {
+                  const isActive = datePreset === preset.id;
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      onClick={() => setDatePreset(preset.id)}
+                      className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-teal-800 text-white font-semibold shadow-2xs"
+                          : "text-stone-600 hover:text-slate-900 hover:bg-stone-50"
+                      }`}
+                    >
+                      {preset.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setStatusFilter("all");
+                    setDatePreset("all");
+                  }}
+                  className="ml-1 text-[11px] font-semibold text-teal-800 hover:underline cursor-pointer flex items-center gap-1"
+                >
+                  <X size={11} />
+                  <span>Reset</span>
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Status Tabs Strip */}
-          <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3">
-            <div className="flex flex-wrap items-center gap-2">
+          {/* Bottom Row: Status Filter Tabs (Scrollable on mobile) */}
+          <div className="flex items-center justify-between border-b border-stone-200/70 pb-3 gap-2">
+            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 w-full sm:w-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {STATUS_FILTERS.map((item) => {
                 const isActive = statusFilter === item.id;
                 const count = filterCounts[item.id] ?? 0;
@@ -877,18 +803,18 @@ const DoctorSchedule = () => {
                     key={item.id}
                     type="button"
                     onClick={() => setStatusFilter(item.id)}
-                    className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all duration-200 cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs transition-all shrink-0 cursor-pointer ${
                       isActive
-                        ? "bg-teal-700 text-white shadow-xs"
-                        : "text-slate-600 hover:bg-teal-50 hover:text-teal-800"
+                        ? "bg-slate-900 text-white font-semibold"
+                        : "border border-stone-200 bg-white text-stone-600 hover:border-stone-300 hover:text-slate-900"
                     }`}
                   >
                     <span>{item.label}</span>
                     <span
-                      className={`inline-flex min-w-4.5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                      className={`inline-flex items-center justify-center rounded-full px-1.5 py-0.2 text-[10px] font-semibold ${
                         isActive
-                          ? "bg-teal-100 text-teal-900"
-                          : "bg-slate-100 text-slate-600"
+                          ? "bg-slate-700 text-white"
+                          : "bg-stone-100 text-stone-600"
                       }`}
                     >
                       {count}
@@ -898,35 +824,25 @@ const DoctorSchedule = () => {
               })}
             </div>
 
-            {(searchQuery || statusFilter !== "all" || datePreset !== "all") && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearchQuery("");
-                  setStatusFilter("all");
-                  setDatePreset("all");
-                }}
-                className="text-[11px] font-semibold text-teal-700 hover:underline cursor-pointer"
-              >
-                Reset all filters
-              </button>
-            )}
+            <span className="hidden sm:inline text-xs text-stone-400 font-medium shrink-0">
+              {groupedAppointments.total} {groupedAppointments.total === 1 ? "appointment" : "appointments"}
+            </span>
           </div>
         </div>
 
-        {/* LOADING STATE */}
+        {/* ── 4. LOADING STATE ── */}
         {loading && (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white/90 py-20 backdrop-blur-md shadow-xs">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
-            <h3 className="mt-4 text-sm font-bold text-slate-800">
-              Syncing Clinical Consultations
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-stone-200 bg-white py-16 shadow-2xs">
+            <Loader2 className="h-7 w-7 animate-spin text-teal-700" />
+            <h3 className="mt-3 text-xs sm:text-sm font-medium text-stone-600">
+              Syncing consultation agenda...
             </h3>
           </div>
         )}
 
-        {/* ERROR STATE */}
+        {/* ── 5. ERROR STATE ── */}
         {!loading && error && (
-          <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/80 p-4 text-xs font-semibold text-rose-800">
+          <div className="flex items-center gap-3 rounded-2xl border border-rose-200 bg-rose-50/80 p-4 text-xs font-medium text-rose-800">
             <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
             <div className="flex-1">
               <p className="font-bold">Error loading schedule</p>
@@ -935,16 +851,16 @@ const DoctorSchedule = () => {
             <button
               type="button"
               onClick={handleRefresh}
-              className="rounded-xl bg-white px-3 py-1.5 text-xs font-bold text-rose-700 shadow-2xs hover:bg-rose-50 cursor-pointer"
+              className="rounded-xl bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 shadow-2xs hover:bg-rose-50 cursor-pointer"
             >
               Retry
             </button>
           </div>
         )}
 
-        {/* EMPTY STATE */}
+        {/* ── 6. EMPTY STATE ── */}
         {!loading && !error && groupedAppointments.groups.length === 0 && (
-          <div className="rounded-2xl border-2 border-dashed border-slate-300 bg-white/90 p-12 text-center backdrop-blur-md shadow-xs">
+          <div className="rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center">
             <EmptyState
               icon={CalendarDays}
               title={
@@ -954,14 +870,14 @@ const DoctorSchedule = () => {
               }
               description={
                 searchQuery
-                  ? "Try adjusting your search query or removing the active filters."
-                  : "When patients book consultations for these dates, they will automatically appear here."
+                  ? "Try adjusting your search query or reset the active filters."
+                  : "Patient bookings for these dates will automatically appear in your clinical agenda."
               }
             />
           </div>
         )}
 
-        {/* APPOINTMENT GROUPS & BOXES */}
+        {/* ── 7. DAY-BY-DAY PATIENT ENCOUNTER LIST ── */}
         {!loading &&
           !error &&
           groupedAppointments.groups.map(([date, appointmentsForDate]) => {
@@ -969,41 +885,33 @@ const DoctorSchedule = () => {
             const isDayTomorrow = isTomorrow(date);
 
             return (
-              <div
-                key={date}
-                className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white/95 backdrop-blur-md shadow-xs transition-all"
-              >
-                {/* Header for Day Group */}
-                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 bg-gradient-to-r from-teal-50/60 via-slate-50/40 to-white px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-teal-200 bg-teal-50 text-teal-800">
-                      <Calendar size={15} />
-                    </div>
-                    <div className="flex items-center gap-2.5">
-                      <h2 className="text-sm font-extrabold text-slate-900">
-                        {formatDay(date)}
-                      </h2>
-                      {isDayToday && (
-                        <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Today
-                        </span>
-                      )}
-                      {isDayTomorrow && (
-                        <span className="rounded-full bg-slate-700 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
-                          Tomorrow
-                        </span>
-                      )}
-                    </div>
+              <div key={date} className="space-y-3">
+                {/* Day Header Separator */}
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-sm sm:text-base font-semibold text-slate-900">
+                      {formatDay(date)}
+                    </h2>
+                    {isDayToday && (
+                      <span className="rounded-full bg-teal-800 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                        Today
+                      </span>
+                    )}
+                    {isDayTomorrow && (
+                      <span className="rounded-full bg-stone-700 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                        Tomorrow
+                      </span>
+                    )}
                   </div>
 
-                  <span className="rounded-full border border-teal-200 bg-teal-50/80 px-3 py-1 text-xs font-bold text-teal-800">
+                  <span className="text-xs font-medium text-stone-500">
                     {appointmentsForDate.length}{" "}
-                    {appointmentsForDate.length === 1 ? "Consultation" : "Consultations"}
+                    {appointmentsForDate.length === 1 ? "Patient" : "Patients"}
                   </span>
                 </div>
 
-                {/* List Items */}
-                <div className="divide-y divide-slate-100">
+                {/* Appointment Encounter Cards */}
+                <div className="space-y-2.5">
                   {appointmentsForDate.map((appointment) => {
                     const appointmentId = appointment._id || appointment.id;
                     const patientId =
@@ -1013,8 +921,9 @@ const DoctorSchedule = () => {
                       appointment.patientName ||
                       "Patient";
                     const status = appointment.status?.toLowerCase();
-                    const isUpcoming = isUpcomingAppointment(appointment) && !isMissedAppointment(appointment);
-                    const visual = getStatusVisuals(status);
+                    const isMissed = isMissedAppointment(appointment);
+                    const isUpcoming = isUpcomingAppointment(appointment) && !isMissed;
+                    const visual = getStatusVisuals(status, isMissed);
 
                     const patientInitial =
                       patientName.trim().charAt(0).toUpperCase() || "P";
@@ -1023,153 +932,304 @@ const DoctorSchedule = () => {
                     return (
                       <div
                         key={appointmentId}
-                        className="group relative flex flex-col justify-between gap-4 p-5 transition-all duration-200 hover:bg-teal-50/30 sm:flex-row sm:items-center sm:gap-6"
+                        className="group relative rounded-2xl border border-stone-200/90 bg-white p-4 shadow-2xs hover:border-teal-300 hover:shadow-xs transition-all"
                       >
-                        <div
-                          className={`absolute bottom-0 left-0 top-0 w-1.5 rounded-l ${visual.bar} opacity-75 group-hover:opacity-100 transition-opacity`}
-                        />
+                        {/* ========================================= */}
+                        {/* DESKTOP / TABLET ENCOUNTER ROW            */}
+                        {/* ========================================= */}
+                        <div className="hidden sm:flex sm:items-center sm:justify-between sm:gap-4">
+                          
+                          {/* Left: Time & Encounter Meta */}
+                          <div className="flex min-w-0 flex-1 items-center gap-4">
+                            
+                            {/* Time Slot Block */}
+                            <div className="flex w-28 shrink-0 flex-col justify-center border-r border-stone-100 pr-3">
+                              <span className="text-sm font-bold text-slate-900 tracking-tight">
+                                {appointment.startTime || "--:--"}
+                              </span>
+                              {appointment.endTime && (
+                                <span className="text-[11px] text-stone-500 font-medium">
+                                  until {appointment.endTime}
+                                </span>
+                              )}
+                              <div className="mt-1 flex items-center gap-1.5">
+                                <span className={`h-1.5 w-1.5 rounded-full ${visual.dot}`} />
+                                <span className="text-[10px] font-semibold text-stone-500 uppercase tracking-wider">
+                                  {isMissed ? "Missed" : status || "Scheduled"}
+                                </span>
+                              </div>
+                            </div>
 
-                        {/* LEFT: TIME & PATIENT */}
-                        <div className="flex min-w-0 flex-1 items-start sm:items-center gap-4">
-                          <div className="flex w-24 shrink-0 flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/80 py-2.5 px-1.5 text-center transition-all group-hover:border-teal-300 group-hover:bg-white">
-                            <span className="text-xs font-black tracking-tight text-slate-900">
-                              {appointment.startTime || "--:--"}
-                            </span>
-                            {appointment.endTime && (
-                              <span className="text-[10px] font-semibold text-slate-500">
-                                to {appointment.endTime}
-                              </span>
-                            )}
-                            <div className="mt-1 flex items-center gap-1 border-t border-slate-200/80 pt-1">
-                              <span className={`h-1.5 w-1.5 rounded-full ${visual.dot}`} />
-                              <span className="text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                                {isMissedAppointment(appointment) ? "missed" : status || "scheduled"}
-                              </span>
+                            {/* Patient Avatar & Clinical Details */}
+                            <div className="flex min-w-0 flex-1 items-center gap-3.5">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-50 border border-teal-200/80 text-sm font-bold text-teal-800">
+                                {patientInitial}
+                              </div>
+
+                              <div className="min-w-0 flex-1 space-y-0.5">
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <Link
+                                    to={patientId ? `/doctor/patients/${patientId}` : "#"}
+                                    className="truncate text-sm font-semibold text-slate-900 hover:text-teal-800 transition-colors"
+                                  >
+                                    {patientName}
+                                  </Link>
+
+                                  {isMissed && (
+                                    <span className="inline-flex items-center gap-1 rounded border border-amber-200 bg-amber-50 px-1.5 py-0.2 text-[9px] font-bold uppercase text-amber-800">
+                                      <AlertCircle size={9} /> Missed Slot
+                                    </span>
+                                  )}
+
+                                  {appointment.appointmentType && (
+                                    <span className="inline-flex items-center gap-1 rounded border border-stone-200 bg-stone-50 px-1.5 py-0.2 text-[9px] font-semibold uppercase text-stone-600">
+                                      {appointment.appointmentType.toLowerCase() === "video" ? (
+                                        <Video size={9} className="text-teal-700" />
+                                      ) : (
+                                        <MapPin size={9} className="text-stone-500" />
+                                      )}
+                                      {appointment.appointmentType}
+                                    </span>
+                                  )}
+                                </div>
+
+                                <div className="flex flex-wrap items-center gap-2.5 text-xs text-stone-600">
+                                  <span className="inline-flex items-center gap-1 text-[11px] text-stone-700">
+                                    <Stethoscope size={11} className="shrink-0 text-teal-700" />
+                                    <span className="truncate max-w-xs md:max-w-md">
+                                      {appointment.reason || "General Medical Consultation"}
+                                    </span>
+                                  </span>
+
+                                  {appointment.patient?.phone && (
+                                    <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-stone-400">
+                                      <Phone size={9} />
+                                      {appointment.patient.phone}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
 
-                          <div className="flex min-w-0 flex-1 items-start sm:items-center gap-3.5">
-                            <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-700 to-teal-600 text-sm font-bold text-white shadow-xs">
+                          {/* Right: Action Buttons */}
+                          <div className="flex shrink-0 items-center gap-2">
+                            {/* Print Pass */}
+                            <button
+                              type="button"
+                              onClick={() => handlePrintSingle(appointment)}
+                              title="Print encounter pass"
+                              className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700 hover:bg-stone-50 hover:border-stone-300 transition-colors cursor-pointer shadow-2xs"
+                            >
+                              <Printer size={12} className="text-stone-500" />
+                              <span className="hidden lg:inline">Pass</span>
+                            </button>
+
+                            {isUpcoming ? (
+                              <>
+                                <button
+                                  type="button"
+                                  disabled={isCardLoading}
+                                  onClick={() => markCompleted(appointmentId)}
+                                  className="inline-flex items-center gap-1.5 rounded-xl bg-teal-800 px-3.5 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-teal-900 disabled:opacity-50 transition-all cursor-pointer"
+                                >
+                                  {isCardLoading ? (
+                                    <Loader2 size={12} className="animate-spin" />
+                                  ) : (
+                                    <Check size={12} strokeWidth={2.8} />
+                                  )}
+                                  <span>Complete Visit</span>
+                                </button>
+
+                                <Link
+                                  to={`/doctor/prescriptions/new?patient=${patientId}`}
+                                  title="Write prescription"
+                                  className="inline-flex items-center gap-1 rounded-xl border border-teal-200 bg-teal-50 px-2.5 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-100 transition-colors"
+                                >
+                                  <Pill size={11} />
+                                  <span>Rx</span>
+                                </Link>
+
+                                <button
+                                  type="button"
+                                  title="Cancel encounter"
+                                  disabled={isCardLoading}
+                                  onClick={() => setCancelModalAppointment(appointment)}
+                                  className="inline-flex items-center justify-center rounded-xl border border-stone-200 bg-white h-8 w-8 text-stone-400 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50 transition-colors cursor-pointer"
+                                >
+                                  <X size={12} strokeWidth={2.5} />
+                                </button>
+                              </>
+                            ) : isMissed ? (
+                              <>
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-900">
+                                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                                  Missed Slot
+                                </span>
+
+                                <button
+                                  type="button"
+                                  disabled={isCardLoading}
+                                  onClick={() => markCompleted(appointmentId)}
+                                  title="Mark completed if consultation occurred"
+                                  className="inline-flex items-center gap-1 rounded-xl bg-teal-800 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-teal-900 disabled:opacity-50 transition-all cursor-pointer"
+                                >
+                                  {isCardLoading ? (
+                                    <Loader2 size={12} className="animate-spin" />
+                                  ) : (
+                                    <Check size={12} strokeWidth={2.8} />
+                                  )}
+                                  <span>Complete</span>
+                                </button>
+                              </>
+                            ) : (
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium capitalize ${visual.pill}`}
+                                >
+                                  <span className={`h-1.5 w-1.5 rounded-full ${visual.dot}`} />
+                                  {visual.label}
+                                </span>
+
+                                {status === "completed" && (
+                                  <button
+                                    type="button"
+                                    onClick={() => setPrescriptionModal(true)}
+                                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-800 hover:underline cursor-pointer"
+                                  >
+                                    <Pill size={11} />
+                                    <span>Rx</span>
+                                  </button>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* ========================================= */}
+                        {/* MOBILE ENCOUNTER CARD VIEW (Below sm)      */}
+                        {/* ========================================= */}
+                        <div className="flex flex-col gap-2.5 sm:hidden">
+                          {/* Row 1: Time & Status Pill */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold text-slate-900 bg-stone-100 px-2 py-0.5 rounded-md">
+                                {appointment.startTime || "--:--"}
+                                {appointment.endTime && ` - ${appointment.endTime}`}
+                              </span>
+                              {appointment.appointmentType && (
+                                <span className="inline-flex items-center gap-1 rounded border border-stone-200 bg-stone-50 px-1.5 py-0.2 text-[9px] font-semibold uppercase text-stone-600">
+                                  {appointment.appointmentType.toLowerCase() === "video" ? (
+                                    <Video size={9} className="text-teal-700" />
+                                  ) : (
+                                    <MapPin size={9} className="text-stone-500" />
+                                  )}
+                                  {appointment.appointmentType}
+                                </span>
+                              )}
+                            </div>
+
+                            <span
+                              className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-medium ${visual.pill}`}
+                            >
+                              <span className={`h-1.5 w-1.5 rounded-full ${visual.dot}`} />
+                              {visual.label}
+                            </span>
+                          </div>
+
+                          {/* Row 2: Patient Info */}
+                          <div className="flex items-start gap-2.5">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-50 border border-teal-200/80 text-xs font-bold text-teal-800">
                               {patientInitial}
                             </div>
 
                             <div className="min-w-0 flex-1">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <Link
-                                  to={patientId ? `/doctor/patients/${patientId}` : "#"}
-                                  className="truncate text-sm font-bold text-slate-900 transition-colors hover:text-teal-700"
-                                >
-                                  {patientName}
-                                </Link>
-
-                                {isMissedAppointment(appointment) && (
-                                  <span className="inline-flex items-center gap-1 rounded-md border border-amber-200 bg-amber-50 px-2 py-0.5 text-[9px] font-bold uppercase text-amber-800">
-                                    <AlertCircle size={10} /> Missed Slot
-                                  </span>
-                                )}
-
-                                {appointment.appointmentType && (
-                                  <span className="rounded-md border border-slate-200 bg-slate-100/70 px-1.5 py-0.5 text-[9px] font-bold uppercase text-slate-600">
-                                    {appointment.appointmentType}
-                                  </span>
-                                )}
-                              </div>
-
-                              <div className="mt-1 flex flex-wrap items-center gap-2 text-xs">
-                                <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700">
-                                  <FileText
-                                    size={11}
-                                    className="shrink-0 text-teal-600"
-                                  />
-                                  <span className="truncate max-w-xs">
-                                    {appointment.reason || "General Consultation"}
-                                  </span>
-                                </span>
-
-                                {appointment.patient?.phone && (
-                                  <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-slate-400">
-                                    <Phone size={10} />
-                                    {appointment.patient.phone}
-                                  </span>
-                                )}
+                              <Link
+                                to={patientId ? `/doctor/patients/${patientId}` : "#"}
+                                className="text-xs font-semibold text-slate-900 hover:text-teal-800 transition-colors block truncate"
+                              >
+                                {patientName}
+                              </Link>
+                              <div className="mt-0.5 text-[11px] text-stone-600 flex items-center gap-1 truncate">
+                                <Stethoscope size={10} className="shrink-0 text-teal-700" />
+                                <span className="truncate">{appointment.reason || "General Consultation"}</span>
                               </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* RIGHT: ACTIONS & PRINT */}
-                        <div className="flex shrink-0 items-center gap-2 pt-2 sm:pt-0">
-                          <button
-                            type="button"
-                            onClick={() => handlePrintSingle(appointment)}
-                            title="Print this appointment pass"
-                            className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-600 transition-all duration-150 hover:bg-slate-50 hover:border-slate-300 active:scale-[0.98] cursor-pointer"
-                          >
-                            <Printer size={13} className="text-slate-500" />
-                            <span className="hidden md:inline">Print Pass</span>
-                          </button>
+                          {/* Row 3: Action Buttons */}
+                          <div className="flex items-center justify-end gap-1.5 pt-1.5 border-t border-stone-100">
+                            <button
+                              type="button"
+                              onClick={() => handlePrintSingle(appointment)}
+                              className="inline-flex items-center gap-1 rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-xs font-medium text-stone-700"
+                            >
+                              <Printer size={11} />
+                              <span>Pass</span>
+                            </button>
 
-                          {isUpcoming ? (
-                            <>
+                            {isUpcoming && (
+                              <>
+                                <Link
+                                  to={`/doctor/prescriptions/new?patient=${patientId}`}
+                                  className="inline-flex items-center gap-1 rounded-lg border border-teal-200 bg-teal-50 px-2.5 py-1.5 text-xs font-semibold text-teal-900"
+                                >
+                                  <Pill size={11} />
+                                  <span>Rx</span>
+                                </Link>
+
+                                <button
+                                  type="button"
+                                  disabled={isCardLoading}
+                                  onClick={() => markCompleted(appointmentId)}
+                                  className="inline-flex items-center gap-1 rounded-lg bg-teal-800 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-teal-900 disabled:opacity-50"
+                                >
+                                  {isCardLoading ? (
+                                    <Loader2 size={11} className="animate-spin" />
+                                  ) : (
+                                    <Check size={11} strokeWidth={2.8} />
+                                  )}
+                                  <span>Complete</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  disabled={isCardLoading}
+                                  onClick={() => setCancelModalAppointment(appointment)}
+                                  className="inline-flex items-center justify-center rounded-lg border border-stone-200 bg-white h-7.5 w-7.5 text-stone-400 hover:text-rose-600 hover:bg-rose-50"
+                                >
+                                  <X size={11} strokeWidth={2.5} />
+                                </button>
+                              </>
+                            )}
+
+                            {isMissed && (
                               <button
                                 type="button"
                                 disabled={isCardLoading}
                                 onClick={() => markCompleted(appointmentId)}
-                                className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-bold text-white shadow-2xs hover:bg-teal-700 active:scale-[0.98] disabled:opacity-50 transition-colors cursor-pointer"
+                                className="inline-flex items-center gap-1 rounded-lg bg-teal-800 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs hover:bg-teal-900 disabled:opacity-50"
                               >
                                 {isCardLoading ? (
-                                  <Loader2 size={12} className="animate-spin" />
+                                  <Loader2 size={11} className="animate-spin" />
                                 ) : (
-                                  <Check size={12} strokeWidth={3} />
+                                  <Check size={11} strokeWidth={2.8} />
                                 )}
                                 <span>Complete</span>
                               </button>
+                            )}
 
-                              <Link
-                                to={`/doctor/prescriptions/new?patient=${patientId}`}
-                                title="Write prescription"
-                                className="inline-flex items-center gap-1 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-xs font-semibold text-teal-800 hover:bg-teal-100 transition-colors"
-                              >
-                                <Pill size={12} />
-                                <span className="hidden sm:inline">Rx</span>
-                              </Link>
-
+                            {status === "completed" && (
                               <button
                                 type="button"
-                                title="Cancel consultation"
-                                disabled={isCardLoading}
-                                onClick={() =>
-                                  setCancelModalAppointment(appointment)
-                                }
-                                className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-2 text-xs font-semibold text-slate-500 hover:border-rose-200 hover:bg-rose-50 hover:text-rose-600 active:scale-[0.98] disabled:opacity-50 transition-colors cursor-pointer"
+                                onClick={() => setPrescriptionModal(true)}
+                                className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-800 hover:underline px-2 py-1"
                               >
-                                <X size={13} strokeWidth={2.5} />
+                                <Pill size={11} />
+                                <span>Rx</span>
                               </button>
-                            </>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              <span
-                                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold capitalize ${visual.pill}`}
-                              >
-                                <span
-                                  className={`h-1.5 w-1.5 rounded-full ${visual.dot}`}
-                                />
-                                {status}
-                              </span>
-
-                              {status === "completed" && (
-                                <button
-                                  onClick={() => setPrescriptionModal(true)}
-                                  className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-700 hover:underline"
-                                >
-                                  <Pill size={11} />
-                                  <span>Rx</span>
-                                </button>
-                              )}
-
-                              
-                            </div>
-                          )}
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
@@ -1179,10 +1239,10 @@ const DoctorSchedule = () => {
             );
           })}
 
-        {/* PAGINATION */}
+        {/* ── 8. PAGINATION ── */}
         {groupedAppointments.total > 0 && (
-          <div className="flex flex-col gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between shadow-2xs">
-            <p className="text-xs text-slate-500">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-stone-200/80">
+            <p className="text-xs text-stone-500">
               Showing {Math.min((currentPage - 1) * PAGE_SIZE + 1, groupedAppointments.total)}–
               {Math.min(currentPage * PAGE_SIZE, groupedAppointments.total)} of {groupedAppointments.total} consultations
             </p>
@@ -1191,20 +1251,22 @@ const DoctorSchedule = () => {
                 type="button"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage <= 1}
-                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
               >
-                Previous
+                <ChevronLeft size={13} />
+                <span>Prev</span>
               </button>
-              <span className="px-2 text-xs font-bold text-slate-700">
-                Page {Math.min(currentPage, groupedAppointments.pageCount)} of {groupedAppointments.pageCount}
+              <span className="px-2 text-xs font-semibold text-stone-700">
+                {Math.min(currentPage, groupedAppointments.pageCount)} / {groupedAppointments.pageCount}
               </span>
               <button
                 type="button"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage >= groupedAppointments.pageCount}
-                className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
+                className="inline-flex items-center gap-1 rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 shadow-2xs hover:bg-stone-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer transition-colors"
               >
-                Next
+                <span>Next</span>
+                <ChevronRight size={13} />
               </button>
             </div>
           </div>
@@ -1213,45 +1275,45 @@ const DoctorSchedule = () => {
 
       {/* CANCEL CONFIRMATION MODAL */}
       {cancelModalAppointment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-xs">
+          <div className="relative w-full max-w-md overflow-hidden rounded-2xl border border-stone-200 bg-white p-5 sm:p-6 shadow-xl">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rose-50 text-rose-600">
-                <AlertCircle size={24} />
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+                <AlertCircle size={20} />
               </div>
               <div>
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-semibold text-slate-900">
                   Cancel Consultation?
                 </h3>
-                <p className="text-xs text-slate-500">
-                  This action will notify the patient and release the slot.
+                <p className="text-xs text-stone-500">
+                  This action will release the slot and notify the patient.
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 rounded-2xl border border-slate-100 bg-slate-50/80 p-3.5 text-xs text-slate-700">
+            <div className="mt-4 rounded-xl border border-stone-100 bg-stone-50 p-3 text-xs text-stone-700 space-y-1">
               <p>
-                <strong className="text-slate-900">Patient:</strong>{" "}
+                <strong className="text-slate-900 font-semibold">Patient:</strong>{" "}
                 {cancelModalAppointment.patient?.fullName ||
                   cancelModalAppointment.patientName ||
                   "Patient"}
               </p>
-              <p className="mt-1">
-                <strong className="text-slate-900">Schedule:</strong>{" "}
+              <p>
+                <strong className="text-slate-900 font-semibold">Schedule:</strong>{" "}
                 {formatDay(cancelModalAppointment.appointmentDate)} at{" "}
                 {cancelModalAppointment.startTime || "Scheduled time"}
               </p>
-              <p className="mt-1">
-                <strong className="text-slate-900">Reason:</strong>{" "}
+              <p>
+                <strong className="text-slate-900 font-semibold">Reason:</strong>{" "}
                 {cancelModalAppointment.reason || "General Consultation"}
               </p>
             </div>
 
-            <div className="mt-6 flex items-center justify-end gap-3">
+            <div className="mt-5 flex items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setCancelModalAppointment(null)}
-                className="rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 cursor-pointer"
+                className="rounded-xl border border-stone-200 px-3.5 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 cursor-pointer"
               >
                 Keep Appointment
               </button>
@@ -1266,7 +1328,7 @@ const DoctorSchedule = () => {
                   actionLoadingId ===
                   (cancelModalAppointment._id || cancelModalAppointment.id)
                 }
-                className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-4 py-2 text-xs font-bold text-white hover:bg-rose-700 active:scale-95 disabled:opacity-50 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-rose-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-rose-700 active:scale-95 disabled:opacity-50 transition-colors cursor-pointer"
               >
                 {actionLoadingId ===
                 (cancelModalAppointment._id || cancelModalAppointment.id) ? (
@@ -1279,30 +1341,27 @@ const DoctorSchedule = () => {
             </div>
           </div>
         </div>
-
       )}
 
-      {/* write Prescription Modal */}
+      {/* WRITE PRESCRIPTION MODAL */}
       {prescriptionModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-md"
-          onClick={() => setPrescriptionModal(false)} >
-            <div  onClick={(e) => e.stopPropagation()}
-            className="rounded-2xl border border-stone-200/80 bg-[#FAFBF9] p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto" >
-
-           {/* <DoctorWritePrescription setPrescriptionModal={setPrescriptionModal} /> */}
-           <DoctorWritePrescription isOpen={prescriptionModal}    
-  onClose={() => setPrescriptionModal(false)}       />
-
-            </div>
-
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4 backdrop-blur-xs"
+          onClick={() => setPrescriptionModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="rounded-2xl border border-stone-200 bg-[#FAFBF9] p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto w-full max-w-4xl"
+          >
+            <DoctorWritePrescription
+              isOpen={prescriptionModal}
+              onClose={() => setPrescriptionModal(false)}
+            />
+          </div>
         </div>
-      )
-
-      }
+      )}
     </div>
   );
 };
-
- 
 
 export default DoctorSchedule;

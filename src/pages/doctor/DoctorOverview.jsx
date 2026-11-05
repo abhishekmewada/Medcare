@@ -144,7 +144,7 @@ const DoctorOverview = () => {
               <span className="inline-block rounded-full border border-slate-300 bg-white/80 backdrop-blur-sm px-4 py-0.5 font-serif italic text-slate-900 shadow-2xs">
                 clinical
               </span>{" "}
-              practice &amp;{" "}
+              practice &amp;{" "} 
               <span className="inline-block rounded-full border border-teal-200 bg-teal-100/80 px-4 py-0.5 font-medium text-teal-900 shadow-2xs">
                 consultations.
               </span>
