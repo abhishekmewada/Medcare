@@ -146,6 +146,17 @@ const VideoCallRoom = () => {
     };
     socket.on("call:ended", onCallEnded);
 
+    // Listen for call declined by the recipient
+    const onCallDeclined = (data) => {
+      if (data?.appointmentId === appointmentId) {
+        handleLeaveCall(
+          true,
+          "The other participant declined the video consultation."
+        );
+      }
+    };
+    socket.on("call:declined", onCallDeclined);
+
     const initCall = async () => {
       try {
         setLoading(true);
@@ -201,6 +212,33 @@ const VideoCallRoom = () => {
 
         setAppointment(res.appointment);
         setUserRole(res.userRole);
+
+        // Ring / alert the other participant in real time
+        const isCurrentDoctor =
+          res.userRole === "doctor" || currentUser?.role === "doctor";
+        const callerName = isCurrentDoctor
+          ? res.appointment?.doctor?.fullName || currentUser?.fullName || "Doctor"
+          : res.appointment?.patient?.fullName || currentUser?.fullName || "Patient";
+
+        const recipientUserId = isCurrentDoctor
+          ? res.appointment?.patient?._id || res.appointment?.patient
+          : res.appointment?.doctor?.userId ||
+            res.appointment?.doctor?._id ||
+            res.appointment?.doctor;
+
+        const recipientDoctorId = isCurrentDoctor
+          ? null
+          : res.appointment?.doctor?._id || res.appointment?.doctor;
+
+        socket.emit("call:ring", {
+          appointmentId,
+          callerName,
+          callerRole: isCurrentDoctor ? "doctor" : "patient",
+          recipientUserId,
+          recipientDoctorId,
+          reason:
+            res.appointment?.reason || "Online Telehealth Consultation",
+        });
 
         const { appId, channelName, token, uid } = res;
 
@@ -317,6 +355,7 @@ const VideoCallRoom = () => {
     return () => {
       isCancelled = true;
       socket.off("call:ended", onCallEnded);
+      socket.off("call:declined", onCallDeclined);
       socket.emit("call:leave", appointmentId);
       if (timerRef.current) {
         clearInterval(timerRef.current);

@@ -38,6 +38,7 @@ import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
 import AuditLogs from "./pages/admin/AuditLogs";
 import AdminChat from "./pages/admin/AdminChat";
 import VideoCallRoom from "./pages/common/VideoCallRoom";
+import IncomingCallAlert from "./components/common/IncomingCallAlert";
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -53,7 +54,9 @@ function App() {
  
  
   return (
-    <Routes>
+    <>
+      <IncomingCallAlert />
+      <Routes>
       
       {/* ------------------PUBLIC WEB */}
       <Route element={ <PublicLayout/> }>
@@ -184,7 +187,7 @@ function App() {
 
 
     </Routes>
-    
+    </>
   )
 }
 
