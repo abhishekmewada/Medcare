@@ -10,15 +10,19 @@ import {
   ShieldCheck,
   Clock,
   User,
-   AlertCircle,
+  AlertCircle,
   Loader2,
   Maximize2,
   Minimize2,
- } from "lucide-react";
+  Sparkles,
+  Crown,
+} from "lucide-react";
 import { useSelector } from "react-redux";
 import api from "../../api/axios";
 import socket from "../../socket/socket";
 import { getAppointmentAgoraTokenApi } from "../../api/appointment.api";
+import SubscriptionModal from "../../components/common/SubscriptionModal";
+import { completeFreeTrialApi } from "../../services/subscription.service";
 
 // Set Agora log level to warn only
 AgoraRTC.setLogLevel(2);
@@ -43,6 +47,12 @@ const VideoCallRoom = () => {
   const [callDuration, setCallDuration] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [callEndingMessage, setCallEndingMessage] = useState(null);
+
+  // Subscription & Free Trial (5 minutes limit) State
+  const [isFreeTrial, setIsFreeTrial] = useState(false);
+  const [trialTimeLimit, setTrialTimeLimit] = useState(300); // 300 seconds = 5 minutes
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
+  const [subModalReason, setSubModalReason] = useState("trial_expired");
 
   // Refs for Agora client and tracks
   const clientRef = useRef(null);
@@ -166,6 +176,17 @@ const VideoCallRoom = () => {
         try {
           res = await getAppointmentAgoraTokenApi(appointmentId);
         } catch (apiErr) {
+          if (apiErr.response?.data?.requireSubscription) {
+            setError(
+              apiErr.response.data.message ||
+                "A MedCare Premium Subscription is required for video consultations."
+            );
+            setSubModalReason("locked");
+            setShowSubscriptionModal(true);
+            setLoading(false);
+            return;
+          }
+
           console.warn(
             "Agora token endpoint returned error, attempting fallback mode:",
             apiErr
@@ -189,6 +210,7 @@ const VideoCallRoom = () => {
             channelName: `medcare_${appointmentId}`,
             token: null,
             uid: 0,
+            isFreeTrial: false,
             appointment: {
               _id: appointmentId,
               appointmentType: aptData.appointmentType || "video",
@@ -207,6 +229,13 @@ const VideoCallRoom = () => {
           throw new Error(
             res.message || "Failed to initialize video call session."
           );
+        }
+
+        if (res.isFreeTrial) {
+          setIsFreeTrial(true);
+          if (res.timeLimitSeconds) {
+            setTrialTimeLimit(res.timeLimitSeconds);
+          }
         }
 
         setAppointment(res.appointment);
@@ -364,7 +393,24 @@ const VideoCallRoom = () => {
 
         // Start Call Duration Timer
         timerRef.current = setInterval(() => {
-          setCallDuration((prev) => prev + 1);
+          setCallDuration((prev) => {
+            const nextDuration = prev + 1;
+            // 5-minute Free Trial expiration check (300 seconds)
+            if (res.isFreeTrial && nextDuration >= (res.timeLimitSeconds || 300)) {
+              if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+              }
+              completeFreeTrialApi(appointmentId).catch(() => {});
+              handleLeaveCall(
+                false,
+                "Your 5-minute free video consultation trial has ended. Subscribe to MedCare Premium to continue unlimited calls."
+              );
+              setSubModalReason("trial_expired");
+              setShowSubscriptionModal(true);
+            }
+            return nextDuration;
+          });
         }, 1000);
       } catch (err) {
         console.error("Video room init failed:", err);
@@ -483,7 +529,23 @@ const VideoCallRoom = () => {
         <p className="mt-2 text-xs text-slate-400 max-w-md">
           {error}
         </p>
-        <div className="mt-6 flex items-center justify-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          {(error.toLowerCase().includes("premium") ||
+            error.toLowerCase().includes("subscribe") ||
+            error.toLowerCase().includes("trial")) && (
+            <button
+              type="button"
+              onClick={() => {
+                setSubModalReason("locked");
+                setShowSubscriptionModal(true);
+              }}
+              className="inline-flex items-center gap-2 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-2.5 text-xs shadow-lg transition-all cursor-pointer"
+            >
+              <Crown size={15} />
+              <span>Unlock Premium Subscription</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => window.location.reload()}
@@ -540,11 +602,28 @@ const VideoCallRoom = () => {
           </div>
         </div>
 
-        {/* Center: Live Call Timer */}
-        <div className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3.5 py-1 text-xs font-medium backdrop-blur-md">
-          <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-          <Clock className="h-3 w-3 text-slate-400" />
-          <span className="font-mono text-emerald-400 font-bold">{formatTimer(callDuration)}</span>
+        {/* Center: Live Call Timer & Free Trial Countdown */}
+        <div className="flex items-center gap-2.5">
+          {isFreeTrial && (
+            <div
+              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold border transition-all ${
+                Math.max(0, trialTimeLimit - callDuration) <= 60
+                  ? "bg-rose-500/20 border-rose-500/50 text-rose-300 animate-pulse"
+                  : "bg-amber-500/15 border-amber-500/30 text-amber-300"
+              }`}
+            >
+              <Sparkles size={11} className="text-amber-400" />
+              <span>
+                Free Trial: {formatTimer(Math.max(0, trialTimeLimit - callDuration))}
+              </span>
+            </div>
+          )}
+
+          <div className="hidden sm:inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3.5 py-1 text-xs font-medium backdrop-blur-md">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <Clock className="h-3 w-3 text-slate-400" />
+            <span className="font-mono text-emerald-400 font-bold">{formatTimer(callDuration)}</span>
+          </div>
         </div>
 
         {/* Right: Security & Actions */}
@@ -687,6 +766,16 @@ const VideoCallRoom = () => {
           </div>
         </div>
       )}
+
+      {/* ── 5. PREMIUM SUBSCRIPTION UPGRADE MODAL ── */}
+      <SubscriptionModal
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        reason={subModalReason}
+        onSubscribed={() => {
+          window.location.reload();
+        }}
+      />
     </div>
   );
 };

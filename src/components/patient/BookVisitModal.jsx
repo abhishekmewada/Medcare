@@ -404,8 +404,13 @@ const BookVisitModal = () => {
                     <Video className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold leading-tight">Video Call</p>
-                    <p className="text-[10px] text-stone-400">Online Consultation</p>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-xs font-bold leading-tight">Video Call</p>
+                      <span className="rounded-full bg-amber-100 border border-amber-300 text-amber-800 text-[9px] font-bold px-1.5 py-0.2">
+                        Premium
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-emerald-700 font-medium">1st 5-Min Free Trial</p>
                   </div>
                 </button>
               </div>
