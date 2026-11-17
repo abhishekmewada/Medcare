@@ -39,18 +39,28 @@ import AuditLogs from "./pages/admin/AuditLogs";
 import AdminChat from "./pages/admin/AdminChat";
 import VideoCallRoom from "./pages/common/VideoCallRoom";
 import IncomingCallAlert from "./components/common/IncomingCallAlert";
-import {useEffect} from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { identifyUser } from "./socket/socket";
 import AOS from "aos";
 import "aos/dist/aos.css";
+
 function App() {
+  const currentUser = useSelector((state) => state.auth?.user);
 
   useEffect(() => {
-  AOS.init({
-    duration: 800,
-    once: false,
-    offset: 100,
-  });
-}, []);
+    if (currentUser) {
+      identifyUser(currentUser);
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: false,
+      offset: 100,
+    });
+  }, []);
  
  
   return (

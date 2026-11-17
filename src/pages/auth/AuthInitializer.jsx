@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
  
 import { setUser, setAuthLoading, logout } from "../../redux/slice/authSlice";
 import api from "../../api/axios";
-import { connectSocket, disconnectSocket } from "../../socket/socket";
+import { connectSocket, disconnectSocket, identifyUser } from "../../socket/socket";
 
 const AuthInitializer = ({ children }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,8 @@ const AuthInitializer = ({ children }) => {
         console.log("ME RESPONSE:", response.data);
 
         dispatch(setUser(response.data.user));
-        connectSocket();
+        connectSocket(response.data.user);
+        identifyUser(response.data.user);
       } catch (error) {
         console.log("error message:", error.response?.data || error.message);
         localStorage.removeItem("authToken");

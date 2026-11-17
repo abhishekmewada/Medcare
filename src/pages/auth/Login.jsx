@@ -16,7 +16,7 @@ import { loginUser } from "../../services/auth.service";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/slice/authSlice";
 import { motion } from "framer-motion";
-import { connectSocket } from "../../socket/socket";
+import { connectSocket, identifyUser } from "../../socket/socket";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -69,7 +69,8 @@ const Login = () => {
       }
 
       dispatch(setUser(response.user));
-      connectSocket();
+      connectSocket(response.user);
+      identifyUser(response.user, response.token);
 
       if (response.user.role === "patient") {
         navigate("/patient");

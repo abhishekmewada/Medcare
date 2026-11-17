@@ -51,6 +51,7 @@ const VideoCallRoom = () => {
   const localContainerRef = useRef(null);
   const remoteContainerRef = useRef(null);
   const timerRef = useRef(null);
+  const ringIntervalRef = useRef(null);
   const isLeavingRef = useRef(false);
 
   // Format Call Timer (MM:SS)
@@ -221,22 +222,48 @@ const VideoCallRoom = () => {
         const recipientUserId = isCurrentDoctor
           ? res.appointment?.patient?._id || res.appointment?.patient
           : res.appointment?.doctor?.userId ||
-            res.appointment?.doctor?._id ||
-            res.appointment?.doctor;
+            res.appointment?.doctor?.user?._id ||
+            res.appointment?.doctor?.user ||
+            res.appointment?.doctor?._id;
 
         const recipientDoctorId = isCurrentDoctor
           ? null
           : res.appointment?.doctor?._id || res.appointment?.doctor;
 
-        socket.emit("call:ring", {
+        const ringPayload = {
           appointmentId,
           callerName,
           callerRole: isCurrentDoctor ? "doctor" : "patient",
-          recipientUserId,
-          recipientDoctorId,
+          callerUserId: currentUser?._id,
+          recipientUserId: recipientUserId?.toString
+            ? recipientUserId.toString()
+            : recipientUserId,
+          recipientDoctorId: recipientDoctorId?.toString
+            ? recipientDoctorId.toString()
+            : recipientDoctorId,
           reason:
             res.appointment?.reason || "Online Telehealth Consultation",
-        });
+        };
+
+        const emitRing = () => {
+          if (socket.connected) {
+            console.log("📞 [VideoCallRoom] Emitting call:ring:", ringPayload);
+            socket.emit("call:ring", ringPayload);
+          } else {
+            socket.connect();
+          }
+        };
+
+        emitRing();
+        let ringCount = 0;
+        ringIntervalRef.current = setInterval(() => {
+          ringCount += 1;
+          if (ringCount >= 4 || isCancelled) {
+            if (ringIntervalRef.current) clearInterval(ringIntervalRef.current);
+            return;
+          }
+          emitRing();
+        }, 3500);
 
         const { appId, channelName, token, uid } = res;
 
@@ -246,6 +273,10 @@ const VideoCallRoom = () => {
 
         // Handle remote user published
         client.on("user-published", async (user, mediaType) => {
+          if (ringIntervalRef.current) {
+            clearInterval(ringIntervalRef.current);
+            ringIntervalRef.current = null;
+          }
           await client.subscribe(user, mediaType);
 
           if (mediaType === "video") {
@@ -355,6 +386,10 @@ const VideoCallRoom = () => {
       socket.off("call:ended", onCallEnded);
       socket.off("call:declined", onCallDeclined);
       socket.emit("call:leave", appointmentId);
+      if (ringIntervalRef.current) {
+        clearInterval(ringIntervalRef.current);
+        ringIntervalRef.current = null;
+      }
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
