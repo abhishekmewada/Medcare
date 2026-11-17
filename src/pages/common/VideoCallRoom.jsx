@@ -357,17 +357,27 @@ const VideoCallRoom = () => {
         <p className="mt-2 text-xs text-slate-400 max-w-md">
           {error}
         </p>
-        <button
-          type="button"
-          onClick={() =>
-            currentUser?.role === "doctor"
-              ? navigate("/doctor/schedule")
-              : navigate("/patient/appointments")
-          }
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-teal-700 hover:bg-teal-600 px-6 py-2.5 text-xs font-semibold text-white shadow-lg transition-all cursor-pointer"
-        >
-          Return to Dashboard
-        </button>
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="inline-flex items-center gap-2 rounded-full bg-teal-600 hover:bg-teal-500 px-6 py-2.5 text-xs font-semibold text-white shadow-lg transition-all cursor-pointer"
+          >
+            Retry Connection
+          </button>
+
+          <button
+            type="button"
+            onClick={() =>
+              currentUser?.role === "doctor"
+                ? navigate("/doctor/schedule")
+                : navigate("/patient/appointments")
+            }
+            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 px-6 py-2.5 text-xs font-semibold text-white transition-all cursor-pointer"
+          >
+            Return to Dashboard
+          </button>
+        </div>
       </div>
     );
   }
