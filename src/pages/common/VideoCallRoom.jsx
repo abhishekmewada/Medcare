@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import api from "../../api/axios";
+import socket from "../../socket/socket";
 import { getAppointmentAgoraTokenApi } from "../../api/appointment.api";
 
 // Set Agora log level to warn only
@@ -43,6 +44,7 @@ const VideoCallRoom = () => {
   const [hasRemoteVideo, setHasRemoteVideo] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [callEndingMessage, setCallEndingMessage] = useState(null);
 
   // Refs for Agora client and tracks
   const clientRef = useRef(null);
@@ -51,6 +53,7 @@ const VideoCallRoom = () => {
   const localContainerRef = useRef(null);
   const remoteContainerRef = useRef(null);
   const timerRef = useRef(null);
+  const isLeavingRef = useRef(false);
 
   // Format Call Timer (MM:SS)
   const formatTimer = (seconds) => {
@@ -59,44 +62,89 @@ const VideoCallRoom = () => {
     return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
   };
 
-  // ── 1. LEAVE AND CLEANUP ──
-  const handleLeaveCall = useCallback(async () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
+  // ── 1. LEAVE AND CLEANUP (SYNCS BOTH SIDES) ──
+  const handleLeaveCall = useCallback(
+    async (isRemote = false, message = null) => {
+      if (isLeavingRef.current) return;
+      isLeavingRef.current = true;
 
-    try {
-      if (localAudioTrackRef.current) {
-        localAudioTrackRef.current.stop();
-        localAudioTrackRef.current.close();
-        localAudioTrackRef.current = null;
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
       }
-      if (localVideoTrackRef.current) {
-        localVideoTrackRef.current.stop();
-        localVideoTrackRef.current.close();
-        localVideoTrackRef.current = null;
+
+      const notice =
+        message ||
+        (isRemote
+          ? "The other participant has left the consultation. Returning to dashboard..."
+          : "Consultation ended. Returning to dashboard...");
+
+      setCallEndingMessage(notice);
+
+      // If initiated locally, notify the other participant through Socket.io
+      if (!isRemote) {
+        socket.emit("call:end", {
+          appointmentId,
+          role: currentUser?.role || "user",
+          name:
+            currentUser?.fullName ||
+            (currentUser?.role === "doctor" ? "Doctor" : "Patient"),
+        });
       }
-      if (clientRef.current) {
-        await clientRef.current.leave();
-        clientRef.current = null;
+
+      try {
+        if (localAudioTrackRef.current) {
+          localAudioTrackRef.current.stop();
+          localAudioTrackRef.current.close();
+          localAudioTrackRef.current = null;
+        }
+        if (localVideoTrackRef.current) {
+          localVideoTrackRef.current.stop();
+          localVideoTrackRef.current.close();
+          localVideoTrackRef.current = null;
+        }
+        if (clientRef.current) {
+          await clientRef.current.leave();
+          clientRef.current = null;
+        }
+      } catch (err) {
+        console.warn("Agora leave cleanup warning:", err);
+      } finally {
+        setJoined(false);
+        socket.emit("call:leave", appointmentId);
+
+        // Smooth redirect after 1.5 seconds
+        setTimeout(() => {
+          if (currentUser?.role === "doctor") {
+            navigate("/doctor/schedule");
+          } else {
+            navigate("/patient/appointments");
+          }
+        }, 1500);
       }
-    } catch (err) {
-      console.warn("Agora leave cleanup warning:", err);
-    } finally {
-      setJoined(false);
-      // Navigate back to respective schedule/appointments page
-      if (currentUser?.role === "doctor") {
-        navigate("/doctor/schedule");
-      } else {
-        navigate("/patient/appointments");
-      }
-    }
-  }, [currentUser, navigate]);
+    },
+    [appointmentId, currentUser, navigate]
+  );
 
   // ── 2. INITIALIZE AGORA CALL ──
   useEffect(() => {
     let isCancelled = false;
+
+    // Join Socket.io room for this appointment call
+    socket.emit("call:join", appointmentId);
+
+    // Listen for real-time call termination
+    const onCallEnded = (data) => {
+      if (data?.appointmentId === appointmentId) {
+        const endedBy =
+          data.endedByRole === "doctor" ? "Doctor" : "Patient";
+        handleLeaveCall(
+          true,
+          `Consultation ended by ${endedBy}. Returning to dashboard...`
+        );
+      }
+    };
+    socket.on("call:ended", onCallEnded);
 
     const initCall = async () => {
       try {
@@ -186,10 +234,14 @@ const VideoCallRoom = () => {
           }
         });
 
-        // Handle remote user left
+        // Handle remote user left (Agora event)
         client.on("user-left", () => {
           setRemoteUser(null);
           setHasRemoteVideo(false);
+          handleLeaveCall(
+            true,
+            "The other participant has left the consultation. Returning to dashboard..."
+          );
         });
 
         // Join Agora RTC Channel
@@ -264,6 +316,8 @@ const VideoCallRoom = () => {
 
     return () => {
       isCancelled = true;
+      socket.off("call:ended", onCallEnded);
+      socket.emit("call:leave", appointmentId);
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -407,7 +461,7 @@ const VideoCallRoom = () => {
               {appointment?.reason && (
                 <>
                   <span className="text-slate-600">•</span>
-                  <span className="truncate max-w-[200px] sm:max-w-xs">{appointment.reason}</span>
+                  <span className="truncate max-w-50 sm:max-w-xs">{appointment.reason}</span>
                 </>
               )}
             </p>
@@ -533,7 +587,7 @@ const VideoCallRoom = () => {
           {/* End Call Button */}
           <button
             type="button"
-            onClick={handleLeaveCall}
+            onClick={() => handleLeaveCall(false)}
             className="flex h-12 px-6 sm:h-13 sm:px-8 items-center justify-center gap-2 rounded-2xl bg-rose-600 text-white font-bold text-xs sm:text-sm hover:bg-rose-700 shadow-xl shadow-rose-900/40 active:scale-95 transition-all cursor-pointer ring-2 ring-rose-500/40"
             title="Leave / End Consultation"
           >
@@ -542,6 +596,25 @@ const VideoCallRoom = () => {
           </button>
         </div>
       </footer>
+
+      {/* ── 4. CALL TERMINATION OVERLAY (SYNCS BOTH SIDES) ── */}
+      {callEndingMessage && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 p-6 backdrop-blur-md text-center transition-all animate-fade-in">
+          <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-rose-500/20 text-rose-400 border border-rose-500/30 mb-4 shadow-2xl animate-bounce">
+            <PhoneOff size={30} />
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+            Consultation Ended
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-sm">
+            {callEndingMessage}
+          </p>
+          <div className="mt-5 flex items-center gap-2 text-xs text-teal-400">
+            <Loader2 size={14} className="animate-spin" />
+            <span>Redirecting to your dashboard...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
