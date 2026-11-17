@@ -1,16 +1,15 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import {
   MapPin,
-  CalendarDays,
-  Star,
+   Star,
   Search,
   X,
-  ChevronRight,
-  CheckCircle2,
+   CheckCircle2,
   AlertCircle,
   Stethoscope,
   ArrowUpRight,
   ShieldCheck,
+  Video,
 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAppointment } from "../../context/AppointmentContext";
@@ -256,7 +255,8 @@ const BookVisitView = () => {
               <DoctorCard
                 key={doc.id || doc._id}
                 doc={doc}
-                onSchedule={() => selectDoctor(doc)}
+                onScheduleInPerson={() => selectDoctor(doc, "in-person")}
+                onScheduleVideo={() => selectDoctor(doc, "video")}
               />
             ))}
           </div>
@@ -302,7 +302,7 @@ const BookVisitView = () => {
 // DOCTOR BENTO CARD
 // ============================================================
 
-const DoctorCard = ({ doc, onSchedule }) => {
+const DoctorCard = ({ doc, onScheduleInPerson, onScheduleVideo }) => {
   const [imgError, setImgError] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
@@ -399,18 +399,32 @@ const DoctorCard = ({ doc, onSchedule }) => {
           </div>
         </div>
 
-        {/* ACTIONS FOOTER */}
-        <div className="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
+        {/* ACTIONS FOOTER WITH TWO OPTIONS: IN-PERSON & VIDEO CALL */}
+        <div className="mt-4 pt-3 border-t border-stone-100 flex items-center gap-1.5">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onSchedule();
+              onScheduleInPerson();
             }}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#285943] py-2.5 text-xs font-semibold text-white shadow-2xs transition-all duration-200 hover:bg-[#1e4533] active:scale-[0.98]"
+            title="Book In-Person Clinic Visit"
+            className="flex-1 inline-flex items-center justify-center gap-1 rounded-full border border-stone-200 bg-[#F9FAF8] py-2 text-[11px] font-semibold text-slate-700 shadow-2xs hover:border-[#285943] hover:bg-[#EBF7F2] hover:text-[#285943] transition-all cursor-pointer"
           >
-            <CalendarDays className="h-3.5 w-3.5" />
-            <span>Book Visit</span>
+            <MapPin className="h-3 w-3 text-[#285943]" />
+            <span>In-Person</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onScheduleVideo();
+            }}
+            title="Book Online Video Call"
+            className="flex-1 inline-flex items-center justify-center gap-1 rounded-full bg-[#285943] py-2 text-[11px] font-semibold text-white shadow-2xs hover:bg-[#1e4533] transition-all cursor-pointer"
+          >
+            <Video className="h-3 w-3 text-emerald-300" />
+            <span>Video Call</span>
           </button>
 
           <button
@@ -420,9 +434,9 @@ const DoctorCard = ({ doc, onSchedule }) => {
               setShowDetails(true);
             }}
             title="View Details"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-400 group-hover:border-[#FA6432] group-hover:bg-[#FA6432] group-hover:text-white transition-all shadow-2xs"
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-400 group-hover:border-[#FA6432] group-hover:bg-[#FA6432] group-hover:text-white transition-all shadow-2xs cursor-pointer"
           >
-            <ArrowUpRight className="h-4 w-4" />
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
@@ -572,19 +586,32 @@ const DoctorCard = ({ doc, onSchedule }) => {
               </div>
             </div>
 
-            {/* ACTION CTA BUTTON */}
-            <button
-              type="button"
-              onClick={() => {
-                setShowDetails(false);
-                onSchedule();
-              }}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-[#FA6432] hover:bg-[#e45222] py-3 text-xs font-bold text-white shadow-sm transition-all hover:scale-[1.02] active:scale-95"
-            >
-              <CalendarDays className="h-4 w-4" />
-              <span>Proceed to Booking</span>
-              <ChevronRight className="h-4 w-4" />
-            </button>
+            {/* ACTION CTA BUTTONS */}
+            <div className="grid grid-cols-2 gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDetails(false);
+                  onScheduleInPerson();
+                }}
+                className="flex items-center justify-center gap-1.5 rounded-full border border-[#285943] bg-white hover:bg-[#EBF7F2] py-2.5 text-xs font-bold text-[#285943] shadow-xs transition-all cursor-pointer"
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                <span>In-Person</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowDetails(false);
+                  onScheduleVideo();
+                }}
+                className="flex items-center justify-center gap-1.5 rounded-full bg-[#FA6432] hover:bg-[#e45222] py-2.5 text-xs font-bold text-white shadow-xs transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+              >
+                <Video className="h-3.5 w-3.5" />
+                <span>Video Call</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

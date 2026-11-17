@@ -688,6 +688,16 @@ const DoctorSchedule = () => {
 
               {/* Fast Encounter Action Controls */}
               <div className="flex items-center gap-2 self-end sm:self-center">
+                {nextUpcoming.appointmentType?.toLowerCase() === "video" && (
+                  <Link
+                    to={`/video-call/${nextUpcoming._id || nextUpcoming.id}`}
+                    className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-teal-700 active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Video size={13} className="text-teal-200" />
+                    <span>Start Video Call</span>
+                  </Link>
+                )}
+
                 <button
                   type="button"
                   onClick={() => handlePrintSingle(nextUpcoming)}
@@ -1027,6 +1037,17 @@ const DoctorSchedule = () => {
 
                             {isUpcoming ? (
                               <>
+                                {appointment.appointmentType?.toLowerCase() === "video" && (
+                                  <Link
+                                    to={`/video-call/${appointmentId}`}
+                                    title="Start Agora Video Consultation"
+                                    className="inline-flex items-center gap-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs transition-all cursor-pointer"
+                                  >
+                                    <Video size={12} className="text-teal-200" />
+                                    <span>Call</span>
+                                  </Link>
+                                )}
+
                                 <button
                                   type="button"
                                   disabled={isCardLoading}
@@ -1170,6 +1191,16 @@ const DoctorSchedule = () => {
 
                             {isUpcoming && (
                               <>
+                                {appointment.appointmentType?.toLowerCase() === "video" && (
+                                  <Link
+                                    to={`/video-call/${appointmentId}`}
+                                    className="inline-flex items-center gap-1 rounded-lg bg-teal-600 px-2.5 py-1.5 text-xs font-semibold text-white shadow-2xs"
+                                  >
+                                    <Video size={11} className="text-teal-200" />
+                                    <span>Call</span>
+                                  </Link>
+                                )}
+
                                 <Link
                                   to={`/doctor/prescriptions/new?patient=${patientId}`}
                                   className="inline-flex items-center gap-1 rounded-lg border border-teal-200 bg-teal-50 px-2.5 py-1.5 text-xs font-semibold text-teal-900"

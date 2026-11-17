@@ -6,9 +6,11 @@ import {
   Clock,
   Check,
   HeartPulse,
-   ShieldCheck,
+  ShieldCheck,
   Sparkles,
   ArrowRight,
+  Video,
+  MapPin,
 } from "lucide-react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +63,7 @@ const BookVisitModal = () => {
     selectedDoctor,
     isBookVisitModalOpen,
     closeBookVisitModal,
+    initialConsultationType,
   } = useAppointment();
 
   // ==========================================
@@ -70,10 +73,17 @@ const BookVisitModal = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [reason, setReason] = useState("");
+  const [consultationType, setConsultationType] = useState("in-person");
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedAvailability, setSelectedAvailability] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
   const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    if (initialConsultationType) {
+      setConsultationType(initialConsultationType);
+    }
+  }, [initialConsultationType, isBookVisitModalOpen]);
 
   // ==========================================
   // GET DOCTOR ID
@@ -174,27 +184,18 @@ const BookVisitModal = () => {
       return;
     }
 
-    const consultationTypes = Array.isArray(selectedDoctor.consultationType)
-      ? selectedDoctor.consultationType
-      : selectedDoctor.consultationType
-      ? [selectedDoctor.consultationType]
-      : [];
-
-    const resolvedAppointmentType = consultationTypes.includes("in-person")
-      ? "in-person"
-      : consultationTypes.includes("video")
-      ? "video"
-      : "in-person";
-
     const appointmentData = {
       doctor: doctorId,
       availability: selectedAvailability._id,
       appointmentDate: date,
       startTime: selectedSlot.startTime,
       endTime: selectedSlot.endTime,
-      appointmentType: resolvedAppointmentType,
+      appointmentType: consultationType,
       reason: reason.trim(),
-      notes: "Scheduled via MedCare Patient Portal.",
+      notes:
+        consultationType === "video"
+          ? "Scheduled for Online Video Consultation via Agora."
+          : "Scheduled for In-Person Clinic Visit.",
     };
 
     try {
@@ -352,6 +353,62 @@ const BookVisitModal = () => {
               <span className="rounded-full bg-[#F7F8F5] border border-stone-200 px-2.5 py-1 text-[10px] font-semibold text-stone-600">
                 {consultationTypeBadge}
               </span>
+            </div>
+
+            {/* CONSULTATION MODE (IN-PERSON VS VIDEO CALL) */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-slate-700 block">
+                Select Consultation Type
+              </label>
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setConsultationType("in-person")}
+                  className={`flex items-center gap-2.5 rounded-2xl border p-3 text-left transition-all cursor-pointer ${
+                    consultationType === "in-person"
+                      ? "border-[#285943] bg-[#EBF7F2] text-[#285943] ring-1 ring-[#285943] shadow-xs"
+                      : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
+                  }`}
+                >
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
+                      consultationType === "in-person"
+                        ? "bg-[#285943] text-white"
+                        : "bg-stone-100 text-stone-500"
+                    }`}
+                  >
+                    <MapPin className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold leading-tight">In-Person</p>
+                    <p className="text-[10px] text-stone-400">Clinic Visit</p>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setConsultationType("video")}
+                  className={`flex items-center gap-2.5 rounded-2xl border p-3 text-left transition-all cursor-pointer ${
+                    consultationType === "video"
+                      ? "border-teal-700 bg-teal-50 text-teal-900 ring-1 ring-teal-700 shadow-xs"
+                      : "border-stone-200 bg-white text-stone-600 hover:bg-stone-50"
+                  }`}
+                >
+                  <div
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
+                      consultationType === "video"
+                        ? "bg-teal-700 text-white"
+                        : "bg-stone-100 text-stone-500"
+                    }`}
+                  >
+                    <Video className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold leading-tight">Video Call</p>
+                    <p className="text-[10px] text-stone-400">Online Consultation</p>
+                  </div>
+                </button>
+              </div>
             </div>
 
             {/* DATE & TIME BENTO ROW */}

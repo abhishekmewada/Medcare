@@ -14,10 +14,12 @@ import {
   ShieldCheck,
  } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { fetchMyAppointments } from "../../redux/slice/appointmentSlice";
 import { useAppointment } from "../../context/AppointmentContext";
 
 const Appointments = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -466,9 +468,16 @@ const Appointments = () => {
                         {formatStatus(status)}
                       </span>
 
-                      <span className="text-[11px] font-medium text-stone-400">
-                        • In-Clinic / Virtual
-                      </span>
+                      {apt.appointmentType === "video" ? (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-teal-50 border border-teal-200/80 px-2 py-0.5 text-[10px] font-semibold text-teal-800">
+                          <Video size={10} className="text-teal-600" />
+                          <span>Video Call</span>
+                        </span>
+                      ) : (
+                        <span className="text-[11px] font-medium text-stone-400">
+                          • In-Clinic
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-200 text-stone-400 transition-all group-hover:border-[#285943] group-hover:bg-[#285943] group-hover:text-white">
@@ -513,9 +522,25 @@ const Appointments = () => {
                     <span>{appointmentTime}</span>
                   </div>
 
-                  <span className="shrink-0 text-xs font-bold text-[#285943] group-hover:underline">
-                    Details &gt;
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {apt.appointmentType === "video" && !isCancelled && status !== "rejected" && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/video-call/${appointmentId}`);
+                        }}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-teal-800 hover:bg-teal-900 px-3.5 py-1.5 text-[11px] font-bold text-white shadow-xs transition-all active:scale-95 cursor-pointer"
+                      >
+                        <Video size={11} className="text-teal-200" />
+                        <span>Join Call</span>
+                      </button>
+                    )}
+
+                    <span className="shrink-0 text-xs font-bold text-[#285943] group-hover:underline">
+                      Details &gt;
+                    </span>
+                  </div>
                 </div>
               </div>
             );

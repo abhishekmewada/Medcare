@@ -16,6 +16,7 @@ import {
   Stethoscope,
   ShieldCheck,
   HeartPulse,
+  Video,
 } from "lucide-react";
 
 import StatusBadge from "../../components/ui/StatusBadge";
@@ -435,7 +436,18 @@ className="h-full w-full object-cover object-[center_20%] opacity-25 group-hover
                           <p className="text-xs text-slate-500 truncate mt-0.5">{apt.reason || "General Consultation"}</p>
                         </div>
                       </div>
-                      <StatusBadge status={apt.status} />
+                      <div className="flex items-center gap-2">
+                        {apt.appointmentType?.toLowerCase() === "video" && (
+                          <Link
+                            to={`/video-call/${apt._id || apt.id}`}
+                            className="inline-flex items-center gap-1 rounded-xl bg-teal-700 hover:bg-teal-800 px-3 py-1 text-xs font-semibold text-white shadow-2xs transition-all cursor-pointer"
+                          >
+                            <Video size={11} className="text-teal-200" />
+                            <span>Call</span>
+                          </Link>
+                        )}
+                        <StatusBadge status={apt.status} />
+                      </div>
                     </div>
                   ))}
                 </div>

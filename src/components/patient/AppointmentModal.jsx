@@ -5,10 +5,12 @@ import {
   MapPin,
   Video,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import { useAppointment } from "../../context/AppointmentContext";
 
 const AppointmentModal = () => {
+  const navigate = useNavigate();
   const {
     selectedAppointment,
     isAppointmentModalOpen,
@@ -119,8 +121,10 @@ const AppointmentModal = () => {
 
           <div className="flex items-center gap-3">
 
-            {appointment.type === "virtual" ? (
-              <Video className="h-5 w-5 text-purple-600" />
+            {appointment.appointmentType === "video" ||
+            appointment.type === "virtual" ||
+            appointment.type === "video" ? (
+              <Video className="h-5 w-5 text-teal-600" />
             ) : (
               <MapPin className="h-5 w-5 text-emerald-600" />
             )}
@@ -131,8 +135,10 @@ const AppointmentModal = () => {
               </p>
 
               <p className="text-sm font-semibold text-slate-800">
-                {appointment.type === "virtual"
-                  ? "Virtual Consultation"
+                {appointment.appointmentType === "video" ||
+                appointment.type === "virtual" ||
+                appointment.type === "video"
+                  ? "Online Video Consultation"
                   : "In-person Visit"}
               </p>
             </div>
@@ -171,14 +177,31 @@ const AppointmentModal = () => {
 
         {/* Footer */}
 
-        <div className="border-t border-slate-100 p-5">
+        <div className="border-t border-slate-100 p-5 flex items-center gap-3">
 
           <button
             onClick={closeAppointmentModal}
-            className="w-full rounded-xl bg-blue-600 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+            className="flex-1 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 cursor-pointer"
           >
             Close
           </button>
+
+          {(appointment.appointmentType === "video" ||
+            appointment.type === "virtual" ||
+            appointment.type === "video") &&
+            appointment.status !== "cancelled" &&
+            appointment.status !== "rejected" && (
+              <button
+                onClick={() => {
+                  closeAppointmentModal();
+                  navigate(`/video-call/${appointment._id || appointment.id}`);
+                }}
+                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-teal-800 py-2.5 text-sm font-semibold text-white transition hover:bg-teal-900 cursor-pointer shadow-sm"
+              >
+                <Video className="h-4 w-4" />
+                <span>Join Video Call</span>
+              </button>
+            )}
 
         </div>
 

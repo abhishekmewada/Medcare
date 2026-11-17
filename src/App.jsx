@@ -37,6 +37,7 @@ import AppointmentManagement from "./pages/admin/AppointmentManagement";
 import AnalyticsDashboard from "./pages/admin/AnalyticsDashboard";
 import AuditLogs from "./pages/admin/AuditLogs";
 import AdminChat from "./pages/admin/AdminChat";
+import VideoCallRoom from "./pages/common/VideoCallRoom";
 import {useEffect} from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -174,6 +175,11 @@ function App() {
     <Route path="audit-logs" element={<AuditLogs />} />
     <Route path="chat" element={<AdminChat />} />
   </Route>
+</Route>
+
+{/* Video Consultation Call (Agora) */}
+<Route element={<ProtectedRoute allowedRoles={["patient", "doctor", "admin"]} />}>
+  <Route path="/video-call/:appointmentId" element={<VideoCallRoom />} />
 </Route>
 
 

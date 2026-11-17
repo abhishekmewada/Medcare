@@ -11,6 +11,7 @@ export const AppointmentProvider = ({ children }) => {
   // =========================
 
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [initialConsultationType, setInitialConsultationType] = useState("in-person");
 
   // =========================
   // BOOK VISIT MODAL
@@ -47,8 +48,9 @@ export const AppointmentProvider = ({ children }) => {
   // SELECT DOCTOR
   // =========================
 
-  const selectDoctor = (doctor) => {
+  const selectDoctor = (doctor, preferredType = "in-person") => {
     setSelectedDoctor(doctor);
+    setInitialConsultationType(preferredType);
     setIsBookVisitModalOpen(true);
   };
 
@@ -95,6 +97,7 @@ export const AppointmentProvider = ({ children }) => {
       value={{
         // Doctor
         selectedDoctor,
+        initialConsultationType,
         selectDoctor,
 
         // Book Visit

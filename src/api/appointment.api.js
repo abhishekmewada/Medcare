@@ -40,3 +40,9 @@ export const cancelAppointmentApi = async (id) => {
 
   return response.data;
  };
+
+// Get Agora token for video call
+export const getAppointmentAgoraTokenApi = async (id) => {
+  const response = await api.get(`/appointments/${id}/agora-token`);
+  return response.data;
+};
