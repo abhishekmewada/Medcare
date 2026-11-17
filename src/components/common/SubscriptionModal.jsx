@@ -132,19 +132,19 @@ const SubscriptionModal = ({
 
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">Care+ Monthly</span>
-                    <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-slate-300">
-                      30 Days
+                    <span className="text-sm font-bold text-white">Video Consultation Pass</span>
+                    <span className="rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 px-2 py-0.5 text-[10px] font-semibold">
+                      Popular
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Unlimited video consultations with all specialists
+                    Unlimited video consultations with all specialists (30 days)
                   </p>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-base font-bold text-white">₹499</span>
+                <span className="text-base font-bold text-white">₹100</span>
                 <span className="text-xs text-slate-400">/mo</span>
               </div>
             </div>
@@ -159,7 +159,7 @@ const SubscriptionModal = ({
               }`}
             >
               <span className="absolute -top-2.5 right-4 rounded-full bg-amber-500 text-slate-950 px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider">
-                Best Value (Save 35%)
+                Full Year Access
               </span>
 
               <div className="flex items-center gap-3.5">
@@ -177,19 +177,19 @@ const SubscriptionModal = ({
 
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-bold text-white">Care+ Annual Family</span>
+                    <span className="text-sm font-bold text-white">Annual Telehealth Pass</span>
                     <span className="rounded-full bg-amber-500/20 text-amber-300 px-2 py-0.5 text-[10px] font-semibold border border-amber-500/30">
                       1 Year
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Family coverage (up to 4) + 24/7 priority emergency access
+                    All-year unlimited consultations + priority 24/7 care
                   </p>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="text-base font-bold text-white">₹3,999</span>
+                <span className="text-base font-bold text-white">₹999</span>
                 <span className="text-xs text-slate-400">/yr</span>
               </div>
             </div>
@@ -234,7 +234,7 @@ const SubscriptionModal = ({
                   <Zap size={15} />
                   <span>
                     Activate {selectedPlan === "annual" ? "Annual" : "Monthly"} Plan (
-                    {selectedPlan === "annual" ? "₹3,999" : "₹499"})
+                    {selectedPlan === "annual" ? "₹999" : "₹100"})
                   </span>
                   <ArrowRight size={15} />
                 </>

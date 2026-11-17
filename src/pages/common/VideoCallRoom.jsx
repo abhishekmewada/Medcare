@@ -62,6 +62,7 @@ const VideoCallRoom = () => {
   const remoteContainerRef = useRef(null);
   const timerRef = useRef(null);
   const ringIntervalRef = useRef(null);
+  const remoteUserRef = useRef(null);
   const isLeavingRef = useRef(false);
 
   // Format Call Timer (MM:SS)
@@ -302,6 +303,7 @@ const VideoCallRoom = () => {
 
         // Handle remote user published
         client.on("user-published", async (user, mediaType) => {
+          remoteUserRef.current = user;
           if (ringIntervalRef.current) {
             clearInterval(ringIntervalRef.current);
             ringIntervalRef.current = null;
@@ -395,8 +397,12 @@ const VideoCallRoom = () => {
         timerRef.current = setInterval(() => {
           setCallDuration((prev) => {
             const nextDuration = prev + 1;
-            // 5-minute Free Trial expiration check (300 seconds)
-            if (res.isFreeTrial && nextDuration >= (res.timeLimitSeconds || 300)) {
+            // 5-minute Free Trial expiration check (300 seconds of active consultation)
+            if (
+              res.isFreeTrial &&
+              remoteUserRef.current &&
+              nextDuration >= (res.timeLimitSeconds || 300)
+            ) {
               if (timerRef.current) {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
@@ -404,7 +410,7 @@ const VideoCallRoom = () => {
               completeFreeTrialApi(appointmentId).catch(() => {});
               handleLeaveCall(
                 false,
-                "Your 5-minute free video consultation trial has ended. Subscribe to MedCare Premium to continue unlimited calls."
+                "Your 5-minute free video consultation trial has ended. Subscribe for ₹100 to continue unlimited calls."
               );
               setSubModalReason("trial_expired");
               setShowSubscriptionModal(true);
