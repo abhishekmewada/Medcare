@@ -121,8 +121,8 @@ const PatientNavbar = () => {
       <div className="relative mx-auto max-w-7xl" ref={menuRef}>
         {/* Main Floating Pill Nav */}
         <nav
-          className={`h-16 scale-90 group hover:scale-95 transition-all duration-400 sm:scale-85 sm:hover:scale-90 xl:scale-80 xl:hover:scale-85 md:h-18 bg-white/25 backdrop-blur-xl border border-white/40 rounded-full px-3 sm:px-5 xl:px-6 py-2.5 flex items-center justify-between ${
-            scrolled ? "shadow-lg bg-white/50 border-slate-200/60" : ""
+          className={`h-16 md:h-18 bg-white/35 backdrop-blur-xl border border-white/40 rounded-full px-3.5 sm:px-5 xl:px-6 py-2.5 flex items-center justify-between transition-all duration-300 ${
+            scrolled ? "shadow-lg bg-white/60 border-slate-200/70" : ""
           }`}
         >
           {/* Logo */}
@@ -134,7 +134,7 @@ const PatientNavbar = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <ul className="mx-1 hidden items-center gap-0.5 lg:flex 2xl:mx-2 2xl:gap-1.5">
+          <ul className="mx-1 hidden items-center gap-1 lg:flex xl:gap-1.5 2xl:mx-3 2xl:gap-2.5">
             {menuItems.map((item) => {
               return (
                 <NavLink
@@ -143,15 +143,13 @@ const PatientNavbar = () => {
                   end={item.path === "/patient"}
                   onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-1.5 rounded-xl px-2 py-2 text-xs font-semibold transition-all duration-200 2xl:px-3 2xl:text-sm ${
+                    `flex items-center gap-1.5 rounded-xl px-2.5 py-1.5 text-xs font-semibold tracking-tight transition-all duration-200 lg:text-[13px] xl:px-3.5 xl:py-2 xl:text-[14.5px] 2xl:px-4 2xl:text-[15.5px] whitespace-nowrap ${
                       isActive
-                        ? "bg-blue-50 text-blue-600 shadow-xs border border-blue-100/60"
+                        ? "bg-blue-50 text-blue-600 shadow-xs border border-blue-100/70 font-bold"
                         : "text-slate-600 hover:text-blue-600 hover:bg-slate-50/80"
                     }`}
                 >
-                  
-                    <span>{item.label}</span>
-                  
+                  <span>{item.label}</span>
                 </NavLink>
               );
             })}
@@ -212,21 +210,21 @@ const PatientNavbar = () => {
           <div className="absolute right-0 mt-2 w-72 max-w-[calc(100vw-1.5rem)] overflow-hidden rounded-[28px] border border-slate-200/90 bg-white/95 p-4 shadow-xl backdrop-blur-md xl:hidden animate-in fade-in slide-in-from-top-2 duration-200">
             
             <nav className="flex flex-col space-y-1">
-              {menuItems.map(({ path, label, icon: Icon, }) => (
+              {menuItems.map(({ path, label, icon: Icon }) => (
                 <NavLink
                   key={path}
                   to={path}
                   end={path === "/patient"}
                   onClick={() => setMobileMenuOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold transition-all ${
+                    `flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
                       isActive
-                        ? "bg-blue-50 text-blue-600 shadow-2xs"
+                        ? "bg-blue-50 text-blue-600 shadow-2xs font-bold"
                         : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                     }`
                   }
                 >
-                  <Icon size={16} />
+                  <Icon size={18} />
                   <span>{label}</span>
                 </NavLink>
               ))}
@@ -237,9 +235,9 @@ const PatientNavbar = () => {
                     setMobileMenuOpen(false);
                     requestLogout();
                   }}
-                  className="flex w-full items-center gap-3 rounded-full px-4 py-2.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="flex w-full items-center gap-3 rounded-full px-4 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
                 >
-                  <LogOut size={16} />
+                  <LogOut size={18} />
                   <span>Sign Out</span>
                 </button>
               </div>
