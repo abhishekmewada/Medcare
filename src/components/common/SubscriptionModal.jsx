@@ -3,14 +3,10 @@ import {
   Crown,
   CheckCircle2,
   Sparkles,
-  ShieldCheck,
-  Video,
-  X,
+   X,
   Zap,
   ArrowRight,
-  Clock,
-  Lock,
-} from "lucide-react";
+ } from "lucide-react";
 import { subscribeToPlanApi } from "../../services/subscription.service";
 
 const SubscriptionModal = ({
@@ -51,7 +47,7 @@ const SubscriptionModal = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[999999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+    <div className="fixed inset-0 z-999999 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
       <div className="relative w-full max-w-lg overflow-hidden rounded-3xl border border-teal-500/30 bg-slate-900 shadow-2xl text-white">
         
         {/* Ambient Top Glow */}

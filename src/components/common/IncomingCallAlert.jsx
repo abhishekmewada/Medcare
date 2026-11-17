@@ -208,8 +208,14 @@ const IncomingCallAlert = () => {
     (isDoctor ? "D" : "P");
 
   return (
-    <div className="fixed top-5 right-4 sm:right-8 z-[999999] w-[calc(100vw-32px)] sm:w-96 max-w-sm transition-all duration-300">
-      <div className="relative overflow-hidden rounded-3xl border border-teal-500/40 bg-slate-900/95 p-4 sm:p-5 shadow-2xl backdrop-blur-2xl text-white ring-1 ring-teal-500/30">
+    <div className="fixed top-5 right-4 sm:right-8 z-999999 w-[calc(100vw-32px)] sm:w-96 max-w-sm transition-all duration-300">
+      <div className="relative overflow-hidden rounded-3xl borderborder border-teal-400/25
+bg-slate-950/65
+p-4 sm:p-5
+shadow-[0_8px_40px_rgba(0,0,0,0.35)]
+backdrop-blur-2xl
+text-white
+ring-1 ring-white/10">
         {/* Ambient Ringing Glow */}
         <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-teal-500/20 blur-2xl animate-pulse" />
 
