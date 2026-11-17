@@ -10,13 +10,11 @@ import {
   ShieldCheck,
   Clock,
   User,
-  Stethoscope,
-  AlertCircle,
+   AlertCircle,
   Loader2,
   Maximize2,
   Minimize2,
-  Volume2,
-} from "lucide-react";
+ } from "lucide-react";
 import { useSelector } from "react-redux";
 import api from "../../api/axios";
 import socket from "../../socket/socket";
