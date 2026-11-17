@@ -47,6 +47,8 @@ const VideoCallRoom = () => {
   const [callDuration, setCallDuration] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [callEndingMessage, setCallEndingMessage] = useState(null);
+  const [waitingSeconds, setWaitingSeconds] = useState(45);
+  const [isCallAnswered, setIsCallAnswered] = useState(false);
 
   // Subscription & Free Trial (5 minutes limit) State
   const [isFreeTrial, setIsFreeTrial] = useState(false);
@@ -61,8 +63,12 @@ const VideoCallRoom = () => {
   const localContainerRef = useRef(null);
   const remoteContainerRef = useRef(null);
   const timerRef = useRef(null);
+  const pickupTimerRef = useRef(null);
   const ringIntervalRef = useRef(null);
   const remoteUserRef = useRef(null);
+  const hasConnectedRef = useRef(false);
+  const isFreeTrialRef = useRef(false);
+  const trialCompletedRef = useRef(false);
   const isLeavingRef = useRef(false);
 
   // Format Call Timer (MM:SS)
@@ -74,13 +80,31 @@ const VideoCallRoom = () => {
 
   // ── 1. LEAVE AND CLEANUP (SYNCS BOTH SIDES) ──
   const handleLeaveCall = useCallback(
-    async (isRemote = false, message = null) => {
+    async (isRemote = false, message = null, reason = "normal") => {
       if (isLeavingRef.current) return;
       isLeavingRef.current = true;
 
       if (timerRef.current) {
         clearInterval(timerRef.current);
         timerRef.current = null;
+      }
+      if (pickupTimerRef.current) {
+        clearInterval(pickupTimerRef.current);
+        pickupTimerRef.current = null;
+      }
+      if (ringIntervalRef.current) {
+        clearInterval(ringIntervalRef.current);
+        ringIntervalRef.current = null;
+      }
+
+      // If call connected and was a free trial, ensure trial is marked consumed in DB
+      if (
+        hasConnectedRef.current &&
+        isFreeTrialRef.current &&
+        !trialCompletedRef.current
+      ) {
+        trialCompletedRef.current = true;
+        completeFreeTrialApi(appointmentId).catch(() => {});
       }
 
       const notice =
@@ -99,6 +123,7 @@ const VideoCallRoom = () => {
           name:
             currentUser?.fullName ||
             (currentUser?.role === "doctor" ? "Doctor" : "Patient"),
+          reason,
         });
       }
 
@@ -123,14 +148,21 @@ const VideoCallRoom = () => {
         setJoined(false);
         socket.emit("call:leave", appointmentId);
 
-        // Smooth redirect after 1.5 seconds
-        setTimeout(() => {
-          if (currentUser?.role === "doctor") {
-            navigate("/doctor/schedule");
-          } else {
-            navigate("/patient/appointments");
-          }
-        }, 1500);
+        // If trial expired and user is patient, open SubscriptionModal without immediate redirect
+        if (reason === "trial_expired" && currentUser?.role !== "doctor") {
+          setSubModalReason("trial_expired");
+          setShowSubscriptionModal(true);
+          setCallEndingMessage(null);
+        } else {
+          // Smooth redirect after 2 seconds
+          setTimeout(() => {
+            if (currentUser?.role === "doctor") {
+              navigate("/doctor/schedule");
+            } else {
+              navigate("/patient/appointments");
+            }
+          }, 2000);
+        }
       }
     },
     [appointmentId, currentUser, navigate]
@@ -148,10 +180,24 @@ const VideoCallRoom = () => {
       if (data?.appointmentId === appointmentId) {
         const endedBy =
           data.endedByRole === "doctor" ? "Doctor" : "Patient";
-        handleLeaveCall(
-          true,
-          `Consultation ended by ${endedBy}. Returning to dashboard...`
-        );
+        if (data?.reason === "trial_expired") {
+          handleLeaveCall(
+            true,
+            "Your 5-minute free video consultation trial has expired. Please subscribe for ₹100 to continue video consultations.",
+            "trial_expired"
+          );
+        } else if (data?.reason === "no_answer") {
+          handleLeaveCall(
+            true,
+            "Call was automatically disconnected because the other participant did not answer.",
+            "no_answer"
+          );
+        } else {
+          handleLeaveCall(
+            true,
+            `Consultation ended by ${endedBy}. Returning to dashboard...`
+          );
+        }
       }
     };
     socket.on("call:ended", onCallEnded);
@@ -177,13 +223,18 @@ const VideoCallRoom = () => {
         try {
           res = await getAppointmentAgoraTokenApi(appointmentId);
         } catch (apiErr) {
-          if (apiErr.response?.data?.requireSubscription) {
+          if (
+            apiErr.response?.status === 403 ||
+            apiErr.response?.data?.requireSubscription
+          ) {
             setError(
-              apiErr.response.data.message ||
+              apiErr.response?.data?.message ||
                 "A MedCare Premium Subscription is required for video consultations."
             );
             setSubModalReason("locked");
-            setShowSubscriptionModal(true);
+            if (currentUser?.role !== "doctor") {
+              setShowSubscriptionModal(true);
+            }
             setLoading(false);
             return;
           }
@@ -193,35 +244,39 @@ const VideoCallRoom = () => {
             apiErr
           );
 
-          // Fallback: If deployed backend (e.g. Render) doesn't have the new route yet, fetch appointment directly
-          const fallbackAptRes = await api
-            .get(`/appointments/${appointmentId}`)
-            .catch(() => null);
+          // Fallback: only if endpoint not found (404)
+          if (apiErr.response?.status === 404) {
+            const fallbackAptRes = await api
+              .get(`/appointments/${appointmentId}`)
+              .catch(() => null);
 
-          const aptData =
-            fallbackAptRes?.data?.appointment ||
-            fallbackAptRes?.data ||
-            {};
+            const aptData =
+              fallbackAptRes?.data?.appointment ||
+              fallbackAptRes?.data ||
+              {};
 
-          res = {
-            success: true,
-            appId:
-              import.meta.env.VITE_AGORA_APP_ID ||
-              "40ec841159ac460292d82d31beb66c8d",
-            channelName: `medcare_${appointmentId}`,
-            token: null,
-            uid: 0,
-            isFreeTrial: false,
-            appointment: {
-              _id: appointmentId,
-              appointmentType: aptData.appointmentType || "video",
-              status: aptData.status || "confirmed",
-              reason: aptData.reason || "Telehealth Consultation",
-              patient: aptData.patient,
-              doctor: aptData.doctor,
-            },
-            userRole: currentUser?.role || "doctor",
-          };
+            res = {
+              success: true,
+              appId:
+                import.meta.env.VITE_AGORA_APP_ID ||
+                "40ec841159ac460292d82d31beb66c8d",
+              channelName: `medcare_${appointmentId}`,
+              token: null,
+              uid: 0,
+              isFreeTrial: false,
+              appointment: {
+                _id: appointmentId,
+                appointmentType: aptData.appointmentType || "video",
+                status: aptData.status || "confirmed",
+                reason: aptData.reason || "Telehealth Consultation",
+                patient: aptData.patient,
+                doctor: aptData.doctor,
+              },
+              userRole: currentUser?.role || "doctor",
+            };
+          } else {
+            throw apiErr;
+          }
         }
 
         if (isCancelled) return;
@@ -234,13 +289,45 @@ const VideoCallRoom = () => {
 
         if (res.isFreeTrial) {
           setIsFreeTrial(true);
+          isFreeTrialRef.current = true;
           if (res.timeLimitSeconds) {
             setTrialTimeLimit(res.timeLimitSeconds);
           }
+        } else {
+          setIsFreeTrial(false);
+          isFreeTrialRef.current = false;
         }
 
         setAppointment(res.appointment);
         setUserRole(res.userRole);
+
+        // Start 45-second pickup timer: If unanswered within 45 seconds, automatically cut the call
+        setWaitingSeconds(45);
+        if (pickupTimerRef.current) clearInterval(pickupTimerRef.current);
+        pickupTimerRef.current = setInterval(() => {
+          setWaitingSeconds((prev) => {
+            if (hasConnectedRef.current) {
+              if (pickupTimerRef.current) {
+                clearInterval(pickupTimerRef.current);
+                pickupTimerRef.current = null;
+              }
+              return 0;
+            }
+            if (prev <= 1) {
+              if (pickupTimerRef.current) {
+                clearInterval(pickupTimerRef.current);
+                pickupTimerRef.current = null;
+              }
+              handleLeaveCall(
+                false,
+                "No answer. The call was automatically disconnected because the other participant did not answer within 45 seconds.",
+                "no_answer"
+              );
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
 
         // Ring / alert the other participant in real time
         const isCurrentDoctor =
@@ -288,7 +375,7 @@ const VideoCallRoom = () => {
         let ringCount = 0;
         ringIntervalRef.current = setInterval(() => {
           ringCount += 1;
-          if (ringCount >= 4 || isCancelled) {
+          if (ringCount >= 12 || isCancelled || hasConnectedRef.current) {
             if (ringIntervalRef.current) clearInterval(ringIntervalRef.current);
             return;
           }
@@ -304,10 +391,29 @@ const VideoCallRoom = () => {
         // Handle remote user published
         client.on("user-published", async (user, mediaType) => {
           remoteUserRef.current = user;
+          hasConnectedRef.current = true;
+          setIsCallAnswered(true);
+
+          if (pickupTimerRef.current) {
+            clearInterval(pickupTimerRef.current);
+            pickupTimerRef.current = null;
+          }
           if (ringIntervalRef.current) {
             clearInterval(ringIntervalRef.current);
             ringIntervalRef.current = null;
           }
+
+          // Once call is answered, mark 1-time free trial used in DB (whether 1 min or 5 mins)
+          if (isFreeTrialRef.current && !trialCompletedRef.current) {
+            trialCompletedRef.current = true;
+            completeFreeTrialApi(
+              appointmentId,
+              res.appointment?.patient?._id || res.appointment?.patient
+            ).catch((err) => {
+              console.warn("Trial complete API warning on connect:", err);
+            });
+          }
+
           await client.subscribe(user, mediaType);
 
           if (mediaType === "video") {
@@ -393,27 +499,32 @@ const VideoCallRoom = () => {
         setJoined(true);
         setLoading(false);
 
-        // Start Call Duration Timer
+        // Start Call Duration Timer (ticks only when connected)
         timerRef.current = setInterval(() => {
           setCallDuration((prev) => {
+            if (!remoteUserRef.current && !hasConnectedRef.current) {
+              return prev;
+            }
+
             const nextDuration = prev + 1;
             // 5-minute Free Trial expiration check (300 seconds of active consultation)
             if (
-              res.isFreeTrial &&
-              remoteUserRef.current &&
+              isFreeTrialRef.current &&
               nextDuration >= (res.timeLimitSeconds || 300)
             ) {
               if (timerRef.current) {
                 clearInterval(timerRef.current);
                 timerRef.current = null;
               }
-              completeFreeTrialApi(appointmentId).catch(() => {});
+              completeFreeTrialApi(
+                appointmentId,
+                res.appointment?.patient?._id || res.appointment?.patient
+              ).catch(() => {});
               handleLeaveCall(
                 false,
-                "Your 5-minute free video consultation trial has ended. Subscribe for ₹100 to continue unlimited calls."
+                "Your 5-minute free video consultation trial has ended. Subscribe for ₹100 to continue video consultations.",
+                "trial_expired"
               );
-              setSubModalReason("trial_expired");
-              setShowSubscriptionModal(true);
             }
             return nextDuration;
           });
@@ -438,12 +549,17 @@ const VideoCallRoom = () => {
       socket.off("call:ended", onCallEnded);
       socket.off("call:declined", onCallDeclined);
       socket.emit("call:leave", appointmentId);
+      if (pickupTimerRef.current) {
+        clearInterval(pickupTimerRef.current);
+        pickupTimerRef.current = null;
+      }
       if (ringIntervalRef.current) {
         clearInterval(ringIntervalRef.current);
         ringIntervalRef.current = null;
       }
       if (timerRef.current) {
         clearInterval(timerRef.current);
+        timerRef.current = null;
       }
       if (localAudioTrackRef.current) {
         localAudioTrackRef.current.stop();
@@ -673,15 +789,15 @@ const VideoCallRoom = () => {
               </div>
 
               <h3 className="text-base sm:text-lg font-semibold text-white">
-                Waiting for {otherParticipantName} to join...
+                Calling {otherParticipantName}...
               </h3>
               <p className="mt-1 text-xs text-slate-400 max-w-sm">
-                The video stream will automatically connect as soon as the other participant enters this room.
+                Waiting for {otherParticipantName} to answer. The video stream will automatically connect as soon as they pick up.
               </p>
 
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-teal-400 animate-pulse" />
-                <span>Agora Channel: {appointment?._id?.slice(-8) || "live"}</span>
+              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/15 px-4 py-1.5 text-xs font-semibold text-amber-300 shadow-lg">
+                <Clock className="h-3.5 w-3.5 text-amber-400 animate-spin" />
+                <span>Auto-cancels if not answered in {waitingSeconds}s</span>
               </div>
             </div>
           )}
@@ -776,7 +892,14 @@ const VideoCallRoom = () => {
       {/* ── 5. PREMIUM SUBSCRIPTION UPGRADE MODAL ── */}
       <SubscriptionModal
         isOpen={showSubscriptionModal}
-        onClose={() => setShowSubscriptionModal(false)}
+        onClose={() => {
+          setShowSubscriptionModal(false);
+          if (currentUser?.role === "doctor") {
+            navigate("/doctor/schedule");
+          } else {
+            navigate("/patient/appointments");
+          }
+        }}
         reason={subModalReason}
         onSubscribed={() => {
           window.location.reload();

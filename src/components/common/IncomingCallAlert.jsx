@@ -49,12 +49,14 @@ const IncomingCallAlert = () => {
   const currentUser = useSelector((state) => state.auth?.user);
 
   const [incomingCall, setIncomingCall] = useState(null);
+  const [alertSeconds, setAlertSeconds] = useState(45);
 
   const incomingCallRef = useRef(null);
   const currentUserRef = useRef(currentUser);
   const locationRef = useRef(location);
   const chimeIntervalRef = useRef(null);
   const autoDismissTimerRef = useRef(null);
+  const countdownIntervalRef = useRef(null);
 
   useEffect(() => {
     currentUserRef.current = currentUser;
@@ -73,6 +75,10 @@ const IncomingCallAlert = () => {
     if (chimeIntervalRef.current) {
       clearInterval(chimeIntervalRef.current);
       chimeIntervalRef.current = null;
+    }
+    if (countdownIntervalRef.current) {
+      clearInterval(countdownIntervalRef.current);
+      countdownIntervalRef.current = null;
     }
     if (autoDismissTimerRef.current) {
       clearTimeout(autoDismissTimerRef.current);
@@ -128,6 +134,7 @@ const IncomingCallAlert = () => {
       }
 
       setIncomingCall(data);
+      setAlertSeconds(45);
 
       // Play sound immediately and repeat every 3.5 seconds
       playMedicalChime();
@@ -135,14 +142,31 @@ const IncomingCallAlert = () => {
         chimeIntervalRef.current = setInterval(playMedicalChime, 3500);
       }
 
-      // Auto dismiss after 35 seconds if unanswered
+      // 45-second ticking countdown for recipient
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current);
+      }
+      countdownIntervalRef.current = setInterval(() => {
+        setAlertSeconds((prev) => {
+          if (prev <= 1) {
+            if (countdownIntervalRef.current) {
+              clearInterval(countdownIntervalRef.current);
+              countdownIntervalRef.current = null;
+            }
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Auto dismiss after 45 seconds if unanswered
       if (autoDismissTimerRef.current) {
         clearTimeout(autoDismissTimerRef.current);
       }
       autoDismissTimerRef.current = setTimeout(() => {
         stopChime();
         setIncomingCall(null);
-      }, 35000);
+      }, 45000);
     };
 
     const handleCallEnded = (data) => {
@@ -198,6 +222,9 @@ const IncomingCallAlert = () => {
             </span>
             <span className="text-[11px] font-bold uppercase tracking-wider text-teal-300">
               Incoming Video Call
+            </span>
+            <span className="rounded-full bg-teal-500/20 border border-teal-500/30 px-2 py-0.5 text-[10px] font-mono font-bold text-teal-300">
+              {alertSeconds}s
             </span>
           </div>
 

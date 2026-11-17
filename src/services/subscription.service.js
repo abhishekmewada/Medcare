@@ -15,10 +15,11 @@ export const subscribeToPlanApi = async (plan = "monthly", paymentMethod = "upi"
   return response.data;
 };
 
-// Mark free 5-minute trial as completed
-export const completeFreeTrialApi = async (appointmentId) => {
+// Mark free 1-time trial as completed
+export const completeFreeTrialApi = async (appointmentId, patientId = null) => {
   const response = await api.post("/subscription/complete-trial", {
     appointmentId,
+    patientId,
   });
   return response.data;
 };
