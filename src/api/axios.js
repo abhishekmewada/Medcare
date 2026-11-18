@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getOrCreateDeviceId } from "../utiles/deviceId";
 
 // Create Axios instance with base URL and credentials support
 const api = axios.create({
@@ -6,13 +7,14 @@ const api = axios.create({
     withCredentials: true,
 });
 
-// Request interceptor: attach JWT token from localStorage (if present) to Authorization header
+// Request interceptor: attach JWT token and persistent device ID
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('authToken');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
+        config.headers['x-device-id'] = getOrCreateDeviceId();
         return config;
     },
     (error) => Promise.reject(error)

@@ -10,13 +10,21 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowLeftIcon,
+  Smartphone,
+  KeyRound,
+  RefreshCw,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../services/auth.service";
+import {
+  loginUser,
+  verifyLoginOtp,
+  resendLoginOtp,
+} from "../../services/auth.service";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/slice/authSlice";
 import { motion } from "framer-motion";
 import { connectSocket, identifyUser } from "../../socket/socket";
+import { setActiveSessionId } from "../../utiles/deviceId";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,11 +37,34 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
+
+  // New-device mobile OTP security step state
+  const [otpStep, setOtpStep] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [otpMeta, setOtpMeta] = useState({
+    maskedPhone: "",
+    maskedEmail: "",
+    smsSent: false,
+    trustedDeviceNotified: false,
+    emailSent: false,
+  });
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resending, setResending] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // Countdown timer for Resend OTP button
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setResendCooldown((prev) => (prev <= 1 ? 0 : prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [resendCooldown]);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -55,30 +86,57 @@ const Login = () => {
     });
   };
 
+  const completeLoginSession = (response) => {
+    if (response.token) {
+      localStorage.setItem("authToken", response.token);
+    }
+    if (response.sessionId) {
+      setActiveSessionId(response.sessionId);
+    }
+
+    dispatch(setUser(response.user));
+    connectSocket(response.user, response.token, response.sessionId);
+    identifyUser(response.user, response.token, response.sessionId);
+
+    if (response.user.role === "patient") {
+      navigate("/patient");
+    } else if (response.user.role === "doctor") {
+      navigate("/doctor");
+    } else if (response.user.role === "admin") {
+      navigate("/admin");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
       setError("");
+      setInfoMessage("");
 
       const response = await loginUser(formData);
 
-      if (response.token) {
-        localStorage.setItem("authToken", response.token);
+      // If same user is already signed in on another device -> require mobile OTP
+      if (response?.requiresOtp) {
+        setOtpStep(true);
+        setOtpCode("");
+        setOtpMeta({
+          maskedPhone: response.maskedPhone || "your registered mobile",
+          maskedEmail: response.maskedEmail || "",
+          smsSent: Boolean(response.smsSent),
+          trustedDeviceNotified: Boolean(response.trustedDeviceNotified),
+          emailSent: Boolean(response.emailSent),
+        });
+        setInfoMessage(
+          response.message ||
+            "Security verification required. Enter the 6-digit OTP sent to your registered mobile number."
+        );
+        setResendCooldown(60);
+        return;
       }
 
-      dispatch(setUser(response.user));
-      connectSocket(response.user);
-      identifyUser(response.user, response.token);
-
-      if (response.user.role === "patient") {
-        navigate("/patient");
-      } else if (response.user.role === "doctor") {
-        navigate("/doctor");
-      } else if (response.user.role === "admin") {
-        navigate("/admin");
-      }
+      completeLoginSession(response);
     } catch (err) {
       console.error("Login error:", err);
       setError(
@@ -87,6 +145,57 @@ const Login = () => {
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    const cleaned = otpCode.replace(/\D/g, "");
+    if (cleaned.length !== 6) {
+      setError("Please enter the complete 6-digit OTP.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError("");
+
+      const response = await verifyLoginOtp({
+        email: formData.email,
+        otp: cleaned,
+      });
+
+      completeLoginSession(response);
+    } catch (err) {
+      console.error("OTP verification error:", err);
+      setError(
+        err.response?.data?.message ||
+          "Invalid or expired OTP. Please check the code and try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || resending) return;
+    try {
+      setResending(true);
+      setError("");
+      const res = await resendLoginOtp(formData.email);
+      setInfoMessage(
+        res.message ||
+          `A fresh 6-digit OTP has been sent to ${otpMeta.maskedPhone}.`
+      );
+      setResendCooldown(60);
+    } catch (err) {
+      const retryAfter = err.response?.data?.retryAfterSeconds;
+      if (retryAfter) setResendCooldown(retryAfter);
+      setError(
+        err.response?.data?.message || "Could not resend OTP. Please try again."
+      );
+    } finally {
+      setResending(false);
     }
   };
 
@@ -222,12 +331,33 @@ const Login = () => {
           {/* Form Header */}
           <div>
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Welcome back
+              {otpStep ? "Verify New Device" : "Welcome back"}
             </h1>
             <p className="mt-2 text-sm text-slate-500">
-              Sign in to continue to your healthcare dashboard.
+              {otpStep
+                ? "Your account is already active on another device. Verify your identity with the 6-digit OTP."
+                : "Sign in to continue to your healthcare dashboard."}
             </p>
           </div>
+
+          {/* Security Info Box (OTP Step) */}
+          {otpStep && infoMessage && (
+            <div className="mt-5 flex items-start gap-2.5 rounded-xl border border-teal-200 bg-teal-50/90 p-3.5 text-xs sm:text-sm text-teal-800">
+              <Smartphone size={18} className="mt-0.5 shrink-0 text-teal-600" />
+              <div className="space-y-1">
+                <p className="font-medium">{infoMessage}</p>
+                <p className="text-xs text-teal-700/90">
+                  Mobile: <strong>{otpMeta.maskedPhone}</strong>
+                  {otpMeta.trustedDeviceNotified
+                    ? " • Also displayed on your signed-in device"
+                    : ""}
+                  {otpMeta.emailSent && otpMeta.maskedEmail
+                    ? ` • Backup sent to ${otpMeta.maskedEmail}`
+                    : ""}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Error Message Box */}
           {error && (
@@ -237,7 +367,96 @@ const Login = () => {
             </div>
           )}
 
-          {/* Login Form */}
+          {otpStep ? (
+            /* NEW DEVICE OTP VERIFICATION FORM */
+            <form onSubmit={handleVerifyOtp} className="mt-7 space-y-5">
+              <div>
+                <label
+                  htmlFor="login-otp"
+                  className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-700"
+                >
+                  Enter 6-Digit Security OTP
+                </label>
+
+                <div className="relative">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                    <KeyRound size={18} />
+                  </div>
+
+                  <input
+                    id="login-otp"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    maxLength={6}
+                    autoFocus
+                    value={otpCode}
+                    onChange={(e) =>
+                      setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))
+                    }
+                    placeholder="• • • • • •"
+                    required
+                    className="h-13 w-full rounded-xl border border-slate-200 bg-slate-50/50 pl-11 pr-4 text-center font-mono text-xl font-bold tracking-[0.45em] text-slate-900 placeholder:tracking-[0.25em] placeholder:text-slate-400 outline-none transition-all duration-200 hover:border-slate-300 focus:border-teal-600 focus:bg-white focus:ring-4 focus:ring-teal-600/10"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-1">
+                <button
+                  type="submit"
+                  disabled={loading || otpCode.length !== 6}
+                  className="group relative flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-5 text-sm font-semibold text-white shadow-md shadow-teal-700/20 transition-all duration-200 hover:bg-teal-700 hover:shadow-lg hover:shadow-teal-700/25 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-65 cursor-pointer"
+                >
+                  {loading ? (
+                    <>
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                      <span>Verifying OTP...</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck size={17} />
+                      <span>Verify &amp; Sign In</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between pt-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setOtpStep(false);
+                    setOtpCode("");
+                    setError("");
+                    setInfoMessage("");
+                  }}
+                  className="font-medium text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
+                >
+                  &larr; Back to Sign In
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={resendCooldown > 0 || resending}
+                  className="inline-flex items-center gap-1.5 font-semibold text-teal-700 hover:text-teal-800 disabled:text-slate-400 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                >
+                  <RefreshCw
+                    size={13}
+                    className={resending ? "animate-spin" : ""}
+                  />
+                  <span>
+                    {resendCooldown > 0
+                      ? `Resend OTP in ${resendCooldown}s`
+                      : resending
+                        ? "Sending..."
+                        : "Resend OTP"}
+                  </span>
+                </button>
+              </div>
+            </form>
+          ) : (
+          /* Login Form */
           <form onSubmit={handleSubmit} className="mt-7 space-y-5">
             {/* EMAIL INPUT */}
             <div>
@@ -337,6 +556,7 @@ const Login = () => {
               </button>
             </div>
           </form>
+          )}
 
           {/* REGISTER LINK */}
           <p className="mt-8 text-center text-sm text-slate-500">

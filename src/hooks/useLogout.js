@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/auth.service";
 import { logout } from "../redux/slice/authSlice";
 import { disconnectSocket } from "../socket/socket";
+import { clearActiveSessionId } from "../utiles/deviceId";
 
 /**
  * useLogout
@@ -41,6 +42,7 @@ export const useLogout = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        clearActiveSessionId();
         sessionStorage.clear();
       } catch (e) {
         console.error("Storage cleanup failed:", e);

@@ -1,4 +1,5 @@
-import api from "../api/axios"
+import api from "../api/axios";
+import { getOrCreateDeviceId, getDeviceInfo } from "../utiles/deviceId";
 
 export const registerUser = async (data) => {
      try {
@@ -14,11 +15,32 @@ export const registerUser = async (data) => {
 
 
 export const loginUser = async (data) => {
-    const response = await api.post("/auth/login", data);
- console.log("login------", response.data);
+    const response = await api.post("/auth/login", {
+      ...data,
+      deviceId: getOrCreateDeviceId(),
+      deviceInfo: getDeviceInfo(),
+    });
     return response.data;
-     
-}
+};
+
+export const verifyLoginOtp = async ({ email, otp }) => {
+    const response = await api.post("/auth/verify-login-otp", {
+      email,
+      otp,
+      deviceId: getOrCreateDeviceId(),
+      deviceInfo: getDeviceInfo(),
+    });
+    return response.data;
+};
+
+export const resendLoginOtp = async (email) => {
+    const response = await api.post("/auth/resend-login-otp", {
+      email,
+      deviceId: getOrCreateDeviceId(),
+      deviceInfo: getDeviceInfo(),
+    });
+    return response.data;
+};
 
 export const logoutUser = async () => {
     const response = await api.post("/auth/logout");

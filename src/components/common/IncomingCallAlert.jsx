@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Video, PhoneOff, Check, Stethoscope, User, X } from "lucide-react";
 import socket from "../../socket/socket";
+import { getActiveSessionId } from "../../utiles/deviceId";
 
 // Helper: Soothing professional medical chime using Web Audio API
 const playMedicalChime = () => {
@@ -133,6 +134,17 @@ const IncomingCallAlert = () => {
         return;
       }
 
+      // Latest-device enforcement: Only ring if this device's sessionId matches targetSessionId
+      if (data.targetSessionId) {
+        const mySessionId = getActiveSessionId();
+        if (!mySessionId || mySessionId !== data.targetSessionId) {
+          console.log(
+            "🔇 [IncomingCallAlert] Ignored call alert — this is not the latest signed-in device."
+          );
+          return;
+        }
+      }
+
       setIncomingCall(data);
       setAlertSeconds(45);
 
@@ -189,14 +201,21 @@ const IncomingCallAlert = () => {
       }
     };
 
+    const handleSessionSuperseded = () => {
+      stopChime();
+      setIncomingCall(null);
+    };
+
     socket.on("call:incoming", handleIncoming);
     socket.on("call:ended", handleCallEnded);
     socket.on("call:declined", handleCallDeclined);
+    socket.on("session:superseded", handleSessionSuperseded);
 
     return () => {
       socket.off("call:incoming", handleIncoming);
       socket.off("call:ended", handleCallEnded);
       socket.off("call:declined", handleCallDeclined);
+      socket.off("session:superseded", handleSessionSuperseded);
     };
   }, [stopChime]);
 

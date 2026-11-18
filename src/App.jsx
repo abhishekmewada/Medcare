@@ -39,6 +39,7 @@ import AuditLogs from "./pages/admin/AuditLogs";
 import AdminChat from "./pages/admin/AdminChat";
 import VideoCallRoom from "./pages/common/VideoCallRoom";
 import IncomingCallAlert from "./components/common/IncomingCallAlert";
+import SecurityLoginOtpAlert from "./components/common/SecurityLoginOtpAlert";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { identifyUser } from "./socket/socket";
@@ -66,6 +67,7 @@ function App() {
   return (
     <>
       <IncomingCallAlert />
+      <SecurityLoginOtpAlert />
       <Routes>
       
       {/* ------------------PUBLIC WEB */}
