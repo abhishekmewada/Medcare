@@ -52,10 +52,32 @@ const Login = () => {
   const [resendCooldown, setResendCooldown] = useState(0);
   const [resending, setResending] = useState(false);
 
+  const PENDING_OTP_KEY = "medcare_pending_login_otp";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  // Restore pending OTP step if user refreshed or switched apps to check SMS/email
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(PENDING_OTP_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed?.expiresAt && parsed.expiresAt > Date.now() && parsed.email) {
+          setFormData((prev) => ({ ...prev, email: parsed.email }));
+          setOtpMeta(parsed.otpMeta || {});
+          setInfoMessage(parsed.infoMessage || "");
+          setOtpStep(true);
+        } else {
+          sessionStorage.removeItem(PENDING_OTP_KEY);
+        }
+      }
+    } catch (e) {
+      // ignore storage errors
+    }
+  }, []);
 
   // Countdown timer for Resend OTP button
   useEffect(() => {
@@ -87,6 +109,12 @@ const Login = () => {
   };
 
   const completeLoginSession = (response) => {
+    try {
+      sessionStorage.removeItem(PENDING_OTP_KEY);
+    } catch (e) {
+      // ignore
+    }
+
     if (response.token) {
       localStorage.setItem("authToken", response.token);
     }
@@ -119,20 +147,36 @@ const Login = () => {
 
       // If same user is already signed in on another device -> require mobile OTP
       if (response?.requiresOtp) {
-        setOtpStep(true);
-        setOtpCode("");
-        setOtpMeta({
+        const meta = {
           maskedPhone: response.maskedPhone || "your registered mobile",
           maskedEmail: response.maskedEmail || "",
           smsSent: Boolean(response.smsSent),
           trustedDeviceNotified: Boolean(response.trustedDeviceNotified),
           emailSent: Boolean(response.emailSent),
-        });
-        setInfoMessage(
+        };
+        const msg =
           response.message ||
-            "Security verification required. Enter the 6-digit OTP sent to your registered mobile number."
-        );
+          "Security verification required. Enter the 6-digit OTP sent to your registered mobile number.";
+
+        setOtpStep(true);
+        setOtpCode("");
+        setOtpMeta(meta);
+        setInfoMessage(msg);
         setResendCooldown(60);
+
+        try {
+          sessionStorage.setItem(
+            PENDING_OTP_KEY,
+            JSON.stringify({
+              email: formData.email,
+              otpMeta: meta,
+              infoMessage: msg,
+              expiresAt: Date.now() + 5 * 60 * 1000,
+            })
+          );
+        } catch (storageErr) {
+          // ignore
+        }
         return;
       }
 
@@ -425,6 +469,9 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={() => {
+                    try {
+                      sessionStorage.removeItem(PENDING_OTP_KEY);
+                    } catch (e) {}
                     setOtpStep(false);
                     setOtpCode("");
                     setError("");

@@ -160,8 +160,8 @@ const SecurityLoginOtpAlert = () => {
           </button>
         </div>
 
-        <p className="mt-3 text-[11px] text-rose-300/90 leading-snug">
-          Only use this code if <strong>you</strong> are signing in on the new device.
+        <p className="mt-3 text-[11px] text-amber-200/95 leading-snug">
+          Enter this 6-digit code on your <strong>new device&apos;s Login screen</strong> to complete sign-in. Only share if <strong>you</strong> are logging in.
         </p>
       </div>
     </div>
